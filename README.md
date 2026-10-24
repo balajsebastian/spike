@@ -6,14 +6,17 @@ The default CGM apps often have quiet alarms that aren't enough during sleep. Sp
 
 ## Supported CGM Sources
 
-- **Dexcom Share** (G6, G7, ONE)
-- **LibreLinkUp** (Libre 2, Libre 3)
-- **Nightscout** (any CGM via your self-hosted instance)
+- **Dexcom Share** (G6, G7, ONE) — tested
+- **LibreLinkUp** (Libre 2, Libre 3) — untested
+- **Nightscout** (any CGM via your self-hosted instance) — untested
+
+> Only Dexcom Share has been tested with real hardware. LibreLinkUp and Nightscout support is implemented based on their public APIs but has not been verified yet. Feedback and bug reports are welcome.
 
 ## Features
 
 - Large, readable glucose display — optimized for nightstand mode
 - Loud alarm with haptic feedback that plays even in silent mode
+- Multiple alarm sounds (Beep, Chime, Horn, Alert)
 - Configurable thresholds (urgent low, low, high)
 - Trend alerts (rapid rise/fall)
 - Snooze (1–15 min, default 5)

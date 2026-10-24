@@ -32,7 +32,7 @@ To remove all stored data, simply log out within the app or uninstall it. All lo
 
 ## Contact
 
-If you have any questions about this privacy policy, contact: sebastianbalaj@email.com
+If you have any questions about this privacy policy, contact: balajdariussebastian@gmail.com
 
 ## Changes
 

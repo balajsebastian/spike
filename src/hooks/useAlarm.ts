@@ -2,13 +2,20 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudioPlayer, setAudioModeAsync } from "expo-audio";
 import * as Haptics from "expo-haptics";
 import type { GlucoseReading } from "../types";
-import type { Settings } from "../settings/types";
+import type { Settings, AlarmSound } from "../settings/types";
 import {
   ALARM_ROUNDS,
   HAPTIC_BURSTS,
   HAPTIC_DELAY_MS,
   ALARM_PAUSE_MS,
 } from "../constants";
+
+const SOUND_SOURCES: Record<AlarmSound, ReturnType<typeof require>> = {
+  beep: require("../../assets/alarm-beep.wav"),
+  chime: require("../../assets/alarm-chime.wav"),
+  horn: require("../../assets/alarm-horn.wav"),
+  alert: require("../../assets/alarm-alert.wav"),
+};
 
 export type AlarmLevel = "urgent-low" | "low" | "high" | "falling" | "rising" | null;
 
@@ -37,8 +44,19 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
   const lastAlarmTimeRef = useRef(0);
   const lastReadingTimestampRef = useRef(0);
   const audioConfigured = useRef(false);
-  const player = useAudioPlayer(require("../../assets/beep.wav"));
   const [snoozeUntil, setSnoozeUntil] = useState(0);
+
+  const beepPlayer = useAudioPlayer(SOUND_SOURCES.beep);
+  const chimePlayer = useAudioPlayer(SOUND_SOURCES.chime);
+  const hornPlayer = useAudioPlayer(SOUND_SOURCES.horn);
+  const alertPlayer = useAudioPlayer(SOUND_SOURCES.alert);
+
+  const players: Record<AlarmSound, typeof beepPlayer> = {
+    beep: beepPlayer,
+    chime: chimePlayer,
+    horn: hornPlayer,
+    alert: alertPlayer,
+  };
 
   useEffect(() => {
     if (!audioConfigured.current) {
@@ -58,6 +76,7 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
   const isSnoozed = snoozeUntil > Date.now();
 
   const playAlarm = useCallback(async () => {
+    const player = players[settings.alarmSound];
     for (let round = 0; round < ALARM_ROUNDS; round++) {
       for (let j = 0; j < HAPTIC_BURSTS; j++) {
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -69,7 +88,13 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
         await new Promise((r) => setTimeout(r, ALARM_PAUSE_MS));
       }
     }
-  }, [player]);
+  }, [settings.alarmSound, beepPlayer, chimePlayer, hornPlayer, alertPlayer]);
+
+  const previewSound = useCallback((sound: AlarmSound) => {
+    const player = players[sound];
+    player.seekTo(0);
+    player.play();
+  }, [beepPlayer, chimePlayer, hornPlayer, alertPlayer]);
 
   useEffect(() => {
     if (!reading) return;
@@ -94,5 +119,6 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     cancelSnooze,
     isSnoozed,
     snoozeUntil,
+    previewSound,
   };
 }

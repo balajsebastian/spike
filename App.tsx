@@ -53,7 +53,7 @@ function MonitorScreen({ credentials, onLogout }: {
 }) {
   const { settings, theme } = useSettingsContext();
   const { reading, error } = useGlucose(credentials);
-  const { alarmLevel, snooze, cancelSnooze, isSnoozed, snoozeUntil } = useAlarm(reading, settings);
+  const { alarmLevel, snooze, cancelSnooze, isSnoozed, snoozeUntil, previewSound } = useAlarm(reading, settings);
   const [showSettings, setShowSettings] = useState(false);
   const [now, setNow] = useState(Date.now());
 
@@ -63,7 +63,7 @@ function MonitorScreen({ credentials, onLogout }: {
   }, []);
 
   if (showSettings) {
-    return <SettingsScreen onBack={() => setShowSettings(false)} />;
+    return <SettingsScreen onBack={() => setShowSettings(false)} onPreviewSound={previewSound} />;
   }
 
   const status = getStatusText(reading);

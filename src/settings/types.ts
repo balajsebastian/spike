@@ -1,3 +1,12 @@
+export type AlarmSound = "beep" | "chime" | "horn" | "alert";
+
+export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
+  { label: "Beep", value: "beep" },
+  { label: "Chime", value: "chime" },
+  { label: "Horn", value: "horn" },
+  { label: "Alert", value: "alert" },
+];
+
 export interface Settings {
   theme: "dark" | "light";
   unit: "mgdl" | "mmol";
@@ -12,6 +21,7 @@ export interface Settings {
   risingEnabled: boolean;
   alarmRepeatMinutes: number;
   snoozeMinutes: number;
+  alarmSound: AlarmSound;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -28,6 +38,7 @@ export const DEFAULT_SETTINGS: Settings = {
   risingEnabled: true,
   alarmRepeatMinutes: 5,
   snoozeMinutes: 5,
+  alarmSound: "beep",
 };
 
 export interface ThemeColors {

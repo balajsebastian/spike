@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Alert, Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { useSettingsContext } from "../settings/SettingsContext";
-import { formatGlucose, type ThemeColors } from "../settings/types";
+import { formatGlucose, ALARM_SOUNDS, type ThemeColors, type AlarmSound } from "../settings/types";
 import {
   COLORS,
   THRESHOLD_MIN,
@@ -19,6 +19,7 @@ const FEEDBACK_URL = `mailto:${FEEDBACK_EMAIL}?subject=Spike%20Feedback`;
 
 interface Props {
   onBack: () => void;
+  onPreviewSound: (sound: AlarmSound) => void;
 }
 
 function SectionHeader({ title, theme }: { title: string; theme: ThemeColors }) {
@@ -109,7 +110,7 @@ async function openFeedback() {
   }
 }
 
-export function SettingsScreen({ onBack }: Props) {
+export function SettingsScreen({ onBack, onPreviewSound }: Props) {
   const { settings, theme, update } = useSettingsContext();
   const unit = settings.unit;
   const unitLabel = unit === "mmol" ? "mmol/L" : "mg/dL";
@@ -252,6 +253,34 @@ export function SettingsScreen({ onBack }: Props) {
         </Row>
 
         <SectionHeader title="ALARM" theme={theme} />
+        <Row label="Sound" theme={theme}>
+          <View style={styles.soundRow}>
+            {ALARM_SOUNDS.map((s) => (
+              <TouchableOpacity
+                key={s.value}
+                style={[
+                  styles.soundBtn,
+                  { borderColor: theme.border },
+                  settings.alarmSound === s.value && { borderColor: theme.text, backgroundColor: theme.surface },
+                ]}
+                onPress={() => {
+                  update({ alarmSound: s.value });
+                  onPreviewSound(s.value);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.soundText,
+                    { color: theme.textTertiary },
+                    settings.alarmSound === s.value && { color: theme.text },
+                  ]}
+                >
+                  {s.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </Row>
         <Row label="Repeat Every" theme={theme}>
           <Stepper
             displayValue={`${settings.alarmRepeatMinutes} min`}
@@ -396,6 +425,21 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     minWidth: 85,
     textAlign: "center",
+  },
+  soundRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  soundBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  soundText: {
+    fontSize: 13,
+    fontWeight: "500",
   },
   warning: {
     fontSize: 13,
