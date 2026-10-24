@@ -52,7 +52,7 @@ export function MonitorScreen({ credentials, onLogout, onOpenSettings }: Props) 
         adjustsFontSizeToFit
         numberOfLines={1}
       >
-        {isNoData ? "--" : `${displayValue} ${reading!.trendArrow}`}
+        {isNoData || !reading ? "--" : `${displayValue} ${reading.trendArrow}`}
       </Text>
 
       <Text style={[styles.ago, { color: status.color ?? theme.textTertiary }]}>

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Stack, ErrorBoundary as ExpoErrorBoundary } from "expo-router";
 import { useKeepAwake } from "expo-keep-awake";
 import { SettingsProvider, useSettingsContext } from "@/features/settings/SettingsContext";
@@ -25,8 +25,8 @@ function AppStack() {
 
   if (onboardingLoading || authLoading) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: theme.background }}>
-        <Text style={{ color: theme.textTertiary, fontSize: 16 }}>Loading...</Text>
+      <View style={[styles.loading, { backgroundColor: theme.background }]}>
+        <Text style={[styles.loadingText, { color: theme.textTertiary }]}>Loading...</Text>
       </View>
     );
   }
@@ -46,6 +46,17 @@ function AppStack() {
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loadingText: {
+    fontSize: 16,
+  },
+});
 
 export default function RootLayout() {
   return (

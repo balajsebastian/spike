@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useAudioPlayer } from "expo-audio";
 import type { AlarmSound } from "@/features/settings/types";
 import { SOUND_SOURCES } from "./sounds";
@@ -8,12 +9,8 @@ export function useSoundPlayers() {
   const hornPlayer = useAudioPlayer(SOUND_SOURCES.horn);
   const alertPlayer = useAudioPlayer(SOUND_SOURCES.alert);
 
-  const players: Record<AlarmSound, typeof beepPlayer> = {
-    beep: beepPlayer,
-    chime: chimePlayer,
-    horn: hornPlayer,
-    alert: alertPlayer,
-  };
-
-  return players;
+  return useMemo<Record<AlarmSound, typeof beepPlayer>>(
+    () => ({ beep: beepPlayer, chime: chimePlayer, horn: hornPlayer, alert: alertPlayer }),
+    [beepPlayer, chimePlayer, hornPlayer, alertPlayer],
+  );
 }

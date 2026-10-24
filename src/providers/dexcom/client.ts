@@ -1,3 +1,4 @@
+import type { CGMClient } from "../types";
 import type { GlucoseReading } from "@/shared/types";
 import {
   type DexcomConfig,
@@ -7,7 +8,7 @@ import {
 } from "./types";
 import { parseGlucoseReading } from "./parser";
 
-export class DexcomShareClient {
+export class DexcomShareClient implements CGMClient {
   private baseUrl: string;
   private config: DexcomConfig;
   private accountId: string | null = null;

@@ -1,3 +1,4 @@
+import type { CGMClient } from "../types";
 import {
   type GlucoseReading,
   type TrendDirection,
@@ -22,7 +23,13 @@ function mapDirection(direction: string | undefined): TrendDirection {
   return DIRECTION_MAP[direction] ?? "None";
 }
 
-export class NightscoutClient {
+interface NightscoutEntry {
+  sgv: number;
+  direction?: string;
+  date: number;
+}
+
+export class NightscoutClient implements CGMClient {
   private url: string;
   private token?: string;
 
@@ -52,7 +59,7 @@ export class NightscoutClient {
       throw new Error(`Nightscout error ${res.status}`);
     }
 
-    const entries = await res.json();
+    const entries: NightscoutEntry[] = await res.json();
     if (!Array.isArray(entries) || entries.length === 0) return null;
 
     const entry = entries[0];

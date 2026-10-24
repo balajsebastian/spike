@@ -1,4 +1,5 @@
 import * as Crypto from "expo-crypto";
+import type { CGMClient } from "../types";
 import {
   type GlucoseReading,
   type TrendDirection,
@@ -44,7 +45,27 @@ async function sha256Hex(input: string): Promise<string> {
   return Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, input);
 }
 
-export class LibreLinkUpClient {
+interface LibreLoginResponse {
+  data?: {
+    redirect?: boolean;
+    region?: string;
+    authTicket?: { token: string };
+    user?: { id: string | number };
+  };
+}
+
+interface LibreConnectionResponse {
+  data?: Array<{
+    glucoseMeasurement?: {
+      ValueInMgPerDl: number;
+      TrendArrow: number;
+      FactoryTimestamp?: string;
+      Timestamp: string;
+    };
+  }>;
+}
+
+export class LibreLinkUpClient implements CGMClient {
   private baseUrl = "https://api-eu.libreview.io";
   private email: string;
   private password: string;
@@ -57,16 +78,16 @@ export class LibreLinkUpClient {
   }
 
   private headers(): Record<string, string> {
-    const h: Record<string, string> = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
       "cache-control": "no-cache",
       product: "llu.android",
       version: "4.16.0",
     };
-    if (this.token) h["Authorization"] = `Bearer ${this.token}`;
-    if (this.accountId) h["Account-Id"] = this.accountId;
-    return h;
+    if (this.token) headers["Authorization"] = `Bearer ${this.token}`;
+    if (this.accountId) headers["Account-Id"] = this.accountId;
+    return headers;
   }
 
   async connect(redirects = 2): Promise<void> {
@@ -80,7 +101,7 @@ export class LibreLinkUpClient {
       throw new Error(`LibreLinkUp login failed (${loginRes.status})`);
     }
 
-    const loginData = await loginRes.json();
+    const loginData: LibreLoginResponse = await loginRes.json();
 
     if (loginData.data?.redirect && loginData.data?.region) {
       if (redirects <= 0) throw new Error("LibreLinkUp too many redirects");
@@ -102,7 +123,7 @@ export class LibreLinkUpClient {
     const connRes = await fetch(`${this.baseUrl}/llu/connections`, {
       headers: this.headers(),
     });
-    const connData = await connRes.json();
+    const connData: LibreConnectionResponse = await connRes.json();
 
     if (!connData.data?.length) {
       throw new Error("No connections found in LibreLinkUp — add a connection in the LibreLinkUp app first");
@@ -126,7 +147,7 @@ export class LibreLinkUpClient {
       throw new Error(`LibreLinkUp error ${res.status}`);
     }
 
-    const data = await res.json();
+    const data: LibreConnectionResponse = await res.json();
     const measurement = data.data?.[0]?.glucoseMeasurement;
 
     if (!measurement) return null;
