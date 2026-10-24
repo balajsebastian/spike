@@ -36,9 +36,12 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "spike-cgm",
     "plugins": [
+      ["expo-router", { "root": "src/app" }],
       "expo-secure-store",
-      "expo-audio"
+      "expo-audio",
+      "expo-splash-screen"
     ]
   }
 }

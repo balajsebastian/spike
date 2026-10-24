@@ -7,12 +7,11 @@ export function useDisclaimer() {
   const [accepted, setAccepted] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      const value = await SecureStore.getItemAsync(KEY_DISCLAIMER);
+  useEffect(function loadDisclaimer() {
+    SecureStore.getItemAsync(KEY_DISCLAIMER).then((value) => {
       setAccepted(value === "true");
       setLoading(false);
-    })();
+    });
   }, []);
 
   const accept = useCallback(async () => {

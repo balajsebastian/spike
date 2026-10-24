@@ -3,7 +3,7 @@ import {
   type GlucoseReading,
   type TrendDirection,
   TREND_ARROWS,
-} from "../types";
+} from "@/shared/types";
 
 const LIBRE_TREND_MAP: Record<number, TrendDirection> = {
   1: "SingleDown",

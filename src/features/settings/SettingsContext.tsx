@@ -20,16 +20,15 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      const raw = await SecureStore.getItemAsync(STORAGE_KEY);
+  useEffect(function loadSettings() {
+    SecureStore.getItemAsync(STORAGE_KEY).then((raw) => {
       if (raw) {
         try {
           setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(raw) });
         } catch {}
       }
       setLoaded(true);
-    })();
+    });
   }, []);
 
   const update = useCallback((partial: Partial<Settings>) => {

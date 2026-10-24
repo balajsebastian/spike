@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useSettingsContext } from "../settings/SettingsContext";
+import { useSettingsContext } from "@/features/settings/SettingsContext";
 
 interface Props {
   onAccept: () => void;

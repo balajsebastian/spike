@@ -1,70 +1,31 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useKeepAwake } from "expo-keep-awake";
-import type { GlucoseReading } from "./src/types";
-import {
-  COLORS,
-  NO_DATA_MS,
-  STALE_MS,
-  DELAYED_MS,
-  HIGH_BUFFER,
-  BLINK_CYCLE_MS,
-  BLINK_ON_MS,
-} from "./src/constants";
-import { useGlucose } from "./src/hooks/useGlucose";
-import { useAlarm } from "./src/hooks/useAlarm";
-import { useCredentials, type Credentials } from "./src/hooks/useCredentials";
-import { useDisclaimer } from "./src/hooks/useDisclaimer";
-import { LoginScreen } from "./src/screens/LoginScreen";
-import { DisclaimerScreen } from "./src/screens/DisclaimerScreen";
-import { SettingsScreen } from "./src/screens/SettingsScreen";
-import { SettingsProvider, useSettingsContext } from "./src/settings/SettingsContext";
-import { formatGlucose, type Settings } from "./src/settings/types";
+import { useSettingsContext } from "@/features/settings/SettingsContext";
+import { formatGlucose } from "@/features/settings/types";
+import { useAlarm } from "@/features/alarm/useAlarm";
+import { COLORS } from "@/shared/colors";
+import type { Credentials } from "@/features/auth/types";
+import { useGlucose } from "./useGlucose";
+import { getRangeColor, getStatusText } from "./utils";
+import { NO_DATA_MS, BLINK_CYCLE_MS, BLINK_ON_MS } from "./constants";
 
-function KeepAwake() {
-  useKeepAwake();
-  return null;
-}
-
-function getRangeColor(mgdl: number, settings: Settings, normalColor: string): string {
-  if (mgdl < settings.urgentLowThreshold) return COLORS.danger;
-  if (mgdl < settings.lowThreshold) return COLORS.warning;
-  if (mgdl <= settings.highThreshold) return normalColor;
-  if (mgdl <= settings.highThreshold + HIGH_BUFFER) return COLORS.warning;
-  return COLORS.danger;
-}
-
-function getStatusText(reading: GlucoseReading | null): { text: string; color?: string } {
-  if (!reading) return { text: "CONNECTING..." };
-
-  const ms = Date.now() - reading.timestampMs;
-  const min = Math.floor(ms / 60_000);
-
-  if (ms > NO_DATA_MS) return { text: "NO DATA", color: COLORS.danger };
-  if (ms > STALE_MS) return { text: `STALE · ${min}m ago`, color: COLORS.stale };
-  if (ms > DELAYED_MS) return { text: `DELAYED · ${min}m ago`, color: COLORS.stale };
-  return { text: min <= 0 ? "just now" : `${min} min ago` };
-}
-
-function MonitorScreen({ credentials, onLogout }: {
+interface Props {
   credentials: Credentials;
   onLogout: () => void;
-}) {
+  onOpenSettings: () => void;
+}
+
+export function MonitorScreen({ credentials, onLogout, onOpenSettings }: Props) {
   const { settings, theme } = useSettingsContext();
   const { reading, error } = useGlucose(credentials);
-  const { alarmLevel, snooze, cancelSnooze, isSnoozed, snoozeUntil, previewSound } = useAlarm(reading, settings);
-  const [showSettings, setShowSettings] = useState(false);
+  const { alarmLevel, snooze, cancelSnooze, isSnoozed, snoozeUntil } = useAlarm(reading, settings);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 10_000);
     return () => clearInterval(interval);
   }, []);
-
-  if (showSettings) {
-    return <SettingsScreen onBack={() => setShowSettings(false)} onPreviewSound={previewSound} />;
-  }
 
   const status = getStatusText(reading);
   const isNoData = !reading || Date.now() - reading.timestampMs > NO_DATA_MS;
@@ -78,7 +39,7 @@ function MonitorScreen({ credentials, onLogout }: {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <StatusBar hidden />
 
-      <TouchableOpacity style={styles.settingsBtn} onPress={() => setShowSettings(true)}>
+      <TouchableOpacity style={styles.settingsBtn} onPress={onOpenSettings}>
         <Text style={[styles.btnText, { color: theme.textTertiary }]}>Settings</Text>
       </TouchableOpacity>
 
@@ -121,46 +82,6 @@ function MonitorScreen({ credentials, onLogout }: {
         <Text style={styles.error}>{error}</Text>
       )}
     </View>
-  );
-}
-
-function AppContent() {
-  const { theme } = useSettingsContext();
-  const { credentials, loading, save, clear } = useCredentials();
-  const disclaimer = useDisclaimer();
-
-  if (loading || disclaimer.loading) {
-    return (
-      <View style={[styles.container, { backgroundColor: theme.background }]}>
-        <StatusBar hidden />
-        <Text style={{ color: theme.textTertiary, fontSize: 16 }}>Loading...</Text>
-      </View>
-    );
-  }
-
-  if (!disclaimer.accepted) {
-    return <DisclaimerScreen onAccept={disclaimer.accept} />;
-  }
-
-  if (!credentials) {
-    return <LoginScreen onLogin={save} />;
-  }
-
-  return <MonitorScreen credentials={credentials} onLogout={clear} />;
-}
-
-function KeepAwakeWrapper() {
-  const { settings } = useSettingsContext();
-  if (!settings.keepScreenOn) return null;
-  return <KeepAwake />;
-}
-
-export default function App() {
-  return (
-    <SettingsProvider>
-      <KeepAwakeWrapper />
-      <AppContent />
-    </SettingsProvider>
   );
 }
 

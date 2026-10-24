@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { AppState } from "react-native";
-import { DexcomShareClient } from "../dexcom/share-client";
-import { LibreLinkUpClient } from "../libre/libre-client";
-import { NightscoutClient } from "../nightscout/nightscout-client";
-import type { GlucoseReading } from "../types";
-import type { Credentials } from "./useCredentials";
+import { DexcomShareClient } from "@/providers/dexcom/client";
+import { LibreLinkUpClient } from "@/providers/libre/client";
+import { NightscoutClient } from "@/providers/nightscout/client";
+import type { GlucoseReading } from "@/shared/types";
+import type { Credentials } from "@/features/auth/types";
 
 const POLL_MS = 60_000;
 const STALE_POLL_MS = 15_000;

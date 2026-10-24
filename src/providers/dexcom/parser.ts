@@ -1,5 +1,5 @@
 import type { RawGlucoseReading } from "./types";
-import { type GlucoseReading, type TrendDirection, TREND_ARROWS } from "../types";
+import { type GlucoseReading, type TrendDirection, TREND_ARROWS } from "@/shared/types";
 
 function parseDexcomDate(dateStr: string): number {
   const match = dateStr.match(/Date\((\d+)/);

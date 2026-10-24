@@ -1,14 +1,18 @@
 {
   "name": "gluco-watch",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "dependencies": {
     "expo": "~58.0.14",
     "expo-audio": "~58.0.9",
+    "expo-constants": "~58.0.13",
     "expo-crypto": "~58.0.7",
     "expo-haptics": "~58.0.7",
     "expo-keep-awake": "~58.0.3",
+    "expo-linking": "~58.0.14",
+    "expo-router": "~58.0.26",
     "expo-secure-store": "~58.0.2",
+    "expo-splash-screen": "~58.0.11",
     "expo-status-bar": "~58.0.3",
     "react": "19.3.0",
     "react-native": "0.88.0"

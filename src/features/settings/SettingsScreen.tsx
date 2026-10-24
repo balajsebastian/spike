@@ -1,9 +1,11 @@
-import type { ReactNode } from "react";
 import { Alert, Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
-import { useSettingsContext } from "../settings/SettingsContext";
-import { formatGlucose, ALARM_SOUNDS, type ThemeColors, type AlarmSound } from "../settings/types";
+import { COLORS } from "@/shared/colors";
+import { OptionGroup } from "@/shared/OptionGroup";
+import { useSettingsContext } from "./SettingsContext";
+import { usePreviewSound } from "./usePreviewSound";
+import { SectionHeader, Row, Segmented, Stepper, componentStyles } from "./components";
+import { formatGlucose, ALARM_SOUNDS } from "./types";
 import {
-  COLORS,
   THRESHOLD_MIN,
   THRESHOLD_MAX,
   THRESHOLD_STEP,
@@ -12,93 +14,13 @@ import {
   SNOOZE_MIN,
   SNOOZE_MAX,
   SNOOZE_WARNING_ABOVE,
-} from "../constants";
+} from "./constants";
 
 const FEEDBACK_EMAIL = "balajdariussebastian@gmail.com";
 const FEEDBACK_URL = `mailto:${FEEDBACK_EMAIL}?subject=Spike%20Feedback`;
 
 interface Props {
   onBack: () => void;
-  onPreviewSound: (sound: AlarmSound) => void;
-}
-
-function SectionHeader({ title, theme }: { title: string; theme: ThemeColors }) {
-  return <Text style={[styles.sectionHeader, { color: theme.textSecondary }]}>{title}</Text>;
-}
-
-function Row({ label, theme, children }: { label: string; theme: ThemeColors; children: ReactNode }) {
-  return (
-    <View style={[styles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}>
-      <Text style={[styles.rowLabel, { color: theme.text }]}>{label}</Text>
-      <View style={styles.rowRight}>{children}</View>
-    </View>
-  );
-}
-
-function Segmented<T extends string>({
-  options,
-  value,
-  onChange,
-  theme,
-}: {
-  options: { label: string; value: T }[];
-  value: T;
-  onChange: (v: T) => void;
-  theme: ThemeColors;
-}) {
-  return (
-    <View style={[styles.segmented, { backgroundColor: theme.background }]}>
-      {options.map((opt) => (
-        <TouchableOpacity
-          key={opt.value}
-          style={[
-            styles.segmentedBtn,
-            value === opt.value && { backgroundColor: theme.text },
-          ]}
-          onPress={() => onChange(opt.value)}
-        >
-          <Text
-            style={[
-              styles.segmentedText,
-              { color: value === opt.value ? theme.background : theme.textSecondary },
-            ]}
-          >
-            {opt.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-}
-
-function Stepper({
-  displayValue,
-  onDecrement,
-  onIncrement,
-  theme,
-}: {
-  displayValue: string;
-  onDecrement: () => void;
-  onIncrement: () => void;
-  theme: ThemeColors;
-}) {
-  return (
-    <View style={styles.stepper}>
-      <TouchableOpacity
-        style={[styles.stepperBtn, { backgroundColor: theme.background }]}
-        onPress={onDecrement}
-      >
-        <Text style={[styles.stepperBtnText, { color: theme.text }]}>-</Text>
-      </TouchableOpacity>
-      <Text style={[styles.stepperValue, { color: theme.text }]}>{displayValue}</Text>
-      <TouchableOpacity
-        style={[styles.stepperBtn, { backgroundColor: theme.background }]}
-        onPress={onIncrement}
-      >
-        <Text style={[styles.stepperBtnText, { color: theme.text }]}>+</Text>
-      </TouchableOpacity>
-    </View>
-  );
 }
 
 async function openFeedback() {
@@ -110,8 +32,9 @@ async function openFeedback() {
   }
 }
 
-export function SettingsScreen({ onBack, onPreviewSound }: Props) {
+export function SettingsScreen({ onBack }: Props) {
   const { settings, theme, update } = useSettingsContext();
+  const previewSound = usePreviewSound();
   const unit = settings.unit;
   const unitLabel = unit === "mmol" ? "mmol/L" : "mg/dL";
 
@@ -254,32 +177,19 @@ export function SettingsScreen({ onBack, onPreviewSound }: Props) {
 
         <SectionHeader title="ALARM" theme={theme} />
         <Row label="Sound" theme={theme}>
-          <View style={styles.soundRow}>
-            {ALARM_SOUNDS.map((s) => (
-              <TouchableOpacity
-                key={s.value}
-                style={[
-                  styles.soundBtn,
-                  { borderColor: theme.border },
-                  settings.alarmSound === s.value && { borderColor: theme.text, backgroundColor: theme.surface },
-                ]}
-                onPress={() => {
-                  update({ alarmSound: s.value });
-                  onPreviewSound(s.value);
-                }}
-              >
-                <Text
-                  style={[
-                    styles.soundText,
-                    { color: theme.textTertiary },
-                    settings.alarmSound === s.value && { color: theme.text },
-                  ]}
-                >
-                  {s.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+          <OptionGroup
+            options={ALARM_SOUNDS}
+            value={settings.alarmSound}
+            onChange={(v) => {
+              update({ alarmSound: v });
+              previewSound(v);
+            }}
+            theme={theme}
+            expand={false}
+            containerStyle={{ flexWrap: "wrap", gap: 8 }}
+            buttonStyle={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 }}
+            labelStyle={{ fontSize: 13, fontWeight: "500" }}
+          />
         </Row>
         <Row label="Repeat Every" theme={theme}>
           <Stepper
@@ -324,10 +234,10 @@ export function SettingsScreen({ onBack, onPreviewSound }: Props) {
           <Text style={{ color: theme.textSecondary }}>1.0.0</Text>
         </Row>
         <TouchableOpacity
-          style={[styles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}
+          style={[componentStyles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}
           onPress={openFeedback}
         >
-          <Text style={[styles.rowLabel, { color: COLORS.accent }]}>Send Feedback</Text>
+          <Text style={{ fontSize: 16, color: COLORS.accent }}>Send Feedback</Text>
         </TouchableOpacity>
 
         <View style={{ height: 60 }} />
@@ -361,85 +271,6 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 40,
-  },
-  sectionHeader: {
-    fontSize: 13,
-    fontWeight: "500",
-    paddingHorizontal: 16,
-    paddingTop: 28,
-    paddingBottom: 8,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    minHeight: 48,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  rowLabel: {
-    fontSize: 16,
-    flexShrink: 1,
-  },
-  rowRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: 12,
-  },
-  segmented: {
-    flexDirection: "row",
-    borderRadius: 8,
-    overflow: "hidden",
-    padding: 2,
-  },
-  segmentedBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  segmentedText: {
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  stepper: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepperBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  stepperBtnText: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  stepperValue: {
-    fontSize: 13,
-    fontWeight: "500",
-    minWidth: 85,
-    textAlign: "center",
-  },
-  soundRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  soundBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  soundText: {
-    fontSize: 13,
-    fontWeight: "500",
   },
   warning: {
     fontSize: 13,

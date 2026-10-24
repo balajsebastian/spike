@@ -1,21 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudioPlayer, setAudioModeAsync } from "expo-audio";
 import * as Haptics from "expo-haptics";
-import type { GlucoseReading } from "../types";
-import type { Settings, AlarmSound } from "../settings/types";
+import type { GlucoseReading } from "@/shared/types";
+import type { Settings, AlarmSound } from "@/features/settings/types";
 import {
   ALARM_ROUNDS,
   HAPTIC_BURSTS,
   HAPTIC_DELAY_MS,
   ALARM_PAUSE_MS,
-} from "../constants";
-
-const SOUND_SOURCES: Record<AlarmSound, ReturnType<typeof require>> = {
-  beep: require("../../assets/alarm-beep.wav"),
-  chime: require("../../assets/alarm-chime.wav"),
-  horn: require("../../assets/alarm-horn.wav"),
-  alert: require("../../assets/alarm-alert.wav"),
-};
+} from "./constants";
+import { SOUND_SOURCES } from "./sounds";
 
 export type AlarmLevel = "urgent-low" | "low" | "high" | "falling" | "rising" | null;
 
@@ -65,13 +59,13 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     }
   }, []);
 
-  const snooze = useCallback((minutes: number) => {
+  const snooze = (minutes: number) => {
     setSnoozeUntil(Date.now() + minutes * 60_000);
-  }, []);
+  };
 
-  const cancelSnooze = useCallback(() => {
+  const cancelSnooze = () => {
     setSnoozeUntil(0);
-  }, []);
+  };
 
   const isSnoozed = snoozeUntil > Date.now();
 
@@ -89,12 +83,6 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
       }
     }
   }, [settings.alarmSound, beepPlayer, chimePlayer, hornPlayer, alertPlayer]);
-
-  const previewSound = useCallback((sound: AlarmSound) => {
-    const player = players[sound];
-    player.seekTo(0);
-    player.play();
-  }, [beepPlayer, chimePlayer, hornPlayer, alertPlayer]);
 
   useEffect(() => {
     if (!reading) return;
@@ -119,6 +107,5 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     cancelSnooze,
     isSnoozed,
     snoozeUntil,
-    previewSound,
   };
 }

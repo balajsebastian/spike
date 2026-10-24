@@ -2,7 +2,7 @@ import {
   type GlucoseReading,
   type TrendDirection,
   TREND_ARROWS,
-} from "../types";
+} from "@/shared/types";
 
 const DIRECTION_MAP: Record<string, TrendDirection> = {
   DoubleUp: "DoubleUp",

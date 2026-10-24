@@ -1,4 +1,4 @@
-import type { GlucoseReading } from "../types";
+import type { GlucoseReading } from "@/shared/types";
 import {
   type DexcomConfig,
   type RawGlucoseReading,

@@ -1,29 +1,22 @@
 import { useEffect, useState, useCallback } from "react";
 import * as SecureStore from "expo-secure-store";
+import type { Credentials } from "./types";
 
 const STORAGE_KEY = "cgm_credentials";
-
-export type CGMSource = "dexcom" | "libre" | "nightscout";
-
-export type Credentials =
-  | { source: "dexcom"; username: string; password: string; region: "eu" | "us" }
-  | { source: "libre"; email: string; password: string }
-  | { source: "nightscout"; url: string; token?: string };
 
 export function useCredentials() {
   const [credentials, setCredentials] = useState<Credentials | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      const raw = await SecureStore.getItemAsync(STORAGE_KEY);
+  useEffect(function loadCredentials() {
+    SecureStore.getItemAsync(STORAGE_KEY).then((raw) => {
       if (raw) {
         try {
           setCredentials(JSON.parse(raw));
         } catch {}
       }
       setLoading(false);
-    })();
+    });
   }, []);
 
   const save = useCallback(async (creds: Credentials) => {
