@@ -1,7 +1,7 @@
+import type { GlucoseReading } from "../types";
 import {
   type DexcomConfig,
   type RawGlucoseReading,
-  type GlucoseReading,
   APPLICATION_ID,
   BASE_URLS,
 } from "./types";

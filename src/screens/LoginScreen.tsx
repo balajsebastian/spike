@@ -13,6 +13,7 @@ import { DexcomShareClient } from "../dexcom/share-client";
 import { LibreLinkUpClient } from "../libre/libre-client";
 import { NightscoutClient } from "../nightscout/nightscout-client";
 import { useSettingsContext } from "../settings/SettingsContext";
+import { COLORS } from "../constants";
 
 interface Props {
   onLogin: (credentials: Credentials) => void;
@@ -286,7 +287,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   error: {
-    color: "#ff1744",
+    color: COLORS.danger,
     fontSize: 13,
     textAlign: "center",
     marginTop: 16,

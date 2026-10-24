@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useKeepAwake } from "expo-keep-awake";
+import type { GlucoseReading } from "./src/types";
+import {
+  COLORS,
+  NO_DATA_MS,
+  STALE_MS,
+  DELAYED_MS,
+  HIGH_BUFFER,
+  BLINK_CYCLE_MS,
+  BLINK_ON_MS,
+} from "./src/constants";
 import { useGlucose } from "./src/hooks/useGlucose";
 import { useAlarm } from "./src/hooks/useAlarm";
 import { useCredentials, type Credentials } from "./src/hooks/useCredentials";
@@ -18,23 +28,23 @@ function KeepAwake() {
 }
 
 function getRangeColor(mgdl: number, settings: Settings, normalColor: string): string {
-  if (mgdl < settings.urgentLowThreshold) return "#ff1744";
-  if (mgdl < settings.lowThreshold) return "#ff9800";
+  if (mgdl < settings.urgentLowThreshold) return COLORS.danger;
+  if (mgdl < settings.lowThreshold) return COLORS.warning;
   if (mgdl <= settings.highThreshold) return normalColor;
-  if (mgdl <= settings.highThreshold + 20) return "#ff9800";
-  return "#ff1744";
+  if (mgdl <= settings.highThreshold + HIGH_BUFFER) return COLORS.warning;
+  return COLORS.danger;
 }
 
-function getStatusInfo(reading: ReturnType<typeof useGlucose>["reading"]) {
-  if (!reading) return { text: "CONNECTING...", stale: true };
+function getStatusText(reading: GlucoseReading | null): { text: string; color?: string } {
+  if (!reading) return { text: "CONNECTING..." };
 
-  const ms = Date.now() - reading.sensorTimestampMs;
-  const min = Math.floor(ms / 60000);
+  const ms = Date.now() - reading.timestampMs;
+  const min = Math.floor(ms / 60_000);
 
-  if (ms > 15 * 60000) return { text: "NO DATA", color: "#ff1744", stale: true };
-  if (ms > 10 * 60000) return { text: `STALE · ${min}m ago`, color: "#ffc107", stale: false };
-  if (ms > 8 * 60000) return { text: `DELAYED · ${min}m ago`, color: "#ffc107", stale: false };
-  return { text: min <= 0 ? "just now" : `${min} min ago`, stale: false };
+  if (ms > NO_DATA_MS) return { text: "NO DATA", color: COLORS.danger };
+  if (ms > STALE_MS) return { text: `STALE · ${min}m ago`, color: COLORS.stale };
+  if (ms > DELAYED_MS) return { text: `DELAYED · ${min}m ago`, color: COLORS.stale };
+  return { text: min <= 0 ? "just now" : `${min} min ago` };
 }
 
 function MonitorScreen({ credentials, onLogout }: {
@@ -56,14 +66,13 @@ function MonitorScreen({ credentials, onLogout }: {
     return <SettingsScreen onBack={() => setShowSettings(false)} />;
   }
 
-  const status = getStatusInfo(reading);
-  const isNoData = !reading || Date.now() - reading.sensorTimestampMs > 15 * 60000;
+  const status = getStatusText(reading);
+  const isNoData = !reading || Date.now() - reading.timestampMs > NO_DATA_MS;
   const color = reading ? getRangeColor(reading.valueMgdl, settings, theme.text) : theme.textTertiary;
   const isUrgent = alarmLevel === "urgent-low";
+  const blinkOpacity = isUrgent ? (now % BLINK_CYCLE_MS < BLINK_ON_MS ? 1 : 0.3) : 1;
   const displayValue = reading ? formatGlucose(reading.valueMgdl, settings.unit) : "--";
-  const agoColor = status.color ?? theme.textTertiary;
-
-  const snoozeRemaining = isSnoozed ? Math.ceil((snoozeUntil - now) / 60_000) : 0;
+  const snoozeRemaining = isSnoozed ? Math.round((snoozeUntil - now) / 60_000) : 0;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -78,14 +87,14 @@ function MonitorScreen({ credentials, onLogout }: {
       </TouchableOpacity>
 
       <Text
-        style={[styles.reading, { color, opacity: isUrgent ? (now % 2000 < 1000 ? 1 : 0.3) : 1 }]}
+        style={[styles.reading, { color, opacity: blinkOpacity }]}
         adjustsFontSizeToFit
         numberOfLines={1}
       >
         {isNoData ? "--" : `${displayValue} ${reading!.trendArrow}`}
       </Text>
 
-      <Text style={[styles.ago, { color: agoColor }]}>
+      <Text style={[styles.ago, { color: status.color ?? theme.textTertiary }]}>
         {status.text}
       </Text>
 
@@ -116,7 +125,7 @@ function MonitorScreen({ credentials, onLogout }: {
 }
 
 function AppContent() {
-  const { settings, theme } = useSettingsContext();
+  const { theme } = useSettingsContext();
   const { credentials, loading, save, clear } = useCredentials();
   const disclaimer = useDisclaimer();
 
@@ -137,12 +146,7 @@ function AppContent() {
     return <LoginScreen onLogin={save} />;
   }
 
-  return (
-    <MonitorScreen
-      credentials={credentials}
-      onLogout={clear}
-    />
-  );
+  return <MonitorScreen credentials={credentials} onLogout={clear} />;
 }
 
 function KeepAwakeWrapper() {
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
   },
   snoozeBtn: {
     marginTop: 32,
-    backgroundColor: "#ff9800",
+    backgroundColor: COLORS.warning,
     borderRadius: 28,
     paddingHorizontal: 32,
     paddingVertical: 14,
@@ -213,7 +217,7 @@ const styles = StyleSheet.create({
   },
   error: {
     fontSize: 12,
-    color: "#ff1744",
+    color: COLORS.danger,
     marginTop: 20,
     paddingHorizontal: 20,
     textAlign: "center",

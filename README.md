@@ -64,4 +64,4 @@ Found a bug or have a suggestion? Open an [issue](https://github.com/balajsebast
 
 ## License
 
-MIT
+GPL-3.0 — see [LICENSE](LICENSE)

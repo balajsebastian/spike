@@ -2,7 +2,7 @@ import {
   type GlucoseReading,
   type TrendDirection,
   TREND_ARROWS,
-} from "../dexcom/types";
+} from "../types";
 
 const DIRECTION_MAP: Record<string, TrendDirection> = {
   DoubleUp: "DoubleUp",
@@ -62,8 +62,7 @@ export class NightscoutClient {
       valueMgdl: entry.sgv,
       trend,
       trendArrow: TREND_ARROWS[trend],
-      sensorTimestamp: new Date(entry.date),
-      sensorTimestampMs: entry.date,
+      timestampMs: entry.date,
     };
   }
 }

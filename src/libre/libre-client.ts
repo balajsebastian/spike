@@ -3,14 +3,14 @@ import {
   type GlucoseReading,
   type TrendDirection,
   TREND_ARROWS,
-} from "../dexcom/types";
+} from "../types";
 
 const LIBRE_TREND_MAP: Record<number, TrendDirection> = {
-  1: "SingleDown",     // Falling fast
-  2: "FortyFiveDown",  // Falling
-  3: "Flat",           // Stable
-  4: "FortyFiveUp",    // Rising
-  5: "SingleUp",       // Rising fast
+  1: "SingleDown",
+  2: "FortyFiveDown",
+  3: "Flat",
+  4: "FortyFiveUp",
+  5: "SingleUp",
 };
 
 function mapTrend(arrow: number): TrendDirection {
@@ -21,7 +21,6 @@ function parseTimestamp(ts: string): number {
   const d = new Date(ts);
   if (!isNaN(d.getTime())) return d.getTime();
 
-  // Manual parse for "M/D/YYYY h:mm:ss AM/PM"
   const match = ts.match(/(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+):(\d+)\s*(AM|PM)?/i);
   if (match) {
     const [, month, day, year, hours, minutes, seconds, ampm] = match;
@@ -94,7 +93,6 @@ export class LibreLinkUpClient {
 
     this.token = loginData.data.authTicket.token;
 
-    // Compute Account-Id header (SHA-256 of user ID)
     const userId = loginData.data.user?.id;
     if (userId) {
       this.accountId = await sha256Hex(String(userId));
@@ -139,8 +137,7 @@ export class LibreLinkUpClient {
       valueMgdl: measurement.ValueInMgPerDl,
       trend,
       trendArrow: TREND_ARROWS[trend],
-      sensorTimestamp: new Date(timestampMs),
-      sensorTimestampMs: timestampMs,
+      timestampMs,
     };
   }
 }

@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudioPlayer, setAudioModeAsync } from "expo-audio";
 import * as Haptics from "expo-haptics";
-import type { GlucoseReading } from "../dexcom/types";
+import type { GlucoseReading } from "../types";
 import type { Settings } from "../settings/types";
+import {
+  ALARM_ROUNDS,
+  HAPTIC_BURSTS,
+  HAPTIC_DELAY_MS,
+  ALARM_PAUSE_MS,
+} from "../constants";
 
 export type AlarmLevel = "urgent-low" | "low" | "high" | "falling" | "rising" | null;
 
@@ -52,33 +58,26 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
   const isSnoozed = snoozeUntil > Date.now();
 
   const playAlarm = useCallback(async () => {
-    for (let round = 0; round < 2; round++) {
-      for (let j = 0; j < 10; j++) {
+    for (let round = 0; round < ALARM_ROUNDS; round++) {
+      for (let j = 0; j < HAPTIC_BURSTS; j++) {
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        await new Promise((r) => setTimeout(r, 150));
+        await new Promise((r) => setTimeout(r, HAPTIC_DELAY_MS));
       }
       player.seekTo(0);
       player.play();
-      if (round < 1) {
-        await new Promise((r) => setTimeout(r, 2500));
+      if (round < ALARM_ROUNDS - 1) {
+        await new Promise((r) => setTimeout(r, ALARM_PAUSE_MS));
       }
     }
   }, [player]);
 
-  const triggerAlarm = useCallback(async (level: AlarmLevel) => {
-    if (!level) return;
-    await playAlarm();
-  }, [playAlarm]);
-
   useEffect(() => {
     if (!reading) return;
-    if (reading.sensorTimestampMs === lastReadingTimestampRef.current) return;
-    lastReadingTimestampRef.current = reading.sensorTimestampMs;
+    if (reading.timestampMs === lastReadingTimestampRef.current) return;
+    lastReadingTimestampRef.current = reading.timestampMs;
 
     const level = getAlarmLevel(reading, settings);
     if (!level || !isAlarmEnabled(level, settings)) return;
-
-    // Skip alarm if snoozed
     if (snoozeUntil > Date.now()) return;
 
     const now = Date.now();
@@ -91,7 +90,6 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
 
   return {
     alarmLevel: getAlarmLevel(reading, settings),
-    triggerAlarm,
     snooze,
     cancelSnooze,
     isSnoozed,

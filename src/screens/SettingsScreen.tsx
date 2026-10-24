@@ -1,7 +1,21 @@
 import type { ReactNode } from "react";
-import { Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { useSettingsContext } from "../settings/SettingsContext";
 import { formatGlucose, type ThemeColors } from "../settings/types";
+import {
+  COLORS,
+  THRESHOLD_MIN,
+  THRESHOLD_MAX,
+  THRESHOLD_STEP,
+  ALARM_REPEAT_MIN,
+  ALARM_REPEAT_MAX,
+  SNOOZE_MIN,
+  SNOOZE_MAX,
+  SNOOZE_WARNING_ABOVE,
+} from "../constants";
+
+const FEEDBACK_EMAIL = "balajdariussebastian@gmail.com";
+const FEEDBACK_URL = `mailto:${FEEDBACK_EMAIL}?subject=Spike%20Feedback`;
 
 interface Props {
   onBack: () => void;
@@ -86,6 +100,15 @@ function Stepper({
   );
 }
 
+async function openFeedback() {
+  const canOpen = await Linking.canOpenURL(FEEDBACK_URL);
+  if (canOpen) {
+    Linking.openURL(FEEDBACK_URL);
+  } else {
+    Alert.alert("No Mail App", `Send feedback to ${FEEDBACK_EMAIL}`);
+  }
+}
+
 export function SettingsScreen({ onBack }: Props) {
   const { settings, theme, update } = useSettingsContext();
   const unit = settings.unit;
@@ -99,7 +122,7 @@ export function SettingsScreen({ onBack }: Props) {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={[styles.header, { borderBottomColor: theme.border }]}>
         <TouchableOpacity onPress={onBack} hitSlop={16}>
-          <Text style={styles.backBtn}>Back</Text>
+          <Text style={[styles.backBtn, { color: COLORS.accent }]}>Back</Text>
         </TouchableOpacity>
         <Text style={[styles.title, { color: theme.text }]}>Settings</Text>
         <View style={styles.headerSpacer} />
@@ -142,14 +165,14 @@ export function SettingsScreen({ onBack }: Props) {
             displayValue={thresholdDisplay(settings.urgentLowThreshold)}
             onDecrement={() =>
               update({
-                urgentLowThreshold: Math.max(40, settings.urgentLowThreshold - 5),
+                urgentLowThreshold: Math.max(THRESHOLD_MIN, settings.urgentLowThreshold - THRESHOLD_STEP),
               })
             }
             onIncrement={() =>
               update({
                 urgentLowThreshold: Math.min(
-                  settings.lowThreshold - 5,
-                  settings.urgentLowThreshold + 5,
+                  settings.lowThreshold - THRESHOLD_STEP,
+                  settings.urgentLowThreshold + THRESHOLD_STEP,
                 ),
               })
             }
@@ -162,16 +185,16 @@ export function SettingsScreen({ onBack }: Props) {
             onDecrement={() =>
               update({
                 lowThreshold: Math.max(
-                  settings.urgentLowThreshold + 5,
-                  settings.lowThreshold - 5,
+                  settings.urgentLowThreshold + THRESHOLD_STEP,
+                  settings.lowThreshold - THRESHOLD_STEP,
                 ),
               })
             }
             onIncrement={() =>
               update({
                 lowThreshold: Math.min(
-                  settings.highThreshold - 5,
-                  settings.lowThreshold + 5,
+                  settings.highThreshold - THRESHOLD_STEP,
+                  settings.lowThreshold + THRESHOLD_STEP,
                 ),
               })
             }
@@ -184,13 +207,13 @@ export function SettingsScreen({ onBack }: Props) {
             onDecrement={() =>
               update({
                 highThreshold: Math.max(
-                  settings.lowThreshold + 5,
-                  settings.highThreshold - 5,
+                  settings.lowThreshold + THRESHOLD_STEP,
+                  settings.highThreshold - THRESHOLD_STEP,
                 ),
               })
             }
             onIncrement={() =>
-              update({ highThreshold: Math.min(400, settings.highThreshold + 5) })
+              update({ highThreshold: Math.min(THRESHOLD_MAX, settings.highThreshold + THRESHOLD_STEP) })
             }
             theme={theme}
           />
@@ -234,12 +257,12 @@ export function SettingsScreen({ onBack }: Props) {
             displayValue={`${settings.alarmRepeatMinutes} min`}
             onDecrement={() =>
               update({
-                alarmRepeatMinutes: Math.max(1, settings.alarmRepeatMinutes - 1),
+                alarmRepeatMinutes: Math.max(ALARM_REPEAT_MIN, settings.alarmRepeatMinutes - 1),
               })
             }
             onIncrement={() =>
               update({
-                alarmRepeatMinutes: Math.min(30, settings.alarmRepeatMinutes + 1),
+                alarmRepeatMinutes: Math.min(ALARM_REPEAT_MAX, settings.alarmRepeatMinutes + 1),
               })
             }
             theme={theme}
@@ -250,20 +273,20 @@ export function SettingsScreen({ onBack }: Props) {
             displayValue={`${settings.snoozeMinutes} min`}
             onDecrement={() =>
               update({
-                snoozeMinutes: Math.max(1, settings.snoozeMinutes - 1),
+                snoozeMinutes: Math.max(SNOOZE_MIN, settings.snoozeMinutes - 1),
               })
             }
             onIncrement={() =>
               update({
-                snoozeMinutes: Math.min(15, settings.snoozeMinutes + 1),
+                snoozeMinutes: Math.min(SNOOZE_MAX, settings.snoozeMinutes + 1),
               })
             }
             theme={theme}
           />
         </Row>
-        {settings.snoozeMinutes > 5 && (
+        {settings.snoozeMinutes > SNOOZE_WARNING_ABOVE && (
           <Text style={styles.warning}>
-            Snoozing longer than 5 minutes may delay critical alerts. Use with caution.
+            Snoozing longer than {SNOOZE_WARNING_ABOVE} minutes may delay critical alerts. Use with caution.
           </Text>
         )}
 
@@ -273,9 +296,9 @@ export function SettingsScreen({ onBack }: Props) {
         </Row>
         <TouchableOpacity
           style={[styles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}
-          onPress={() => Linking.openURL("mailto:balajdariussebastian@gmail.com?subject=Spike%20Feedback")}
+          onPress={openFeedback}
         >
-          <Text style={[styles.rowLabel, { color: "#007AFF" }]}>Send Feedback</Text>
+          <Text style={[styles.rowLabel, { color: COLORS.accent }]}>Send Feedback</Text>
         </TouchableOpacity>
 
         <View style={{ height: 60 }} />
@@ -299,7 +322,6 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     fontSize: 17,
-    color: "#007AFF",
   },
   title: {
     fontSize: 17,
@@ -377,7 +399,7 @@ const styles = StyleSheet.create({
   },
   warning: {
     fontSize: 13,
-    color: "#ff9800",
+    color: COLORS.warning,
     paddingHorizontal: 16,
     paddingTop: 6,
     paddingBottom: 4,

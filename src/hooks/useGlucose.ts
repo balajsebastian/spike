@@ -3,13 +3,14 @@ import { AppState } from "react-native";
 import { DexcomShareClient } from "../dexcom/share-client";
 import { LibreLinkUpClient } from "../libre/libre-client";
 import { NightscoutClient } from "../nightscout/nightscout-client";
-import type { GlucoseReading } from "../dexcom/types";
+import type { GlucoseReading } from "../types";
 import type { Credentials } from "./useCredentials";
 
-const POLL_INTERVAL_MS = 60_000;
-const STALE_POLL_INTERVAL_MS = 15_000;
+const POLL_MS = 60_000;
+const STALE_POLL_MS = 15_000;
 const STALE_THRESHOLD_MS = 6 * 60_000;
 const MAX_BACKOFF_MS = 30_000;
+
 interface CGMClient {
   getLatestReading(): Promise<GlucoseReading | null>;
 }
@@ -28,14 +29,12 @@ function createClient(credentials: Credentials): CGMClient {
 interface GlucoseState {
   reading: GlucoseReading | null;
   error: string | null;
-  connected: boolean;
 }
 
 export function useGlucose(credentials: Credentials) {
   const [state, setState] = useState<GlucoseState>({
     reading: null,
     error: null,
-    connected: false,
   });
 
   const clientRef = useRef<CGMClient | null>(null);
@@ -49,20 +48,18 @@ export function useGlucose(credentials: Credentials) {
     try {
       const reading = await clientRef.current.getLatestReading();
 
-      if (reading && reading.sensorTimestampMs !== lastTimestampRef.current) {
-        lastTimestampRef.current = reading.sensorTimestampMs;
-        setState({ reading, error: null, connected: true });
-      } else if (!reading) {
-        setState((prev) => ({ ...prev, error: null, connected: true }));
+      if (reading && reading.timestampMs !== lastTimestampRef.current) {
+        lastTimestampRef.current = reading.timestampMs;
+        setState({ reading, error: null });
       }
 
       errorsRef.current = 0;
-      const isStale = reading && (Date.now() - reading.sensorTimestampMs) > STALE_THRESHOLD_MS;
-      timerRef.current = setTimeout(poll, isStale ? STALE_POLL_INTERVAL_MS : POLL_INTERVAL_MS);
+      const isStale = reading && (Date.now() - reading.timestampMs) > STALE_THRESHOLD_MS;
+      timerRef.current = setTimeout(poll, isStale ? STALE_POLL_MS : POLL_MS);
     } catch (err) {
       errorsRef.current++;
       const backoff = Math.min(
-        POLL_INTERVAL_MS * Math.pow(2, errorsRef.current - 1),
+        POLL_MS * Math.pow(2, errorsRef.current - 1),
         MAX_BACKOFF_MS
       );
       const msg = err instanceof Error ? err.message : String(err);
