@@ -69,7 +69,7 @@ export class LibreLinkUpClient {
     return h;
   }
 
-  async connect(): Promise<void> {
+  async connect(redirects = 2): Promise<void> {
     const loginRes = await fetch(`${this.baseUrl}/llu/auth/login`, {
       method: "POST",
       headers: this.headers(),
@@ -83,8 +83,9 @@ export class LibreLinkUpClient {
     const loginData = await loginRes.json();
 
     if (loginData.data?.redirect && loginData.data?.region) {
+      if (redirects <= 0) throw new Error("LibreLinkUp too many redirects");
       this.baseUrl = `https://api-${loginData.data.region}.libreview.io`;
-      return this.connect();
+      return this.connect(redirects - 1);
     }
 
     if (!loginData.data?.authTicket?.token) {
@@ -108,7 +109,7 @@ export class LibreLinkUpClient {
     }
   }
 
-  async getLatestReading(): Promise<GlucoseReading | null> {
+  async getLatestReading(retries = 1): Promise<GlucoseReading | null> {
     if (!this.token) await this.connect();
 
     const res = await fetch(`${this.baseUrl}/llu/connections`, {
@@ -116,11 +117,11 @@ export class LibreLinkUpClient {
     });
 
     if (!res.ok) {
-      if (res.status === 401 || res.status === 403) {
+      if (retries > 0 && (res.status === 401 || res.status === 403)) {
         this.token = null;
         this.accountId = null;
         await this.connect();
-        return this.getLatestReading();
+        return this.getLatestReading(retries - 1);
       }
       throw new Error(`LibreLinkUp error ${res.status}`);
     }

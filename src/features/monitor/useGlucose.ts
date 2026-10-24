@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { AppState } from "react-native";
-import { DexcomShareClient } from "@/providers/dexcom/client";
-import { LibreLinkUpClient } from "@/providers/libre/client";
-import { NightscoutClient } from "@/providers/nightscout/client";
+import { createCGMClient } from "@/providers/factory";
+import type { CGMClient } from "@/providers/types";
 import type { GlucoseReading } from "@/shared/types";
 import type { Credentials } from "@/features/auth/types";
 
@@ -10,21 +9,6 @@ const POLL_MS = 60_000;
 const STALE_POLL_MS = 15_000;
 const STALE_THRESHOLD_MS = 6 * 60_000;
 const MAX_BACKOFF_MS = 30_000;
-
-interface CGMClient {
-  getLatestReading(): Promise<GlucoseReading | null>;
-}
-
-function createClient(credentials: Credentials): CGMClient {
-  switch (credentials.source) {
-    case "dexcom":
-      return new DexcomShareClient(credentials);
-    case "libre":
-      return new LibreLinkUpClient(credentials.email, credentials.password);
-    case "nightscout":
-      return new NightscoutClient(credentials.url, credentials.token);
-  }
-}
 
 interface GlucoseState {
   reading: GlucoseReading | null;
@@ -41,6 +25,8 @@ export function useGlucose(credentials: Credentials) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTimestampRef = useRef(0);
   const errorsRef = useRef(0);
+  const credentialsRef = useRef(credentials);
+  credentialsRef.current = credentials;
 
   const poll = useCallback(async () => {
     if (!clientRef.current) return;
@@ -68,10 +54,8 @@ export function useGlucose(credentials: Credentials) {
     }
   }, []);
 
-  const credentialsKey = JSON.stringify(credentials);
-
-  useEffect(() => {
-    clientRef.current = createClient(credentials);
+  useEffect(function setupPolling() {
+    clientRef.current = createCGMClient(credentialsRef.current);
     poll();
 
     const sub = AppState.addEventListener("change", (nextState) => {
@@ -85,7 +69,7 @@ export function useGlucose(credentials: Credentials) {
       if (timerRef.current) clearTimeout(timerRef.current);
       sub.remove();
     };
-  }, [credentialsKey, poll]);
+  }, [credentials.source, poll]);
 
   return state;
 }

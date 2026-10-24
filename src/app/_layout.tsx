@@ -1,9 +1,11 @@
 import { View, Text } from "react-native";
-import { Stack } from "expo-router";
+import { Stack, ErrorBoundary as ExpoErrorBoundary } from "expo-router";
 import { useKeepAwake } from "expo-keep-awake";
 import { SettingsProvider, useSettingsContext } from "@/features/settings/SettingsContext";
 import { AuthProvider, useAuth } from "@/features/auth/AuthContext";
 import { OnboardingProvider, useOnboarding } from "@/features/onboarding/OnboardingContext";
+
+export { ExpoErrorBoundary as ErrorBoundary };
 
 function KeepAwake() {
   useKeepAwake();

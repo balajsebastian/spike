@@ -12,8 +12,15 @@ export function useCredentials() {
     SecureStore.getItemAsync(STORAGE_KEY).then((raw) => {
       if (raw) {
         try {
-          setCredentials(JSON.parse(raw));
-        } catch {}
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object" && "source" in parsed) {
+            setCredentials(parsed as Credentials);
+          } else {
+            SecureStore.deleteItemAsync(STORAGE_KEY);
+          }
+        } catch {
+          SecureStore.deleteItemAsync(STORAGE_KEY);
+        }
       }
       setLoading(false);
     });

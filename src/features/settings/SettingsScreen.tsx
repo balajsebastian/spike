@@ -1,4 +1,5 @@
 import { Alert, Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import Constants from "expo-constants";
 import { COLORS } from "@/shared/colors";
 import { OptionGroup } from "@/shared/OptionGroup";
 import { useSettingsContext } from "./SettingsContext";
@@ -16,8 +17,9 @@ import {
   SNOOZE_WARNING_ABOVE,
 } from "./constants";
 
-const FEEDBACK_EMAIL = "balajdariussebastian@gmail.com";
-const FEEDBACK_URL = `mailto:${FEEDBACK_EMAIL}?subject=Spike%20Feedback`;
+const FEEDBACK_URL = "https://github.com/user/gluco-watch/issues";
+
+const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
 
 interface Props {
   onBack: () => void;
@@ -28,7 +30,7 @@ async function openFeedback() {
   if (canOpen) {
     Linking.openURL(FEEDBACK_URL);
   } else {
-    Alert.alert("No Mail App", `Send feedback to ${FEEDBACK_EMAIL}`);
+    Alert.alert("Cannot Open Link", FEEDBACK_URL);
   }
 }
 
@@ -231,7 +233,7 @@ export function SettingsScreen({ onBack }: Props) {
 
         <SectionHeader title="ABOUT" theme={theme} />
         <Row label="Version" theme={theme}>
-          <Text style={{ color: theme.textSecondary }}>1.0.0</Text>
+          <Text style={{ color: theme.textSecondary }}>{APP_VERSION}</Text>
         </Row>
         <TouchableOpacity
           style={[componentStyles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}

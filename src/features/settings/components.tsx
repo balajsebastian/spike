@@ -3,14 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import type { ThemeColors } from "./types";
 
 export function SectionHeader({ title, theme }: { title: string; theme: ThemeColors }) {
-  return <Text style={[styles.sectionHeader, { color: theme.textSecondary }]}>{title}</Text>;
+  return <Text style={[componentStyles.sectionHeader, { color: theme.textSecondary }]}>{title}</Text>;
 }
 
 export function Row({ label, theme, children }: { label: string; theme: ThemeColors; children: ReactNode }) {
   return (
-    <View style={[styles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}>
-      <Text style={[styles.rowLabel, { color: theme.text }]}>{label}</Text>
-      <View style={styles.rowRight}>{children}</View>
+    <View style={[componentStyles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}>
+      <Text style={[componentStyles.rowLabel, { color: theme.text }]}>{label}</Text>
+      <View style={componentStyles.rowRight}>{children}</View>
     </View>
   );
 }
@@ -27,19 +27,19 @@ export function Segmented<T extends string>({
   theme: ThemeColors;
 }) {
   return (
-    <View style={[styles.segmented, { backgroundColor: theme.background }]}>
+    <View style={[componentStyles.segmented, { backgroundColor: theme.background }]}>
       {options.map((opt) => (
         <TouchableOpacity
           key={opt.value}
           style={[
-            styles.segmentedBtn,
+            componentStyles.segmentedBtn,
             value === opt.value && { backgroundColor: theme.text },
           ]}
           onPress={() => onChange(opt.value)}
         >
           <Text
             style={[
-              styles.segmentedText,
+              componentStyles.segmentedText,
               { color: value === opt.value ? theme.background : theme.textSecondary },
             ]}
           >
@@ -63,37 +63,25 @@ export function Stepper({
   theme: ThemeColors;
 }) {
   return (
-    <View style={styles.stepper}>
+    <View style={componentStyles.stepper}>
       <TouchableOpacity
-        style={[styles.stepperBtn, { backgroundColor: theme.background }]}
+        style={[componentStyles.stepperBtn, { backgroundColor: theme.background }]}
         onPress={onDecrement}
       >
-        <Text style={[styles.stepperBtnText, { color: theme.text }]}>-</Text>
+        <Text style={[componentStyles.stepperBtnText, { color: theme.text }]}>-</Text>
       </TouchableOpacity>
-      <Text style={[styles.stepperValue, { color: theme.text }]}>{displayValue}</Text>
+      <Text style={[componentStyles.stepperValue, { color: theme.text }]}>{displayValue}</Text>
       <TouchableOpacity
-        style={[styles.stepperBtn, { backgroundColor: theme.background }]}
+        style={[componentStyles.stepperBtn, { backgroundColor: theme.background }]}
         onPress={onIncrement}
       >
-        <Text style={[styles.stepperBtnText, { color: theme.text }]}>+</Text>
+        <Text style={[componentStyles.stepperBtnText, { color: theme.text }]}>+</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 export const componentStyles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    minHeight: 48,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-});
-
-const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 13,
     fontWeight: "500",

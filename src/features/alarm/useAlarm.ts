@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useAudioPlayer, setAudioModeAsync } from "expo-audio";
+import { setAudioModeAsync } from "expo-audio";
 import * as Haptics from "expo-haptics";
 import type { GlucoseReading } from "@/shared/types";
-import type { Settings, AlarmSound } from "@/features/settings/types";
+import type { Settings } from "@/features/settings/types";
 import {
   ALARM_ROUNDS,
   HAPTIC_BURSTS,
   HAPTIC_DELAY_MS,
   ALARM_PAUSE_MS,
 } from "./constants";
-import { SOUND_SOURCES } from "./sounds";
+import { useSoundPlayers } from "./useSoundPlayers";
 
 export type AlarmLevel = "urgent-low" | "low" | "high" | "falling" | "rising" | null;
 
@@ -40,17 +40,7 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
   const audioConfigured = useRef(false);
   const [snoozeUntil, setSnoozeUntil] = useState(0);
 
-  const beepPlayer = useAudioPlayer(SOUND_SOURCES.beep);
-  const chimePlayer = useAudioPlayer(SOUND_SOURCES.chime);
-  const hornPlayer = useAudioPlayer(SOUND_SOURCES.horn);
-  const alertPlayer = useAudioPlayer(SOUND_SOURCES.alert);
-
-  const players: Record<AlarmSound, typeof beepPlayer> = {
-    beep: beepPlayer,
-    chime: chimePlayer,
-    horn: hornPlayer,
-    alert: alertPlayer,
-  };
+  const players = useSoundPlayers();
 
   useEffect(() => {
     if (!audioConfigured.current) {
@@ -82,7 +72,7 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
         await new Promise((r) => setTimeout(r, ALARM_PAUSE_MS));
       }
     }
-  }, [settings.alarmSound, beepPlayer, chimePlayer, hornPlayer, alertPlayer]);
+  }, [settings.alarmSound, players]);
 
   useEffect(() => {
     if (!reading) return;

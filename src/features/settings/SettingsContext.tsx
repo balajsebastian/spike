@@ -24,8 +24,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     SecureStore.getItemAsync(STORAGE_KEY).then((raw) => {
       if (raw) {
         try {
-          setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(raw) });
-        } catch {}
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object") {
+            setSettings({ ...DEFAULT_SETTINGS, ...parsed });
+          }
+        } catch {
+          SecureStore.deleteItemAsync(STORAGE_KEY);
+        }
       }
       setLoaded(true);
     });

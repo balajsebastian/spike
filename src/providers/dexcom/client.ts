@@ -79,7 +79,8 @@ export class DexcomShareClient {
       ? response.replace(/"/g, "")
       : String(response);
 
-    if (this.sessionId === "00000000-0000-0000-0000-000000000000") {
+    const NULL_SESSION_ID = "00000000-0000-0000-0000-000000000000";
+    if (this.sessionId === NULL_SESSION_ID) {
       throw new Error("Login returned null session ID — check credentials");
     }
 
@@ -91,7 +92,7 @@ export class DexcomShareClient {
     await this.login();
   }
 
-  async getLatestReading(): Promise<GlucoseReading | null> {
+  async getLatestReading(retries = 1): Promise<GlucoseReading | null> {
     if (!this.sessionId) {
       await this.connect();
     }
@@ -110,11 +111,11 @@ export class DexcomShareClient {
       return parseGlucoseReading(raw[0]);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      if (msg.includes("500") || msg.includes("SessionNotValid") || msg.includes("SessionIdNotFound")) {
+      if (retries > 0 && (msg.includes("500") || msg.includes("SessionNotValid") || msg.includes("SessionIdNotFound"))) {
         this.sessionId = null;
         this.accountId = null;
         await this.connect();
-        return this.getLatestReading();
+        return this.getLatestReading(retries - 1);
       }
       throw err;
     }
