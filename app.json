@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Spike",
-    "slug": "spike-cgm",
+    "slug": "spike",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -37,7 +37,7 @@
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ],
       "package": "com.sebastianbalaj.spike",
-      "versionCode": 1
+      "versionCode": 3
     },
     "scheme": "spike-cgm",
     "extra": {
@@ -46,7 +46,12 @@
       }
     },
     "plugins": [
-      ["expo-router", { "root": "src/app" }],
+      [
+        "expo-router",
+        {
+          "root": "src/app"
+        }
+      ],
       "expo-secure-store",
       "expo-audio",
       [
