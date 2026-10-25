@@ -37,7 +37,7 @@
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ],
       "package": "com.sebastianbalaj.spike",
-      "versionCode": 3
+      "versionCode": 4
     },
     "scheme": "spike-cgm",
     "extra": {
