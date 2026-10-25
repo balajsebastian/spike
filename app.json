@@ -7,9 +7,14 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#000000",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sebastianbalaj.glucowatch",
+      "bundleIdentifier": "com.sebastianbalaj.spike",
       "buildNumber": "1",
       "infoPlist": {
         "UIBackgroundModes": [
@@ -31,17 +36,27 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ],
-      "package": "com.sebastianbalaj.glucowatch"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.sebastianbalaj.spike",
+      "versionCode": 1
     },
     "scheme": "spike-cgm",
+    "extra": {
+      "eas": {
+        "projectId": "58df8659-ef76-4355-b06c-c49763656f53"
+      }
+    },
     "plugins": [
       ["expo-router", { "root": "src/app" }],
       "expo-secure-store",
       "expo-audio",
-      "expo-splash-screen"
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#000000",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ]
     ]
   }
 }
