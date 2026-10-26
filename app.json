@@ -32,7 +32,7 @@
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ],
       "package": "com.sebastianbalaj.spike",
-      "versionCode": 7
+      "versionCode": 8
     },
     "scheme": "spike-cgm",
     "extra": {
