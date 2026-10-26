@@ -21,7 +21,7 @@ interface Props {
   onLogin: (credentials: Credentials) => void;
 }
 
-const SOURCES: { label: string; value: CGMSource }[] = [
+const SOURCES: { label: string; value: LoginSource }[] = [
   { label: "Dexcom", value: "dexcom" },
   { label: "Libre", value: "libre" },
   { label: "Nightscout", value: "nightscout" },
@@ -32,7 +32,9 @@ const REGIONS: { label: string; value: "eu" | "us" }[] = [
   { label: "US", value: "us" },
 ];
 
-function buildConnection(source: CGMSource, field1: string, field2: string, region: "eu" | "us") {
+type LoginSource = Exclude<CGMSource, "demo">;
+
+function buildConnection(source: LoginSource, field1: string, field2: string, region: "eu" | "us") {
   switch (source) {
     case "dexcom":
       return {
@@ -54,7 +56,7 @@ function buildConnection(source: CGMSource, field1: string, field2: string, regi
   }
 }
 
-const SOURCE_CONFIG: Record<CGMSource, { field1: string; field2: string; hint: string }> = {
+const SOURCE_CONFIG: Record<Exclude<CGMSource, "demo">, { field1: string; field2: string; hint: string }> = {
   dexcom: {
     field1: "Username or email",
     field2: "Password",
@@ -74,7 +76,7 @@ const SOURCE_CONFIG: Record<CGMSource, { field1: string; field2: string; hint: s
 
 export function LoginScreen({ onLogin }: Props) {
   const { theme } = useSettingsContext();
-  const [source, setSource] = useState<CGMSource>("dexcom");
+  const [source, setSource] = useState<LoginSource>("dexcom");
   const [field1, setField1] = useState("");
   const [field2, setField2] = useState("");
   const [region, setRegion] = useState<"eu" | "us">("eu");
@@ -87,7 +89,7 @@ export function LoginScreen({ onLogin }: Props) {
     setError(null);
   };
 
-  const handleSourceChange = (newSource: CGMSource) => {
+  const handleSourceChange = (newSource: LoginSource) => {
     setSource(newSource);
     resetForm();
   };
@@ -95,6 +97,11 @@ export function LoginScreen({ onLogin }: Props) {
   const handleLogin = async () => {
     const trimmedField1 = field1.trim();
     const trimmedField2 = field2.trim();
+
+    if (trimmedField1.toLowerCase() === "demo@spike-cgm.app") {
+      onLogin({ source: "demo" });
+      return;
+    }
 
     if (!trimmedField1) {
       setError(source === "nightscout" ? "Enter your Nightscout URL" : "Fill in all fields");
