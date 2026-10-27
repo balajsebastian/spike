@@ -1,4 +1,5 @@
 import { Alert, Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Constants from "expo-constants";
 import { COLORS } from "@/shared/colors";
 import { OptionGroup } from "@/shared/OptionGroup";
@@ -37,6 +38,7 @@ async function openFeedback() {
 export function SettingsScreen({ onBack }: Props) {
   const { settings, theme, update } = useSettingsContext();
   const previewSound = usePreviewSound();
+  const insets = useSafeAreaInsets();
   const unit = settings.unit;
   const unitLabel = unit === "mmol" ? "mmol/L" : "mg/dL";
 
@@ -46,7 +48,7 @@ export function SettingsScreen({ onBack }: Props) {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={[styles.header, { borderBottomColor: theme.border }]}>
+      <View style={[styles.header, { borderBottomColor: theme.border, paddingTop: insets.top + 12 }]}>
         <TouchableOpacity onPress={onBack} hitSlop={16}>
           <Text style={[styles.backBtn, { color: COLORS.accent }]}>Back</Text>
         </TouchableOpacity>
@@ -257,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingTop: 60,
+    paddingTop: 12,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
