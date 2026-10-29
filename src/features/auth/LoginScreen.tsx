@@ -174,8 +174,8 @@ export function LoginScreen({ onLogin }: Props) {
           theme={theme}
           disabled={testing}
           containerStyle={styles.regionRow}
-          buttonStyle={{ paddingVertical: 12 }}
-          labelStyle={{ fontSize: 16 }}
+          buttonStyle={styles.regionButton}
+          labelStyle={styles.regionLabel}
         />
       )}
 
@@ -236,6 +236,12 @@ const styles = StyleSheet.create({
   regionRow: {
     gap: 12,
     marginBottom: 24,
+  },
+  regionButton: {
+    paddingVertical: 12,
+  },
+  regionLabel: {
+    fontSize: 16,
   },
   loginBtn: {
     paddingVertical: 16,

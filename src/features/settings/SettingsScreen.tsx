@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Constants from "expo-constants";
 import { COLORS } from "@/shared/colors";
 import { OptionGroup } from "@/shared/OptionGroup";
@@ -22,6 +23,7 @@ const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
 export function SettingsScreen() {
   const { settings, theme, update } = useSettingsContext();
   const previewSound = usePreviewSound();
+  const insets = useSafeAreaInsets();
   const unit = settings.unit;
   const unitLabel = unit === "mmol" ? "mmol/L" : "mg/dL";
 
@@ -31,7 +33,7 @@ export function SettingsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom + 40, paddingLeft: insets.left, paddingRight: insets.right }]}>
         <SectionHeader title="DISPLAY" theme={theme} />
         <Row label="Theme" theme={theme}>
           <Segmented
@@ -165,9 +167,9 @@ export function SettingsScreen() {
             }}
             theme={theme}
             expand={false}
-            containerStyle={{ flexWrap: "wrap", gap: 8 }}
-            buttonStyle={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 }}
-            labelStyle={{ fontSize: 13, fontWeight: "500" }}
+            containerStyle={styles.soundContainer}
+            buttonStyle={styles.soundButton}
+            labelStyle={styles.soundLabel}
           />
         </Row>
         <Row label="Repeat Every" theme={theme}>
@@ -222,8 +224,6 @@ export function SettingsScreen() {
         <Row label="Version" theme={theme}>
           <Text style={{ color: theme.textSecondary }}>{APP_VERSION}</Text>
         </Row>
-
-        <View style={{ height: 60 }} />
       </ScrollView>
     </View>
   );
@@ -235,6 +235,19 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 40,
+  },
+  soundContainer: {
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  soundButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  soundLabel: {
+    fontSize: 13,
+    fontWeight: "500",
   },
   warning: {
     fontSize: 13,

@@ -26,7 +26,7 @@ export function MonitorScreen({ credentials }: Props) {
   }, []);
 
   const status = getStatusText(reading);
-  const isNoData = !reading || Date.now() - reading.timestampMs > NO_DATA_MS;
+  const isNoData = !reading || now - reading.timestampMs > NO_DATA_MS;
   const color = reading ? getRangeColor(reading.valueMgdl, settings, theme.text) : theme.textTertiary;
   const isUrgent = alarmLevel === "urgent-low";
   const blinkOpacity = isUrgent ? (now % BLINK_CYCLE_MS < BLINK_ON_MS ? 1 : 0.3) : 1;

@@ -1,38 +1,20 @@
-import { useContext } from "react";
-import { Alert, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
-import { TabsStateContext } from "expo-router/build/ui/TabContext";
+import { Alert, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Activity, Settings, MessageSquare, LogOut } from "lucide-react-native";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { COLORS } from "@/shared/colors";
-import type { ThemeColors } from "@/features/settings/types";
+import type { BottomTabBarProps } from "expo-router/build/layouts/Tabs";
 
 const FEEDBACK_EMAIL = "mailto:balajdariussebastian@gmail.com?subject=Spike%20Feedback";
 
-function TabButton({ name, href, icon: Icon, label, theme }: {
-  name: string;
-  href: string;
-  icon: typeof Activity;
-  label: string;
-  theme: ThemeColors;
-}) {
-  const state = useContext(TabsStateContext);
-  const isFocused = state?.routes[state.index]?.name === name;
-  const color = isFocused ? theme.text : theme.textTertiary;
+const TAB_ICONS: Record<string, typeof Activity> = {
+  index: Activity,
+  settings: Settings,
+};
 
-  return (
-    <TabTrigger name={name} href={href} asChild>
-      <Pressable style={styles.tab}>
-        <Icon size={20} color={color} />
-        <Text style={[styles.tabLabel, { color }]}>{label}</Text>
-      </Pressable>
-    </TabTrigger>
-  );
-}
-
-export default function TabsLayout() {
+function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) {
   const { theme } = useSettingsContext();
   const { clear: logout } = useAuth();
   const insets = useSafeAreaInsets();
@@ -51,37 +33,55 @@ export default function TabsLayout() {
   }
 
   return (
-    <Tabs>
-      <TabSlot />
-      <TabList
-        style={[
-          styles.tabList,
-          {
-            backgroundColor: theme.surface,
-            paddingBottom: Math.max(insets.bottom, 8),
-          },
-        ]}
-      >
-        <TabButton name="index" href="/" icon={Activity} label="Monitor" theme={theme} />
-        <TabButton name="settings" href="/settings" icon={Settings} label="Settings" theme={theme} />
-        <TouchableOpacity style={styles.tab} onPress={handleFeedback}>
-          <MessageSquare size={20} color={theme.textTertiary} />
-          <Text style={[styles.tabLabel, { color: theme.textTertiary }]}>Feedback</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={handleLogout}>
-          <LogOut size={20} color={COLORS.danger} />
-          <Text style={[styles.tabLabel, { color: COLORS.danger }]}>Logout</Text>
-        </TouchableOpacity>
-      </TabList>
+    <View style={[styles.bar, { backgroundColor: theme.surface, paddingBottom: Math.max(insets.bottom, 8) }]}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const isFocused = state.index === index;
+        const color = isFocused ? theme.text : theme.textTertiary;
+        const Icon = TAB_ICONS[route.name] ?? Activity;
+
+        return (
+          <TouchableOpacity
+            key={route.key}
+            style={styles.tab}
+            activeOpacity={0.5}
+            onPress={() => {
+              if (!isFocused) navigateToTab(route.key);
+            }}
+          >
+            <Icon size={20} color={color} />
+            <Text style={[styles.tabLabel, { color }]}>{options.title ?? route.name}</Text>
+          </TouchableOpacity>
+        );
+      })}
+      <TouchableOpacity style={styles.tab} activeOpacity={0.5} onPress={handleFeedback}>
+        <MessageSquare size={20} color={theme.textTertiary} />
+        <Text style={[styles.tabLabel, { color: theme.textTertiary }]}>Feedback</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.tab} activeOpacity={0.5} onPress={handleLogout}>
+        <LogOut size={20} color={COLORS.danger} />
+        <Text style={[styles.tabLabel, { color: COLORS.danger }]}>Logout</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+export default function TabsLayout() {
+  return (
+    <Tabs
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <CustomTabBar {...props} />}
+    >
+      <Tabs.Screen name="index" options={{ title: "Monitor" }} />
+      <Tabs.Screen name="settings" options={{ title: "Settings" }} />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
-  tabList: {
+  bar: {
     flexDirection: "row",
     paddingTop: 8,
-    borderTopWidth: 0,
   },
   tab: {
     flex: 1,
