@@ -40,8 +40,7 @@ function AppStack() {
         <Stack.Screen name="login" />
       </Stack.Protected>
       <Stack.Protected guard={!!credentials}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="settings" />
+        <Stack.Screen name="(tabs)" />
       </Stack.Protected>
     </Stack>
   );

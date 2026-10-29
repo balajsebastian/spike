@@ -1,10 +1,12 @@
-export type AlarmSound = "beep" | "chime" | "horn" | "alert";
+export type AlarmSound = "beep" | "double-beep" | "arcade" | "siren" | "chime" | "signal";
 
 export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
   { label: "Beep", value: "beep" },
+  { label: "Double Beep", value: "double-beep" },
+  { label: "Arcade", value: "arcade" },
+  { label: "Siren", value: "siren" },
   { label: "Chime", value: "chime" },
-  { label: "Horn", value: "horn" },
-  { label: "Alert", value: "alert" },
+  { label: "Signal", value: "signal" },
 ];
 
 export interface Settings {
@@ -20,6 +22,7 @@ export interface Settings {
   fallingEnabled: boolean;
   risingEnabled: boolean;
   alarmRepeatMinutes: number;
+  snoozeEnabled: boolean;
   snoozeMinutes: number;
   alarmSound: AlarmSound;
 }
@@ -37,6 +40,7 @@ export const DEFAULT_SETTINGS: Settings = {
   fallingEnabled: true,
   risingEnabled: true,
   alarmRepeatMinutes: 5,
+  snoozeEnabled: true,
   snoozeMinutes: 5,
   alarmSound: "beep",
 };

@@ -12,11 +12,9 @@ import { NO_DATA_MS, BLINK_CYCLE_MS, BLINK_ON_MS } from "./constants";
 
 interface Props {
   credentials: Credentials;
-  onLogout: () => void;
-  onOpenSettings: () => void;
 }
 
-export function MonitorScreen({ credentials, onLogout, onOpenSettings }: Props) {
+export function MonitorScreen({ credentials }: Props) {
   const { settings, theme } = useSettingsContext();
   const { reading, error } = useGlucose(credentials);
   const { alarmLevel, snooze, cancelSnooze, isSnoozed, snoozeUntil } = useAlarm(reading, settings);
@@ -34,32 +32,30 @@ export function MonitorScreen({ credentials, onLogout, onOpenSettings }: Props) 
   const blinkOpacity = isUrgent ? (now % BLINK_CYCLE_MS < BLINK_ON_MS ? 1 : 0.3) : 1;
   const displayValue = reading ? formatGlucose(reading.valueMgdl, settings.unit) : "--";
   const snoozeRemaining = isSnoozed ? Math.round((snoozeUntil - now) / 60_000) : 0;
-
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <StatusBar hidden />
 
-      <TouchableOpacity style={styles.settingsBtn} onPress={onOpenSettings}>
-        <Text style={[styles.btnText, { color: theme.textTertiary }]}>Settings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
-        <Text style={[styles.btnText, { color: theme.textTertiary }]}>Logout</Text>
-      </TouchableOpacity>
-
-      <Text
-        style={[styles.reading, { color, opacity: blinkOpacity }]}
-        adjustsFontSizeToFit
-        numberOfLines={1}
-      >
-        {isNoData || !reading ? "--" : `${displayValue} ${reading.trendArrow}`}
-      </Text>
+      <View style={styles.readingRow}>
+        <Text
+          style={[styles.reading, { color, opacity: blinkOpacity }]}
+          adjustsFontSizeToFit
+          numberOfLines={1}
+        >
+          {isNoData || !reading ? "--" : displayValue}
+        </Text>
+        {!isNoData && reading && (
+          <Text style={[styles.trend, { color, opacity: blinkOpacity }]}>
+            {reading.trendArrow}
+          </Text>
+        )}
+      </View>
 
       <Text style={[styles.ago, { color: status.color ?? theme.textTertiary }]}>
         {status.text}
       </Text>
 
-      {isSnoozed && (
+      {isSnoozed && settings.snoozeEnabled && (
         <TouchableOpacity style={[styles.snoozeBadge, { backgroundColor: theme.border }]} onPress={cancelSnooze}>
           <Text style={[styles.snoozeText, { color: theme.text }]}>
             Snoozed {snoozeRemaining}m — tap to cancel
@@ -67,7 +63,7 @@ export function MonitorScreen({ credentials, onLogout, onOpenSettings }: Props) 
         </TouchableOpacity>
       )}
 
-      {!isSnoozed && alarmLevel && (
+      {!isSnoozed && alarmLevel && settings.snoozeEnabled && (
         <TouchableOpacity
           style={styles.snoozeBtn}
           onPress={() => snooze(settings.snoozeMinutes)}
@@ -81,6 +77,7 @@ export function MonitorScreen({ credentials, onLogout, onOpenSettings }: Props) 
       {error && (
         <Text style={styles.error}>{error}</Text>
       )}
+
     </View>
   );
 }
@@ -91,25 +88,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  settingsBtn: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-  },
-  logoutBtn: {
-    position: "absolute",
-    top: 50,
-    right: 20,
-  },
-  btnText: {
-    fontSize: 14,
+  readingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
   },
   reading: {
     fontSize: 180,
     fontWeight: "700",
     fontVariant: ["tabular-nums"],
-    paddingHorizontal: 20,
     textAlign: "center",
+  },
+  trend: {
+    fontSize: 80,
+    fontWeight: "700",
+    marginLeft: 4,
   },
   ago: {
     fontSize: 36,

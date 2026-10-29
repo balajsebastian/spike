@@ -5,12 +5,21 @@ import { SOUND_SOURCES } from "./sounds";
 
 export function useSoundPlayers() {
   const beepPlayer = useAudioPlayer(SOUND_SOURCES.beep);
+  const doubleBeepPlayer = useAudioPlayer(SOUND_SOURCES["double-beep"]);
+  const arcadePlayer = useAudioPlayer(SOUND_SOURCES.arcade);
+  const sirenPlayer = useAudioPlayer(SOUND_SOURCES.siren);
   const chimePlayer = useAudioPlayer(SOUND_SOURCES.chime);
-  const hornPlayer = useAudioPlayer(SOUND_SOURCES.horn);
-  const alertPlayer = useAudioPlayer(SOUND_SOURCES.alert);
+  const signalPlayer = useAudioPlayer(SOUND_SOURCES.signal);
 
   return useMemo<Record<AlarmSound, typeof beepPlayer>>(
-    () => ({ beep: beepPlayer, chime: chimePlayer, horn: hornPlayer, alert: alertPlayer }),
-    [beepPlayer, chimePlayer, hornPlayer, alertPlayer],
+    () => ({
+      beep: beepPlayer,
+      "double-beep": doubleBeepPlayer,
+      arcade: arcadePlayer,
+      siren: sirenPlayer,
+      chime: chimePlayer,
+      signal: signalPlayer,
+    }),
+    [beepPlayer, doubleBeepPlayer, arcadePlayer, sirenPlayer, chimePlayer, signalPlayer],
   );
 }

@@ -4,9 +4,10 @@ import type { AlarmSound } from "./types";
 export function usePreviewSound() {
   const players = useSoundPlayers();
 
-  return (sound: AlarmSound) => {
+  return async (sound: AlarmSound) => {
     const player = players[sound];
-    player.seekTo(0);
+    player.volume = 1;
+    await player.seekTo(0);
     player.play();
   };
 }

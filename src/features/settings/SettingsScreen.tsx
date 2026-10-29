@@ -1,11 +1,10 @@
-import { Alert, Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 import Constants from "expo-constants";
 import { COLORS } from "@/shared/colors";
 import { OptionGroup } from "@/shared/OptionGroup";
 import { useSettingsContext } from "./SettingsContext";
 import { usePreviewSound } from "./usePreviewSound";
-import { SectionHeader, Row, Segmented, Stepper, componentStyles } from "./components";
+import { SectionHeader, Row, Segmented, Stepper } from "./components";
 import { formatGlucose, ALARM_SOUNDS } from "./types";
 import {
   THRESHOLD_MIN,
@@ -18,27 +17,11 @@ import {
   SNOOZE_WARNING_ABOVE,
 } from "./constants";
 
-const FEEDBACK_URL = "https://github.com/user/gluco-watch/issues";
-
 const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
 
-interface Props {
-  onBack: () => void;
-}
-
-async function openFeedback() {
-  const canOpen = await Linking.canOpenURL(FEEDBACK_URL);
-  if (canOpen) {
-    Linking.openURL(FEEDBACK_URL);
-  } else {
-    Alert.alert("Cannot Open Link", FEEDBACK_URL);
-  }
-}
-
-export function SettingsScreen({ onBack }: Props) {
+export function SettingsScreen() {
   const { settings, theme, update } = useSettingsContext();
   const previewSound = usePreviewSound();
-  const insets = useSafeAreaInsets();
   const unit = settings.unit;
   const unitLabel = unit === "mmol" ? "mmol/L" : "mg/dL";
 
@@ -48,14 +31,6 @@ export function SettingsScreen({ onBack }: Props) {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={[styles.header, { borderBottomColor: theme.border, paddingTop: insets.top + 12 }]}>
-        <TouchableOpacity onPress={onBack} hitSlop={16}>
-          <Text style={[styles.backBtn, { color: COLORS.accent }]}>Back</Text>
-        </TouchableOpacity>
-        <Text style={[styles.title, { color: theme.text }]}>Settings</Text>
-        <View style={styles.headerSpacer} />
-      </View>
-
       <ScrollView contentContainerStyle={styles.content}>
         <SectionHeader title="DISPLAY" theme={theme} />
         <Row label="Theme" theme={theme}>
@@ -180,7 +155,7 @@ export function SettingsScreen({ onBack }: Props) {
         </Row>
 
         <SectionHeader title="ALARM" theme={theme} />
-        <Row label="Sound" theme={theme}>
+        <Row label="Sound" theme={theme} vertical>
           <OptionGroup
             options={ALARM_SOUNDS}
             value={settings.alarmSound}
@@ -211,38 +186,42 @@ export function SettingsScreen({ onBack }: Props) {
             theme={theme}
           />
         </Row>
-        <Row label="Snooze Duration" theme={theme}>
-          <Stepper
-            displayValue={`${settings.snoozeMinutes} min`}
-            onDecrement={() =>
-              update({
-                snoozeMinutes: Math.max(SNOOZE_MIN, settings.snoozeMinutes - 1),
-              })
-            }
-            onIncrement={() =>
-              update({
-                snoozeMinutes: Math.min(SNOOZE_MAX, settings.snoozeMinutes + 1),
-              })
-            }
-            theme={theme}
+        <Row label="Snooze" theme={theme}>
+          <Switch
+            value={settings.snoozeEnabled}
+            onValueChange={(v) => update({ snoozeEnabled: v })}
           />
         </Row>
-        {settings.snoozeMinutes > SNOOZE_WARNING_ABOVE && (
-          <Text style={styles.warning}>
-            Snoozing longer than {SNOOZE_WARNING_ABOVE} minutes may delay critical alerts. Use with caution.
-          </Text>
+        {settings.snoozeEnabled && (
+          <>
+            <Row label="Snooze Duration" theme={theme}>
+              <Stepper
+                displayValue={`${settings.snoozeMinutes} min`}
+                onDecrement={() =>
+                  update({
+                    snoozeMinutes: Math.max(SNOOZE_MIN, settings.snoozeMinutes - 1),
+                  })
+                }
+                onIncrement={() =>
+                  update({
+                    snoozeMinutes: Math.min(SNOOZE_MAX, settings.snoozeMinutes + 1),
+                  })
+                }
+                theme={theme}
+              />
+            </Row>
+            {settings.snoozeMinutes > SNOOZE_WARNING_ABOVE && (
+              <Text style={styles.warning}>
+                Snoozing longer than {SNOOZE_WARNING_ABOVE} minutes may delay critical alerts. Use with caution.
+              </Text>
+            )}
+          </>
         )}
 
         <SectionHeader title="ABOUT" theme={theme} />
         <Row label="Version" theme={theme}>
           <Text style={{ color: theme.textSecondary }}>{APP_VERSION}</Text>
         </Row>
-        <TouchableOpacity
-          style={[componentStyles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}
-          onPress={openFeedback}
-        >
-          <Text style={{ fontSize: 16, color: COLORS.accent }}>Send Feedback</Text>
-        </TouchableOpacity>
 
         <View style={{ height: 60 }} />
       </ScrollView>
@@ -253,25 +232,6 @@ export function SettingsScreen({ onBack }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  backBtn: {
-    fontSize: 17,
-  },
-  title: {
-    fontSize: 17,
-    fontWeight: "600",
-  },
-  headerSpacer: {
-    width: 40,
   },
   content: {
     paddingBottom: 40,

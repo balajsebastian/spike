@@ -6,11 +6,11 @@ export function SectionHeader({ title, theme }: { title: string; theme: ThemeCol
   return <Text style={[componentStyles.sectionHeader, { color: theme.textSecondary }]}>{title}</Text>;
 }
 
-export function Row({ label, theme, children }: { label: string; theme: ThemeColors; children: ReactNode }) {
+export function Row({ label, theme, children, vertical }: { label: string; theme: ThemeColors; children: ReactNode; vertical?: boolean }) {
   return (
-    <View style={[componentStyles.row, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}>
+    <View style={[componentStyles.row, vertical && componentStyles.rowVertical, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}>
       <Text style={[componentStyles.rowLabel, { color: theme.text }]}>{label}</Text>
-      <View style={componentStyles.rowRight}>{children}</View>
+      <View style={[componentStyles.rowRight, vertical && componentStyles.rowRightVertical]}>{children}</View>
     </View>
   );
 }
@@ -108,6 +108,14 @@ export const componentStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: 12,
+  },
+  rowVertical: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+  rowRightVertical: {
+    marginLeft: 0,
+    marginTop: 8,
   },
   segmented: {
     flexDirection: "row",
