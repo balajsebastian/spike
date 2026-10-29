@@ -63,7 +63,7 @@ export function MonitorScreen({ credentials }: Props) {
         </TouchableOpacity>
       )}
 
-      {!isSnoozed && settings.snoozeEnabled && (
+      {!isSnoozed && alarmLevel && settings.snoozeEnabled && (
         <TouchableOpacity
           style={styles.snoozeBtn}
           onPress={() => snooze(settings.snoozeMinutes)}
