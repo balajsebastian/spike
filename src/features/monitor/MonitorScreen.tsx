@@ -63,7 +63,7 @@ export function MonitorScreen({ credentials }: Props) {
         </TouchableOpacity>
       )}
 
-      {!isSnoozed && alarmLevel && settings.snoozeEnabled && (
+      {!isSnoozed && settings.snoozeEnabled && (
         <TouchableOpacity
           style={styles.snoozeBtn}
           onPress={() => snooze(settings.snoozeMinutes)}
@@ -106,25 +106,24 @@ const styles = StyleSheet.create({
   },
   ago: {
     fontSize: 36,
-    marginTop: 10,
   },
   snoozeBtn: {
-    marginTop: 32,
+    marginTop: 16,
     backgroundColor: COLORS.warning,
     borderRadius: 28,
     paddingHorizontal: 32,
-    paddingVertical: 14,
+    paddingVertical: 10,
   },
   snoozeBtnText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#000",
   },
   snoozeBadge: {
-    marginTop: 32,
+    marginTop: 16,
     borderRadius: 28,
     paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingVertical: 10,
   },
   snoozeText: {
     fontSize: 16,

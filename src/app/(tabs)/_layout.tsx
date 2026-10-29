@@ -1,4 +1,4 @@
-import { Alert, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Linking, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Activity, Settings, MessageSquare, LogOut } from "lucide-react-native";
@@ -18,6 +18,9 @@ function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) 
   const { theme } = useSettingsContext();
   const { clear: logout } = useAuth();
   const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
+
+  if (width > height) return null;
 
   function handleFeedback() {
     Linking.openURL(FEEDBACK_EMAIL).catch(() =>
