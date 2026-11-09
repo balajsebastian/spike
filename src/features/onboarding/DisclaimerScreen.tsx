@@ -27,7 +27,7 @@ export function DisclaimerScreen({ onAccept }: Props) {
         <Text style={[styles.heading, { color: theme.text }]}>No data collection</Text>
         <Text style={[styles.body, { color: theme.textSecondary }]}>
           Your credentials are stored securely on your device only. Glucose data is fetched directly
-          from your CGM provider's servers to your phone. We do not collect, store, or transmit any of your data.
+          from your CGM provider’s servers to your phone. We do not collect, store, or transmit any of your data.
         </Text>
 
         <Text style={[styles.heading, { color: theme.text }]}>Alarms are supplementary</Text>

@@ -17,8 +17,8 @@ interface Props {
 export function MonitorScreen({ credentials }: Props) {
   const { settings, theme } = useSettingsContext();
   const { reading, error } = useGlucose(credentials);
-  const { alarmLevel, snooze, cancelSnooze, isSnoozed, snoozeUntil } = useAlarm(reading, settings);
-  const [now, setNow] = useState(Date.now());
+  const { alarmLevel, snooze, cancelSnooze, snoozeUntil } = useAlarm(reading, settings);
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 10_000);
@@ -31,6 +31,7 @@ export function MonitorScreen({ credentials }: Props) {
   const isUrgent = alarmLevel === "urgent-low";
   const blinkOpacity = isUrgent ? (now % BLINK_CYCLE_MS < BLINK_ON_MS ? 1 : 0.3) : 1;
   const displayValue = reading ? formatGlucose(reading.valueMgdl, settings.unit) : "--";
+  const isSnoozed = snoozeUntil > now;
   const snoozeRemaining = isSnoozed ? Math.round((snoozeUntil - now) / 60_000) : 0;
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>

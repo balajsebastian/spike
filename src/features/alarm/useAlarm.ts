@@ -57,8 +57,6 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     setSnoozeUntil(0);
   };
 
-  const isSnoozed = snoozeUntil > Date.now();
-
   const playAlarm = useCallback(async () => {
     const player = players[settings.alarmSound];
     for (let round = 0; round < ALARM_ROUNDS; round++) {
@@ -95,7 +93,6 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     alarmLevel: getAlarmLevel(reading, settings),
     snooze,
     cancelSnooze,
-    isSnoozed,
     snoozeUntil,
   };
 }

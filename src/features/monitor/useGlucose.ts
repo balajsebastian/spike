@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
 import { createCGMClient } from "@/providers/factory";
 import type { CGMClient } from "@/providers/types";
@@ -26,38 +26,46 @@ export function useGlucose(credentials: Credentials) {
   const lastTimestampRef = useRef(0);
   const errorsRef = useRef(0);
   const credentialsRef = useRef(credentials);
-  credentialsRef.current = credentials;
 
-  const poll = useCallback(async () => {
-    if (!clientRef.current) return;
-
-    try {
-      const reading = await clientRef.current.getLatestReading();
-
-      if (reading && reading.timestampMs !== lastTimestampRef.current) {
-        lastTimestampRef.current = reading.timestampMs;
-        setState({ reading, error: null });
-      } else {
-        setState((prev) => (prev.error ? { ...prev, error: null } : prev));
-      }
-
-      errorsRef.current = 0;
-      const isStale = reading && (Date.now() - reading.timestampMs) > STALE_THRESHOLD_MS;
-      timerRef.current = setTimeout(poll, isStale ? STALE_POLL_MS : POLL_MS);
-    } catch (err) {
-      errorsRef.current++;
-      const backoff = Math.min(
-        POLL_MS * Math.pow(2, errorsRef.current - 1),
-        MAX_BACKOFF_MS
-      );
-      const msg = err instanceof Error ? err.message : String(err);
-      setState((prev) => ({ ...prev, error: msg }));
-      timerRef.current = setTimeout(poll, backoff);
-    }
-  }, []);
+  useEffect(() => {
+    credentialsRef.current = credentials;
+  }, [credentials]);
 
   useEffect(function setupPolling() {
+    let cancelled = false;
     clientRef.current = createCGMClient(credentialsRef.current);
+
+    async function poll() {
+      const client = clientRef.current;
+      if (!client) return;
+
+      try {
+        const reading = await client.getLatestReading();
+        if (cancelled) return;
+
+        if (reading && reading.timestampMs !== lastTimestampRef.current) {
+          lastTimestampRef.current = reading.timestampMs;
+          setState({ reading, error: null });
+        } else {
+          setState((prev) => (prev.error ? { ...prev, error: null } : prev));
+        }
+
+        errorsRef.current = 0;
+        const isStale = reading && (Date.now() - reading.timestampMs) > STALE_THRESHOLD_MS;
+        timerRef.current = setTimeout(poll, isStale ? STALE_POLL_MS : POLL_MS);
+      } catch (err) {
+        if (cancelled) return;
+        errorsRef.current++;
+        const backoff = Math.min(
+          POLL_MS * Math.pow(2, errorsRef.current - 1),
+          MAX_BACKOFF_MS
+        );
+        const msg = err instanceof Error ? err.message : String(err);
+        setState((prev) => ({ ...prev, error: msg }));
+        timerRef.current = setTimeout(poll, backoff);
+      }
+    }
+
     poll();
 
     const sub = AppState.addEventListener("change", (nextState) => {
@@ -68,10 +76,11 @@ export function useGlucose(credentials: Credentials) {
     });
 
     return () => {
+      cancelled = true;
       if (timerRef.current) clearTimeout(timerRef.current);
       sub.remove();
     };
-  }, [credentials.source, poll]);
+  }, [credentials.source]);
 
   return state;
 }

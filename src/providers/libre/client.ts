@@ -55,14 +55,14 @@ interface LibreLoginResponse {
 }
 
 interface LibreConnectionResponse {
-  data?: Array<{
+  data?: {
     glucoseMeasurement?: {
       ValueInMgPerDl: number;
       TrendArrow: number;
       FactoryTimestamp?: string;
       Timestamp: string;
     };
-  }>;
+  }[];
 }
 
 export class LibreLinkUpClient implements CGMClient {
