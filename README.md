@@ -1,31 +1,65 @@
 # Spike
 
-A loud glucose alarm app for people with diabetes (or their loved ones) who need alerts that actually wake them up at night.
+**Your glucose, always in sight.**
 
-The default CGM apps often have quiet alarms that aren't enough during sleep. Spike fixes that with aggressive sound and haptic alerts that cut through the silence.
+Spike is an always-on glucose display and loud alarm for iOS and Android. Leave it open on your nightstand, kitchen counter or desk and see the current level, the trend and the sensor status at a glance, without unlocking your phone or opening an app. When something actually needs attention, the alarm is loud enough to wake you up.
 
-## Supported CGM Sources
+Built for people with diabetes and the people who look after them.
 
-- **Dexcom Share** (G6, G7, ONE) — tested
-- **LibreLinkUp** (Libre 2, Libre 3) — untested
-- **Nightscout** (any CGM via your self-hosted instance) — untested
+<p align="center">
+  <img src="docs/banner.png" alt="Spike: glucose alerts you can't sleep through" width="600" />
+</p>
 
-> Only Dexcom Share has been tested with real hardware. LibreLinkUp and Nightscout support is implemented based on their public APIs but has not been verified yet. Feedback and bug reports are welcome.
+## Why Spike?
+
+- **See it before the alarm goes off.** The trend is always visible, so you notice a rise or fall early instead of reacting when it's already urgent.
+- **Know when the sensor stops sending data.** No reading is never mistaken for "everything is fine".
+- **An alarm that actually wakes you up.** Default CGM alerts are easy to sleep through. Spike uses loud sounds and haptics that play even in silent mode.
+- **No setup headaches.** Connect directly to your Dexcom Share or LibreLinkUp account. No Nightscout server required (though it's supported too).
+- **Works on iOS and Android, in any country.**
+- **Simple, modern interface.** One big number and a clear trend. Nothing else to configure unless you want to.
+
+## Turn an old phone into a home glucose monitor
+
+Have an old phone or tablet in a drawer? Install Spike, turn on **Keep screen on**, plug it in and put it where you spend your time. Everyone in the house can see the glucose level at a glance, and the alarm covers the night.
+
+## Supported CGM sources
+
+- **Dexcom Share** (G6, G7, ONE): tested
+- **LibreLinkUp** (Libre 2, Libre 3): beta
+- **Nightscout** (any CGM via your own instance): beta
+
+> Only Dexcom Share has been tested with real hardware. LibreLinkUp and Nightscout are implemented from their public APIs but not yet verified. **Libre and Nightscout users: testers wanted!** Please [open an issue](https://github.com/balajsebastian/spike/issues) with your feedback.
 
 ## Features
 
-- Large, readable glucose display — optimized for nightstand mode
+- Large, readable glucose display, built for the nightstand and for a glance across the room
+- Trend arrow and stale-data / sensor signal-loss indication
 - Loud alarm with haptic feedback that plays even in silent mode
-- Multiple alarm sounds (Beep, Chime, Horn, Alert)
+- Multiple alarm sounds (Beep, Double Beep, Arcade, Siren, Chime, Signal)
 - Configurable thresholds (urgent low, low, high)
 - Trend alerts (rapid rise/fall)
 - Snooze (1–15 min, default 5)
-- Keep screen on option
+- Keep screen on, landscape and tablet support
 - Dark and light themes
 - mg/dL and mmol/L units
-- No data collection — credentials stay on your device
+- No data collection: credentials stay on your device
 
-## Getting Started
+## Disclaimer
+
+Spike is **not a medical device**. It displays glucose data from your existing CGM system. Do not make treatment decisions based solely on this app. Always verify with your official CGM app or a blood glucose meter.
+
+## Privacy
+
+No data is collected, stored, or transmitted. Your credentials are stored locally on your device using the OS secure keychain. Glucose data is fetched directly from your CGM provider. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.
+
+## Feedback
+
+Found a bug or have a suggestion? Open an [issue](https://github.com/balajsebastian/spike/issues) or email balajdariussebastian@gmail.com.
+
+## For developers
+
+Spike is built with Expo / React Native. It uses native modules (expo-audio, expo-crypto, expo-haptics), so it needs a development build and will not work in Expo Go.
 
 ```bash
 # Install dependencies
@@ -38,33 +72,16 @@ npx expo run:ios
 npx expo run:android
 ```
 
-> **Note:** This app uses native modules (expo-audio, expo-crypto, expo-haptics) and requires a development build. It will not work in Expo Go.
-
-## Building for Production
+### Building for production
 
 ```bash
-# Install EAS CLI
 npm install -g eas-cli
-
-# Build for iOS
 eas build --platform ios --profile production
-
-# Build for Android
 eas build --platform android --profile production
 ```
 
-## Disclaimer
-
-Spike is **not a medical device**. It is a personal helper that displays glucose data from your existing CGM system. Do not make treatment decisions based solely on this app. Always verify with your official CGM app or a blood glucose meter.
-
-## Privacy
-
-No data is collected, stored, or transmitted. Your credentials are stored locally on your device using the OS secure keychain. Glucose data is fetched directly from your CGM provider. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.
-
-## Feedback
-
-Found a bug or have a suggestion? Open an [issue](https://github.com/balajsebastian/spike/issues) or email balajdariussebastian@gmail.com.
+Contributions are welcome.
 
 ## License
 
-GPL-3.0 — see [LICENSE](LICENSE)
+GPL-3.0. See [LICENSE](LICENSE).
