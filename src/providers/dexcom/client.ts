@@ -112,6 +112,10 @@ export class DexcomShareClient implements CGMClient {
       return parseGlucoseReading(raw[0]);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
+      if (retries > 0 && /Dexcom API error 50[234]/.test(msg)) {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        return this.getLatestReading(retries - 1);
+      }
       if (retries > 0 && (msg.includes("500") || msg.includes("SessionNotValid") || msg.includes("SessionIdNotFound"))) {
         this.sessionId = null;
         this.accountId = null;

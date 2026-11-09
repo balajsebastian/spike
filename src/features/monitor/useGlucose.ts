@@ -37,6 +37,8 @@ export function useGlucose(credentials: Credentials) {
       if (reading && reading.timestampMs !== lastTimestampRef.current) {
         lastTimestampRef.current = reading.timestampMs;
         setState({ reading, error: null });
+      } else {
+        setState((prev) => (prev.error ? { ...prev, error: null } : prev));
       }
 
       errorsRef.current = 0;
