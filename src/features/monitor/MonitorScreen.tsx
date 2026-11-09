@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { formatGlucose } from "@/features/settings/types";
@@ -8,7 +8,8 @@ import { COLORS } from "@/shared/colors";
 import type { Credentials } from "@/features/auth/types";
 import { useGlucose } from "./useGlucose";
 import { getRangeColor, getStatusText } from "./utils";
-import { NO_DATA_MS, BLINK_CYCLE_MS, BLINK_ON_MS } from "./constants";
+import { useBlink } from "./useBlink";
+import { NO_DATA_MS } from "./constants";
 
 interface Props {
   credentials: Credentials;
@@ -29,7 +30,7 @@ export function MonitorScreen({ credentials }: Props) {
   const isNoData = !reading || now - reading.timestampMs > NO_DATA_MS;
   const color = reading ? getRangeColor(reading.valueMgdl, settings, theme.text) : theme.textTertiary;
   const isUrgent = alarmLevel === "urgent-low";
-  const blinkOpacity = isUrgent ? (now % BLINK_CYCLE_MS < BLINK_ON_MS ? 1 : 0.3) : 1;
+  const blinkOpacity = useBlink(isUrgent && !isNoData);
   const displayValue = reading ? formatGlucose(reading.valueMgdl, settings.unit) : "--";
   const isSnoozed = snoozeUntil > now;
   const snoozeRemaining = isSnoozed ? Math.round((snoozeUntil - now) / 60_000) : 0;
@@ -37,20 +38,20 @@ export function MonitorScreen({ credentials }: Props) {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <StatusBar hidden />
 
-      <View style={styles.readingRow}>
+      <Animated.View style={[styles.readingRow, { opacity: blinkOpacity }]}>
         <Text
-          style={[styles.reading, { color, opacity: blinkOpacity }]}
+          style={[styles.reading, { color }]}
           adjustsFontSizeToFit
           numberOfLines={1}
         >
           {isNoData || !reading ? "--" : displayValue}
         </Text>
         {!isNoData && reading && (
-          <Text style={[styles.trend, { color, opacity: blinkOpacity }]}>
+          <Text style={[styles.trend, { color }]}>
             {reading.trendArrow}
           </Text>
         )}
-      </View>
+      </Animated.View>
 
       <Text style={[styles.ago, { color: status.color ?? theme.textTertiary }]}>
         {status.text}
