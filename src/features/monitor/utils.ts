@@ -4,8 +4,7 @@ import type { Settings } from "@/features/settings/types";
 import { NO_DATA_MS, STALE_MS, DELAYED_MS, HIGH_BUFFER } from "./constants";
 
 export function getRangeColor(mgdl: number, settings: Settings, normalColor: string): string {
-  if (mgdl < settings.urgentLowThreshold) return COLORS.danger;
-  if (mgdl < settings.lowThreshold) return COLORS.warning;
+  if (mgdl < settings.lowThreshold) return COLORS.danger;
   if (mgdl <= settings.highThreshold) return normalColor;
   if (mgdl <= settings.highThreshold + HIGH_BUFFER) return COLORS.warning;
   return COLORS.danger;
