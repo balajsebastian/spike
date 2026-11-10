@@ -10,12 +10,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sebastianbalaj.spike",
-      "buildNumber": "1",
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
-      }
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,9 +21,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "permissions": [
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+        "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
       "package": "com.sebastianbalaj.spike",
       "versionCode": 11,
@@ -56,7 +49,8 @@
       [
         "expo-audio",
         {
-          "recordAudioAndroid": false
+          "recordAudioAndroid": false,
+          "enableBackgroundPlayback": false
         }
       ],
       [
