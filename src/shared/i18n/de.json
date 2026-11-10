@@ -20,7 +20,7 @@
   },
   "disclaimer": {
     "title": "Bevor du loslegst",
-    "intro": "Spike ist ein persönliches Hilfsmittel, das die Glukosewerte deines Sensors (Dexcom, Libre oder Nightscout) anzeigt. Es wird ohne Mängelgewähr und ohne jede Garantie bereitgestellt.",
+    "intro": "Spike ist ein persönliches Hilfsmittel, das die Glukosewerte deines Sensors (Dexcom, Libre oder Nightscout) anzeigt. Es wird ohne Gewähr bereitgestellt.",
     "keepOpenTitle": "Lass Spike geöffnet",
     "keepOpenBody": "Alarme funktionieren nur, solange Spike auf dem Bildschirm geöffnet ist. Wenn du dein Handy sperrst, zu einer anderen App wechselst oder Spike schließt, prüft die App deine Glukose nicht mehr und gibt KEINEN Alarm. Lass sie bei eingeschaltetem Bildschirm geöffnet, am besten am Ladegerät.",
     "notMedicalTitle": "Kein Medizinprodukt",

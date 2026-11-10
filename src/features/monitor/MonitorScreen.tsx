@@ -125,12 +125,14 @@ const styles = StyleSheet.create({
   },
   snoozeBadge: {
     marginTop: 16,
+    marginHorizontal: 20,
     borderRadius: 28,
     paddingHorizontal: 24,
     paddingVertical: 10,
   },
   snoozeText: {
     fontSize: 16,
+    textAlign: "center",
   },
   error: {
     fontSize: 12,

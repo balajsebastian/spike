@@ -22,7 +22,7 @@
     "title": "Înainte să începi",
     "intro": "Spike este un instrument personal care afișează valorile glicemiei de la senzorul tău (Dexcom, Libre sau Nightscout). Este oferit ca atare, fără nicio garanție.",
     "keepOpenTitle": "Ține Spike deschis",
-    "keepOpenBody": "Alarmele funcționează doar cât timp Spike este deschis pe ecran. Dacă blochezi telefonul, treci în altă aplicație sau închizi Spike, aplicația nu mai verifică glicemia și NU va suna. Las-o deschisă, cu ecranul aprins, ideal cu telefonul la încărcat.",
+    "keepOpenBody": "Alarmele funcționează doar cât timp Spike este deschis pe ecran. Dacă blochezi telefonul, treci în altă aplicație sau închizi Spike, aplicația nu mai verifică glicemia și NU va suna. Lasă aplicația deschisă, cu ecranul aprins, ideal cu telefonul la încărcat.",
     "notMedicalTitle": "Nu este un dispozitiv medical",
     "notMedicalBody": "Această aplicație NU este un dispozitiv medical și NU trebuie folosită ca singura sursă de monitorizare a glicemiei. Pentru decizii medicale, bazează-te întotdeauna pe receptorul sau aplicația oficială a senzorului.",
     "noDataTitle": "Nu colectăm date",

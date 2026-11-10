@@ -62,8 +62,8 @@
     "delayed": "IN RITARDO · {{count}} min fa",
     "justNow": "proprio ora",
     "minutesAgo": "{{count}} min fa",
-    "snoozed": "Posticipato {{count}} min — tocca per annullare",
-    "snooze": "Posticipa {{count}} min"
+    "snoozed": "Posposto {{count}} min — tocca per annullare",
+    "snooze": "Posponi {{count}} min"
   },
   "settings": {
     "sections": {
@@ -86,9 +86,9 @@
     "rapidRise": "Salita rapida",
     "sound": "Suono",
     "repeatEvery": "Ripeti ogni",
-    "snooze": "Posticipa",
-    "snoozeDuration": "Durata posticipo",
-    "snoozeWarning": "Posticipare per più di {{count}} minuti può ritardare gli avvisi critici. Usalo con cautela.",
+    "snooze": "Posponi",
+    "snoozeDuration": "Durata posposizione",
+    "snoozeWarning": "Posporre per più di {{count}} minuti può ritardare gli avvisi critici. Usalo con cautela.",
     "version": "Versione"
   },
   "sounds": {
