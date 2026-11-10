@@ -45,6 +45,10 @@ Have an old phone or tablet in a drawer? Install Spike, turn on **Keep screen on
 - mg/dL and mmol/L units
 - No data collection: credentials stay on your device
 
+## Important: keep Spike open
+
+Alarms only work while Spike is open on screen. If you lock your phone, switch to another app, or close Spike, it stops checking your glucose and **will not alarm**. Leave it open with the screen on (Spike keeps the screen awake by default), ideally plugged in.
+
 ## Disclaimer
 
 Spike is **not a medical device**. It displays glucose data from your existing CGM system. Do not make treatment decisions based solely on this app. Always verify with your official CGM app or a blood glucose meter.

@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import * as SecureStore from "expo-secure-store";
 
-const KEY_DISCLAIMER = "disclaimer_accepted";
+// Bump the suffix whenever the disclaimer content changes so existing users see it again.
+const KEY_DISCLAIMER = "disclaimer_accepted_v2";
 
 export function useDisclaimer() {
   const [accepted, setAccepted] = useState(false);

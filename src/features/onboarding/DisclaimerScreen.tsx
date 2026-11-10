@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
+import { COLORS } from "@/shared/colors";
 
 interface Props {
   onAccept: () => void;
@@ -17,6 +18,15 @@ export function DisclaimerScreen({ onAccept }: Props) {
           Spike is a personal helper tool that displays glucose readings from your CGM
           (Dexcom, Libre, or Nightscout). It is provided as-is, with no warranties.
         </Text>
+
+        <View style={styles.warningBox}>
+          <Text style={styles.warningHeading}>Keep Spike open</Text>
+          <Text style={[styles.body, { color: theme.text }]}>
+            Alarms only work while Spike is open on screen. If you lock your phone, switch to
+            another app, or close Spike, it stops checking your glucose and will NOT alarm. Leave
+            it open with the screen on, ideally plugged in.
+          </Text>
+        </View>
 
         <Text style={[styles.heading, { color: theme.text }]}>Not a medical device</Text>
         <Text style={[styles.body, { color: theme.textSecondary }]}>
@@ -57,6 +67,19 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "700",
     marginBottom: 32,
+  },
+  warningBox: {
+    borderWidth: 1,
+    borderColor: COLORS.warning,
+    borderRadius: 10,
+    padding: 16,
+    marginTop: 8,
+  },
+  warningHeading: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: COLORS.warning,
+    marginBottom: 8,
   },
   heading: {
     fontSize: 16,

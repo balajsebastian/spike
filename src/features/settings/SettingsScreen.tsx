@@ -63,6 +63,11 @@ export function SettingsScreen() {
             onValueChange={(v) => update({ keepScreenOn: v })}
           />
         </Row>
+        {!settings.keepScreenOn && (
+          <Text style={styles.warning}>
+            When the screen turns off, Spike stops checking your glucose and will not alarm.
+          </Text>
+        )}
 
         <SectionHeader title="ALERT THRESHOLDS" theme={theme} />
         <Row label="Urgent Low" theme={theme}>
