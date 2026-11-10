@@ -7,10 +7,17 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#000000",
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/58df8659-ef76-4355-b06c-c49763656f53",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sebastianbalaj.spike",
-      "buildNumber": "1"
+      "bundleIdentifier": "com.sebastianbalaj.spike"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +31,6 @@
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
       "package": "com.sebastianbalaj.spike",
-      "versionCode": 11,
       "blockedPermissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.READ_EXTERNAL_STORAGE",
@@ -46,6 +52,7 @@
         }
       ],
       "expo-secure-store",
+      "expo-updates",
       [
         "expo-audio",
         {
