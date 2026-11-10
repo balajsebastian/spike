@@ -74,7 +74,11 @@
         {
           "supportedLocales": [
             "en",
-            "ro"
+            "ro",
+            "es",
+            "it",
+            "fr",
+            "de"
           ]
         }
       ]

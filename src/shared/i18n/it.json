@@ -1,0 +1,102 @@
+{
+  "common": {
+    "loading": "Caricamento...",
+    "cancel": "Annulla",
+    "minutes": "{{count}} min"
+  },
+  "tabs": {
+    "monitor": "Monitor",
+    "settings": "Impostazioni",
+    "feedback": "Feedback",
+    "logout": "Esci"
+  },
+  "logout": {
+    "title": "Esci",
+    "message": "Vuoi davvero uscire?",
+    "confirm": "Esci"
+  },
+  "feedback": {
+    "cannotOpenEmail": "Impossibile aprire l'email"
+  },
+  "disclaimer": {
+    "title": "Prima di iniziare",
+    "intro": "Spike è uno strumento personale che mostra i valori di glicemia del tuo sensore (Dexcom, Libre o Nightscout). Viene fornito così com'è, senza alcuna garanzia.",
+    "keepOpenTitle": "Tieni Spike aperto",
+    "keepOpenBody": "Gli allarmi funzionano solo mentre Spike è aperto sullo schermo. Se blocchi il telefono, passi a un'altra app o chiudi Spike, l'app smette di controllare la glicemia e NON suonerà. Lasciala aperta con lo schermo acceso, idealmente con il telefono in carica.",
+    "notMedicalTitle": "Non è un dispositivo medico",
+    "notMedicalBody": "Questa app NON è un dispositivo medico e NON deve essere l'unica fonte per monitorare la glicemia. Per le decisioni mediche, affidati sempre al ricevitore o all'app ufficiale del tuo sensore.",
+    "noDataTitle": "Nessuna raccolta di dati",
+    "noDataBody": "Le tue credenziali sono salvate in modo sicuro solo sul tuo dispositivo. I dati della glicemia arrivano direttamente dai server del produttore del sensore al tuo telefono. Non raccogliamo, conserviamo né trasmettiamo alcun dato.",
+    "supplementaryTitle": "Gli allarmi sono complementari",
+    "supplementaryBody": "Gli allarmi di questa app integrano, non sostituiscono, gli avvisi del tuo sensore. Non disattivare gli allarmi del sensore.",
+    "accept": "Ho capito, continua"
+  },
+  "login": {
+    "subtitle": "Collega il tuo sensore",
+    "connect": "Collega",
+    "dexcom": {
+      "field1": "Nome utente o email",
+      "field2": "Password",
+      "hint": "Usa l'account di chi condivide i dati (l'account collegato al sensore), non un account follower."
+    },
+    "libre": {
+      "field1": "Email",
+      "field2": "Password",
+      "hint": "Usa le credenziali di LibreLinkUp (l'app per i follower, non LibreLink)."
+    },
+    "nightscout": {
+      "field1": "https://il-tuo-sito.herokuapp.com",
+      "field2": "Token (facoltativo)",
+      "hint": "Inserisci l'URL del tuo sito Nightscout. Aggiungi un token di lettura se il sito richiede l'autenticazione."
+    },
+    "errors": {
+      "nightscoutUrl": "Inserisci l'URL di Nightscout",
+      "fillAll": "Compila tutti i campi",
+      "invalidCredentials": "Credenziali errate o account non trovato"
+    }
+  },
+  "monitor": {
+    "connecting": "CONNESSIONE...",
+    "noData": "NESSUN DATO",
+    "stale": "VECCHIO · {{count}} min fa",
+    "delayed": "IN RITARDO · {{count}} min fa",
+    "justNow": "proprio ora",
+    "minutesAgo": "{{count}} min fa",
+    "snoozed": "Posticipato {{count}} min — tocca per annullare",
+    "snooze": "Posticipa {{count}} min"
+  },
+  "settings": {
+    "sections": {
+      "display": "SCHERMO",
+      "thresholds": "SOGLIE DI AVVISO",
+      "alertTypes": "TIPI DI AVVISO",
+      "alarm": "ALLARME",
+      "about": "INFORMAZIONI"
+    },
+    "theme": "Tema",
+    "themeDark": "Scuro",
+    "themeLight": "Chiaro",
+    "unit": "Unità",
+    "keepScreenOn": "Schermo sempre acceso",
+    "keepScreenOnWarning": "Quando lo schermo si spegne, Spike smette di controllare la glicemia e non suonerà.",
+    "urgentLow": "Basso urgente",
+    "low": "Basso",
+    "high": "Alto",
+    "rapidFall": "Discesa rapida",
+    "rapidRise": "Salita rapida",
+    "sound": "Suono",
+    "repeatEvery": "Ripeti ogni",
+    "snooze": "Posticipa",
+    "snoozeDuration": "Durata posticipo",
+    "snoozeWarning": "Posticipare per più di {{count}} minuti può ritardare gli avvisi critici. Usalo con cautela.",
+    "version": "Versione"
+  },
+  "sounds": {
+    "beep": "Bip",
+    "double-beep": "Doppio bip",
+    "arcade": "Arcade",
+    "siren": "Sirena",
+    "chime": "Campanello",
+    "signal": "Segnale"
+  }
+}

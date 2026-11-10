@@ -1,0 +1,102 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "cancel": "Abbrechen",
+    "minutes": "{{count}} Min."
+  },
+  "tabs": {
+    "monitor": "Monitor",
+    "settings": "Einstellungen",
+    "feedback": "Feedback",
+    "logout": "Abmelden"
+  },
+  "logout": {
+    "title": "Abmelden",
+    "message": "Möchtest du dich wirklich abmelden?",
+    "confirm": "Abmelden"
+  },
+  "feedback": {
+    "cannotOpenEmail": "E-Mail kann nicht geöffnet werden"
+  },
+  "disclaimer": {
+    "title": "Bevor du loslegst",
+    "intro": "Spike ist ein persönliches Hilfsmittel, das die Glukosewerte deines Sensors (Dexcom, Libre oder Nightscout) anzeigt. Es wird ohne Mängelgewähr und ohne jede Garantie bereitgestellt.",
+    "keepOpenTitle": "Lass Spike geöffnet",
+    "keepOpenBody": "Alarme funktionieren nur, solange Spike auf dem Bildschirm geöffnet ist. Wenn du dein Handy sperrst, zu einer anderen App wechselst oder Spike schließt, prüft die App deine Glukose nicht mehr und gibt KEINEN Alarm. Lass sie bei eingeschaltetem Bildschirm geöffnet, am besten am Ladegerät.",
+    "notMedicalTitle": "Kein Medizinprodukt",
+    "notMedicalBody": "Diese App ist KEIN Medizinprodukt und darf NICHT deine einzige Quelle zur Glukoseüberwachung sein. Verlass dich bei medizinischen Entscheidungen immer auf das offizielle Empfangsgerät oder die offizielle App deines Sensors.",
+    "noDataTitle": "Keine Datenerfassung",
+    "noDataBody": "Deine Zugangsdaten werden sicher und nur auf deinem Gerät gespeichert. Die Glukosedaten kommen direkt von den Servern deines Sensorherstellers auf dein Handy. Wir erfassen, speichern oder übertragen keine deiner Daten.",
+    "supplementaryTitle": "Alarme sind ergänzend",
+    "supplementaryBody": "Die Alarme dieser App ergänzen die Alarme deines Sensors, ersetzen sie aber nicht. Deaktiviere die Alarme deines Sensors nicht.",
+    "accept": "Verstanden, weiter"
+  },
+  "login": {
+    "subtitle": "Verbinde deinen Sensor",
+    "connect": "Verbinden",
+    "dexcom": {
+      "field1": "Benutzername oder E-Mail",
+      "field2": "Passwort",
+      "hint": "Verwende das Konto der Person, die ihre Daten teilt (das mit dem Sensor verbundene Konto), kein Follower-Konto."
+    },
+    "libre": {
+      "field1": "E-Mail",
+      "field2": "Passwort",
+      "hint": "Verwende deine LibreLinkUp-Zugangsdaten (die Follower-App, nicht LibreLink)."
+    },
+    "nightscout": {
+      "field1": "https://deine-seite.herokuapp.com",
+      "field2": "Token (optional)",
+      "hint": "Gib die URL deiner Nightscout-Seite ein. Füge ein Lese-Token hinzu, falls deine Seite eine Anmeldung verlangt."
+    },
+    "errors": {
+      "nightscoutUrl": "Gib deine Nightscout-URL ein",
+      "fillAll": "Bitte alle Felder ausfüllen",
+      "invalidCredentials": "Falsche Zugangsdaten oder Konto nicht gefunden"
+    }
+  },
+  "monitor": {
+    "connecting": "VERBINDE...",
+    "noData": "KEINE DATEN",
+    "stale": "VERALTET · vor {{count}} Min.",
+    "delayed": "VERZÖGERT · vor {{count}} Min.",
+    "justNow": "gerade eben",
+    "minutesAgo": "vor {{count}} Min.",
+    "snoozed": "Stumm für {{count}} Min. — tippen zum Abbrechen",
+    "snooze": "Stumm {{count}} Min."
+  },
+  "settings": {
+    "sections": {
+      "display": "ANZEIGE",
+      "thresholds": "ALARMGRENZEN",
+      "alertTypes": "ALARMARTEN",
+      "alarm": "ALARM",
+      "about": "ÜBER"
+    },
+    "theme": "Design",
+    "themeDark": "Dunkel",
+    "themeLight": "Hell",
+    "unit": "Einheit",
+    "keepScreenOn": "Bildschirm anlassen",
+    "keepScreenOnWarning": "Wenn der Bildschirm ausgeht, prüft Spike deine Glukose nicht mehr und gibt keinen Alarm.",
+    "urgentLow": "Dringend niedrig",
+    "low": "Niedrig",
+    "high": "Hoch",
+    "rapidFall": "Schneller Abfall",
+    "rapidRise": "Schneller Anstieg",
+    "sound": "Ton",
+    "repeatEvery": "Wiederholen alle",
+    "snooze": "Stummschalten",
+    "snoozeDuration": "Dauer der Stummschaltung",
+    "snoozeWarning": "Eine Stummschaltung von mehr als {{count}} Minuten kann wichtige Alarme verzögern. Mit Vorsicht verwenden.",
+    "version": "Version"
+  },
+  "sounds": {
+    "beep": "Piep",
+    "double-beep": "Doppelpiep",
+    "arcade": "Arcade",
+    "siren": "Sirene",
+    "chime": "Glocke",
+    "signal": "Signal"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "cancel": "Annuler",
+    "minutes": "{{count}} min"
+  },
+  "tabs": {
+    "monitor": "Suivi",
+    "settings": "Réglages",
+    "feedback": "Avis",
+    "logout": "Quitter"
+  },
+  "logout": {
+    "title": "Déconnexion",
+    "message": "Voulez-vous vraiment vous déconnecter ?",
+    "confirm": "Se déconnecter"
+  },
+  "feedback": {
+    "cannotOpenEmail": "Impossible d'ouvrir l'e-mail"
+  },
+  "disclaimer": {
+    "title": "Avant de commencer",
+    "intro": "Spike est un outil personnel qui affiche les mesures de glucose de votre capteur (Dexcom, Libre ou Nightscout). Il est fourni tel quel, sans aucune garantie.",
+    "keepOpenTitle": "Gardez Spike ouvert",
+    "keepOpenBody": "Les alarmes ne fonctionnent que lorsque Spike est ouvert à l'écran. Si vous verrouillez votre téléphone, passez à une autre app ou fermez Spike, il arrête de vérifier votre glucose et ne sonnera PAS. Laissez-le ouvert avec l'écran allumé, idéalement en charge.",
+    "notMedicalTitle": "Pas un dispositif médical",
+    "notMedicalBody": "Cette app n'est PAS un dispositif médical et ne doit PAS être votre seule source de suivi du glucose. Pour toute décision médicale, fiez-vous toujours au lecteur ou à l'app officielle de votre capteur.",
+    "noDataTitle": "Aucune collecte de données",
+    "noDataBody": "Vos identifiants sont stockés en toute sécurité, uniquement sur votre appareil. Les données de glucose arrivent directement des serveurs du fabricant de votre capteur sur votre téléphone. Nous ne collectons, ne stockons et ne transmettons aucune de vos données.",
+    "supplementaryTitle": "Les alarmes sont complémentaires",
+    "supplementaryBody": "Les alarmes de cette app complètent, sans les remplacer, les alertes de votre capteur. Ne désactivez pas les alarmes de votre capteur.",
+    "accept": "J'ai compris, continuer"
+  },
+  "login": {
+    "subtitle": "Connectez votre capteur",
+    "connect": "Connecter",
+    "dexcom": {
+      "field1": "Nom d'utilisateur ou e-mail",
+      "field2": "Mot de passe",
+      "hint": "Utilisez le compte de la personne qui partage ses données (le compte relié au capteur), pas un compte d'abonné."
+    },
+    "libre": {
+      "field1": "E-mail",
+      "field2": "Mot de passe",
+      "hint": "Utilisez vos identifiants LibreLinkUp (l'app pour les proches, pas LibreLink)."
+    },
+    "nightscout": {
+      "field1": "https://votre-site.herokuapp.com",
+      "field2": "Jeton (facultatif)",
+      "hint": "Saisissez l'URL de votre site Nightscout. Ajoutez un jeton de lecture si votre site exige une authentification."
+    },
+    "errors": {
+      "nightscoutUrl": "Saisissez l'URL Nightscout",
+      "fillAll": "Remplissez tous les champs",
+      "invalidCredentials": "Identifiants incorrects ou compte introuvable"
+    }
+  },
+  "monitor": {
+    "connecting": "CONNEXION...",
+    "noData": "AUCUNE DONNÉE",
+    "stale": "ANCIEN · il y a {{count}} min",
+    "delayed": "EN RETARD · il y a {{count}} min",
+    "justNow": "à l'instant",
+    "minutesAgo": "il y a {{count}} min",
+    "snoozed": "En pause {{count}} min — touchez pour annuler",
+    "snooze": "Pause {{count}} min"
+  },
+  "settings": {
+    "sections": {
+      "display": "AFFICHAGE",
+      "thresholds": "SEUILS D'ALERTE",
+      "alertTypes": "TYPES D'ALERTE",
+      "alarm": "ALARME",
+      "about": "À PROPOS"
+    },
+    "theme": "Thème",
+    "themeDark": "Sombre",
+    "themeLight": "Clair",
+    "unit": "Unité",
+    "keepScreenOn": "Écran toujours allumé",
+    "keepScreenOnWarning": "Quand l'écran s'éteint, Spike arrête de vérifier votre glucose et ne sonnera pas.",
+    "urgentLow": "Bas urgent",
+    "low": "Bas",
+    "high": "Haut",
+    "rapidFall": "Baisse rapide",
+    "rapidRise": "Hausse rapide",
+    "sound": "Son",
+    "repeatEvery": "Répéter toutes les",
+    "snooze": "Pause",
+    "snoozeDuration": "Durée de la pause",
+    "snoozeWarning": "Une pause de plus de {{count}} minutes peut retarder des alertes critiques. À utiliser avec prudence.",
+    "version": "Version"
+  },
+  "sounds": {
+    "beep": "Bip",
+    "double-beep": "Double bip",
+    "arcade": "Arcade",
+    "siren": "Sirène",
+    "chime": "Carillon",
+    "signal": "Signal"
+  }
+}
