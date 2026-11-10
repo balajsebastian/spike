@@ -88,4 +88,6 @@ Contributions are welcome.
 
 ## License
 
-GPL-3.0. See [LICENSE](LICENSE).
+Copyright (C) 2026 Sebastian Balaj
+
+Spike is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0 or later. See [LICENSE](LICENSE).
