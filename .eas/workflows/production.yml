@@ -1,12 +1,14 @@
 name: Deploy to production
 
-# On every push to master:
+# On every push to the `release` branch (master does NOT deploy):
 # - if native code changed (new fingerprint): build, then submit (Android -> Play internal, iOS -> TestFlight)
 # - otherwise: publish an OTA update to the production channel
+#
+# To release: git push origin master:release
 
 on:
   push:
-    branches: ['master']
+    branches: ['release']
 
 jobs:
   fingerprint:
