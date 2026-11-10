@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Constants from "expo-constants";
+import { useTranslation } from "react-i18next";
 import { COLORS } from "@/shared/colors";
 import { OptionGroup } from "@/shared/OptionGroup";
 import { useSettingsContext } from "./SettingsContext";
@@ -22,6 +23,8 @@ const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
 
 export function SettingsScreen() {
   const { settings, theme, update } = useSettingsContext();
+  const { t } = useTranslation();
+  const alarmSoundOptions = ALARM_SOUNDS.map((s) => ({ ...s, label: t(`sounds.${s.value}`) }));
   const previewSound = usePreviewSound();
   const insets = useSafeAreaInsets();
   const unit = settings.unit;
@@ -34,19 +37,19 @@ export function SettingsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView contentContainerStyle={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom + 40, paddingLeft: insets.left, paddingRight: insets.right }]}>
-        <SectionHeader title="DISPLAY" theme={theme} />
-        <Row label="Theme" theme={theme}>
+        <SectionHeader title={t("settings.sections.display")} theme={theme} />
+        <Row label={t("settings.theme")} theme={theme}>
           <Segmented
             options={[
-              { label: "Dark", value: "dark" as const },
-              { label: "Light", value: "light" as const },
+              { label: t("settings.themeDark"), value: "dark" as const },
+              { label: t("settings.themeLight"), value: "light" as const },
             ]}
             value={settings.theme}
             onChange={(v) => update({ theme: v })}
             theme={theme}
           />
         </Row>
-        <Row label="Unit" theme={theme}>
+        <Row label={t("settings.unit")} theme={theme}>
           <Segmented
             options={[
               { label: "mg/dL", value: "mgdl" as const },
@@ -57,7 +60,7 @@ export function SettingsScreen() {
             theme={theme}
           />
         </Row>
-        <Row label="Keep Screen On" theme={theme}>
+        <Row label={t("settings.keepScreenOn")} theme={theme}>
           <Switch
             value={settings.keepScreenOn}
             onValueChange={(v) => update({ keepScreenOn: v })}
@@ -65,12 +68,12 @@ export function SettingsScreen() {
         </Row>
         {!settings.keepScreenOn && (
           <Text style={styles.warning}>
-            When the screen turns off, Spike stops checking your glucose and will not alarm.
+            {t("settings.keepScreenOnWarning")}
           </Text>
         )}
 
-        <SectionHeader title="ALERT THRESHOLDS" theme={theme} />
-        <Row label="Urgent Low" theme={theme}>
+        <SectionHeader title={t("settings.sections.thresholds")} theme={theme} />
+        <Row label={t("settings.urgentLow")} theme={theme}>
           <Stepper
             displayValue={thresholdDisplay(settings.urgentLowThreshold)}
             onDecrement={() =>
@@ -89,7 +92,7 @@ export function SettingsScreen() {
             theme={theme}
           />
         </Row>
-        <Row label="Low" theme={theme}>
+        <Row label={t("settings.low")} theme={theme}>
           <Stepper
             displayValue={thresholdDisplay(settings.lowThreshold)}
             onDecrement={() =>
@@ -111,7 +114,7 @@ export function SettingsScreen() {
             theme={theme}
           />
         </Row>
-        <Row label="High" theme={theme}>
+        <Row label={t("settings.high")} theme={theme}>
           <Stepper
             displayValue={thresholdDisplay(settings.highThreshold)}
             onDecrement={() =>
@@ -129,42 +132,42 @@ export function SettingsScreen() {
           />
         </Row>
 
-        <SectionHeader title="ALERT TYPES" theme={theme} />
-        <Row label="Urgent Low" theme={theme}>
+        <SectionHeader title={t("settings.sections.alertTypes")} theme={theme} />
+        <Row label={t("settings.urgentLow")} theme={theme}>
           <Switch
             value={settings.urgentLowEnabled}
             onValueChange={(v) => update({ urgentLowEnabled: v })}
           />
         </Row>
-        <Row label="Low" theme={theme}>
+        <Row label={t("settings.low")} theme={theme}>
           <Switch
             value={settings.lowEnabled}
             onValueChange={(v) => update({ lowEnabled: v })}
           />
         </Row>
-        <Row label="High" theme={theme}>
+        <Row label={t("settings.high")} theme={theme}>
           <Switch
             value={settings.highEnabled}
             onValueChange={(v) => update({ highEnabled: v })}
           />
         </Row>
-        <Row label="Rapid Fall" theme={theme}>
+        <Row label={t("settings.rapidFall")} theme={theme}>
           <Switch
             value={settings.fallingEnabled}
             onValueChange={(v) => update({ fallingEnabled: v })}
           />
         </Row>
-        <Row label="Rapid Rise" theme={theme}>
+        <Row label={t("settings.rapidRise")} theme={theme}>
           <Switch
             value={settings.risingEnabled}
             onValueChange={(v) => update({ risingEnabled: v })}
           />
         </Row>
 
-        <SectionHeader title="ALARM" theme={theme} />
-        <Row label="Sound" theme={theme} vertical>
+        <SectionHeader title={t("settings.sections.alarm")} theme={theme} />
+        <Row label={t("settings.sound")} theme={theme} vertical>
           <OptionGroup
-            options={ALARM_SOUNDS}
+            options={alarmSoundOptions}
             value={settings.alarmSound}
             onChange={(v) => {
               update({ alarmSound: v });
@@ -177,9 +180,9 @@ export function SettingsScreen() {
             labelStyle={styles.soundLabel}
           />
         </Row>
-        <Row label="Repeat Every" theme={theme}>
+        <Row label={t("settings.repeatEvery")} theme={theme}>
           <Stepper
-            displayValue={`${settings.alarmRepeatMinutes} min`}
+            displayValue={t("common.minutes", { count: settings.alarmRepeatMinutes })}
             onDecrement={() =>
               update({
                 alarmRepeatMinutes: Math.max(ALARM_REPEAT_MIN, settings.alarmRepeatMinutes - 1),
@@ -193,7 +196,7 @@ export function SettingsScreen() {
             theme={theme}
           />
         </Row>
-        <Row label="Snooze" theme={theme}>
+        <Row label={t("settings.snooze")} theme={theme}>
           <Switch
             value={settings.snoozeEnabled}
             onValueChange={(v) => update({ snoozeEnabled: v })}
@@ -201,9 +204,9 @@ export function SettingsScreen() {
         </Row>
         {settings.snoozeEnabled && (
           <>
-            <Row label="Snooze Duration" theme={theme}>
+            <Row label={t("settings.snoozeDuration")} theme={theme}>
               <Stepper
-                displayValue={`${settings.snoozeMinutes} min`}
+                displayValue={t("common.minutes", { count: settings.snoozeMinutes })}
                 onDecrement={() =>
                   update({
                     snoozeMinutes: Math.max(SNOOZE_MIN, settings.snoozeMinutes - 1),
@@ -219,14 +222,14 @@ export function SettingsScreen() {
             </Row>
             {settings.snoozeMinutes > SNOOZE_WARNING_ABOVE && (
               <Text style={styles.warning}>
-                Snoozing longer than {SNOOZE_WARNING_ABOVE} minutes may delay critical alerts. Use with caution.
+                {t("settings.snoozeWarning", { count: SNOOZE_WARNING_ABOVE })}
               </Text>
             )}
           </>
         )}
 
-        <SectionHeader title="ABOUT" theme={theme} />
-        <Row label="Version" theme={theme}>
+        <SectionHeader title={t("settings.sections.about")} theme={theme} />
+        <Row label={t("settings.version")} theme={theme}>
           <Text style={{ color: theme.textSecondary }}>{APP_VERSION}</Text>
         </Row>
       </ScrollView>

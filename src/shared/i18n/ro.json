@@ -1,0 +1,102 @@
+{
+  "common": {
+    "loading": "Se încarcă...",
+    "cancel": "Anulează",
+    "minutes": "{{count}} min"
+  },
+  "tabs": {
+    "monitor": "Monitor",
+    "settings": "Setări",
+    "feedback": "Feedback",
+    "logout": "Ieșire"
+  },
+  "logout": {
+    "title": "Deconectare",
+    "message": "Sigur vrei să te deconectezi?",
+    "confirm": "Deconectează-te"
+  },
+  "feedback": {
+    "cannotOpenEmail": "Nu se poate deschide emailul"
+  },
+  "disclaimer": {
+    "title": "Înainte să începi",
+    "intro": "Spike este un instrument personal care afișează valorile glicemiei de la senzorul tău (Dexcom, Libre sau Nightscout). Este oferit ca atare, fără nicio garanție.",
+    "keepOpenTitle": "Ține Spike deschis",
+    "keepOpenBody": "Alarmele funcționează doar cât timp Spike este deschis pe ecran. Dacă blochezi telefonul, treci în altă aplicație sau închizi Spike, aplicația nu mai verifică glicemia și NU va suna. Las-o deschisă, cu ecranul aprins, ideal cu telefonul la încărcat.",
+    "notMedicalTitle": "Nu este un dispozitiv medical",
+    "notMedicalBody": "Această aplicație NU este un dispozitiv medical și NU trebuie folosită ca singura sursă de monitorizare a glicemiei. Pentru decizii medicale, bazează-te întotdeauna pe receptorul sau aplicația oficială a senzorului.",
+    "noDataTitle": "Nu colectăm date",
+    "noDataBody": "Datele tale de autentificare sunt păstrate în siguranță doar pe telefonul tău. Valorile glicemiei vin direct de pe serverele furnizorului senzorului pe telefonul tău. Nu colectăm, nu stocăm și nu transmitem niciun fel de date.",
+    "supplementaryTitle": "Alarmele sunt suplimentare",
+    "supplementaryBody": "Alarmele din această aplicație completează, nu înlocuiesc, alertele senzorului tău. Nu dezactiva alarmele senzorului.",
+    "accept": "Am înțeles, continuă"
+  },
+  "login": {
+    "subtitle": "Conectează-ți senzorul",
+    "connect": "Conectează",
+    "dexcom": {
+      "field1": "Utilizator sau email",
+      "field2": "Parolă",
+      "hint": "Folosește contul persoanei care poartă senzorul (contul conectat la senzor), nu un cont de follower."
+    },
+    "libre": {
+      "field1": "Email",
+      "field2": "Parolă",
+      "hint": "Folosește datele contului LibreLinkUp (aplicația de follower, nu LibreLink)."
+    },
+    "nightscout": {
+      "field1": "https://site-ul-tau.herokuapp.com",
+      "field2": "Token (opțional)",
+      "hint": "Introdu adresa site-ului tău Nightscout. Adaugă un token de citire dacă site-ul cere autentificare."
+    },
+    "errors": {
+      "nightscoutUrl": "Introdu adresa Nightscout",
+      "fillAll": "Completează toate câmpurile",
+      "invalidCredentials": "Date de autentificare greșite sau cont inexistent"
+    }
+  },
+  "monitor": {
+    "connecting": "SE CONECTEAZĂ...",
+    "noData": "FĂRĂ DATE",
+    "stale": "VECHI · acum {{count}} min",
+    "delayed": "ÎNTÂRZIAT · acum {{count}} min",
+    "justNow": "chiar acum",
+    "minutesAgo": "acum {{count}} min",
+    "snoozed": "Amânat {{count}} min — atinge pentru anulare",
+    "snooze": "Amână {{count}} min"
+  },
+  "settings": {
+    "sections": {
+      "display": "AFIȘARE",
+      "thresholds": "PRAGURI DE ALERTĂ",
+      "alertTypes": "TIPURI DE ALERTĂ",
+      "alarm": "ALARMĂ",
+      "about": "DESPRE"
+    },
+    "theme": "Temă",
+    "themeDark": "Întunecată",
+    "themeLight": "Luminoasă",
+    "unit": "Unitate",
+    "keepScreenOn": "Ecran mereu aprins",
+    "keepScreenOnWarning": "Când ecranul se stinge, Spike nu mai verifică glicemia și nu va suna.",
+    "urgentLow": "Scăzut urgent",
+    "low": "Scăzut",
+    "high": "Ridicat",
+    "rapidFall": "Scădere rapidă",
+    "rapidRise": "Creștere rapidă",
+    "sound": "Sunet",
+    "repeatEvery": "Repetă la",
+    "snooze": "Amânare",
+    "snoozeDuration": "Durata amânării",
+    "snoozeWarning": "O amânare mai lungă de {{count}} minute poate întârzia alertele critice. Folosește cu grijă.",
+    "version": "Versiune"
+  },
+  "sounds": {
+    "beep": "Bip",
+    "double-beep": "Bip dublu",
+    "arcade": "Arcade",
+    "siren": "Sirenă",
+    "chime": "Clopoțel",
+    "signal": "Semnal"
+  }
+}

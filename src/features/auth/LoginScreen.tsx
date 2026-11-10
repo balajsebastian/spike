@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Image,
   StyleSheet,
@@ -56,26 +57,9 @@ function buildConnection(source: LoginSource, field1: string, field2: string, re
   }
 }
 
-const SOURCE_CONFIG: Record<Exclude<CGMSource, "demo">, { field1: string; field2: string; hint: string }> = {
-  dexcom: {
-    field1: "Username or email",
-    field2: "Password",
-    hint: "Use the sharer's credentials (the account connected to the sensor), not a follower account.",
-  },
-  libre: {
-    field1: "Email",
-    field2: "Password",
-    hint: "Use your LibreLinkUp credentials (the follower app, not LibreLink).",
-  },
-  nightscout: {
-    field1: "https://your-site.herokuapp.com",
-    field2: "Token (optional)",
-    hint: "Enter your Nightscout site URL. Add a readable token if your site requires authentication.",
-  },
-};
-
 export function LoginScreen({ onLogin }: Props) {
   const { theme } = useSettingsContext();
+  const { t } = useTranslation();
   const [source, setSource] = useState<LoginSource>("dexcom");
   const [field1, setField1] = useState("");
   const [field2, setField2] = useState("");
@@ -104,11 +88,11 @@ export function LoginScreen({ onLogin }: Props) {
     }
 
     if (!trimmedField1) {
-      setError(source === "nightscout" ? "Enter your Nightscout URL" : "Fill in all fields");
+      setError(source === "nightscout" ? t("login.errors.nightscoutUrl") : t("login.errors.fillAll"));
       return;
     }
     if (source !== "nightscout" && !trimmedField2) {
-      setError("Fill in all fields");
+      setError(t("login.errors.fillAll"));
       return;
     }
 
@@ -121,19 +105,23 @@ export function LoginScreen({ onLogin }: Props) {
       onLogin(credentials);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      setError(msg.includes("500") ? "Invalid credentials or account not found" : msg);
+      setError(msg.includes("500") ? t("login.errors.invalidCredentials") : msg);
     } finally {
       setTesting(false);
     }
   };
 
-  const config = SOURCE_CONFIG[source];
+  const config = {
+    field1: t(`login.${source}.field1`),
+    field2: t(`login.${source}.field2`),
+    hint: t(`login.${source}.hint`),
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <Image source={iconImage} style={styles.logo} />
       <Text style={[styles.title, { color: theme.text }]}>Spike</Text>
-      <Text style={[styles.subtitle, { color: theme.textSecondary }]}>Connect your CGM</Text>
+      <Text style={[styles.subtitle, { color: theme.textSecondary }]}>{t("login.subtitle")}</Text>
 
       <OptionGroup
         options={SOURCES}
@@ -187,7 +175,7 @@ export function LoginScreen({ onLogin }: Props) {
         {testing ? (
           <ActivityIndicator color={theme.background} />
         ) : (
-          <Text style={[styles.loginText, { color: theme.background }]}>Connect</Text>
+          <Text style={[styles.loginText, { color: theme.background }]}>{t("login.connect")}</Text>
         )}
       </TouchableOpacity>
 

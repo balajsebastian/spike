@@ -68,7 +68,16 @@
           "imageWidth": 200
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": [
+            "en",
+            "ro"
+          ]
+        }
+      ]
     ]
   }
 }

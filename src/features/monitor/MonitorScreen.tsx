@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
@@ -17,6 +18,7 @@ interface Props {
 
 export function MonitorScreen({ credentials }: Props) {
   const { settings, theme } = useSettingsContext();
+  const { t } = useTranslation();
   const { reading, error } = useGlucose(credentials);
   const { alarmLevel, snooze, cancelSnooze, snoozeUntil } = useAlarm(reading, settings);
   const [now, setNow] = useState(() => Date.now());
@@ -60,7 +62,7 @@ export function MonitorScreen({ credentials }: Props) {
       {isSnoozed && settings.snoozeEnabled && (
         <TouchableOpacity style={[styles.snoozeBadge, { backgroundColor: theme.border }]} onPress={cancelSnooze}>
           <Text style={[styles.snoozeText, { color: theme.text }]}>
-            Snoozed {snoozeRemaining}m — tap to cancel
+            {t("monitor.snoozed", { count: snoozeRemaining })}
           </Text>
         </TouchableOpacity>
       )}
@@ -71,7 +73,7 @@ export function MonitorScreen({ credentials }: Props) {
           onPress={() => snooze(settings.snoozeMinutes)}
         >
           <Text style={styles.snoozeBtnText}>
-            Snooze {settings.snoozeMinutes}m
+            {t("monitor.snooze", { count: settings.snoozeMinutes })}
           </Text>
         </TouchableOpacity>
       )}

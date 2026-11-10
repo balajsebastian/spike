@@ -4,6 +4,8 @@ import { useKeepAwake } from "expo-keep-awake";
 import { SettingsProvider, useSettingsContext } from "@/features/settings/SettingsContext";
 import { AuthProvider, useAuth } from "@/features/auth/AuthContext";
 import { OnboardingProvider, useOnboarding } from "@/features/onboarding/OnboardingContext";
+import { useTranslation } from "react-i18next";
+import "@/shared/lib/i18n";
 
 export { ExpoErrorBoundary as ErrorBoundary };
 
@@ -22,11 +24,12 @@ function AppStack() {
   const { accepted, loading: onboardingLoading } = useOnboarding();
   const { credentials, loading: authLoading } = useAuth();
   const { theme } = useSettingsContext();
+  const { t } = useTranslation();
 
   if (onboardingLoading || authLoading) {
     return (
       <View style={[styles.loading, { backgroundColor: theme.background }]}>
-        <Text style={[styles.loadingText, { color: theme.textTertiary }]}>Loading...</Text>
+        <Text style={[styles.loadingText, { color: theme.textTertiary }]}>{t("common.loading")}</Text>
       </View>
     );
   }

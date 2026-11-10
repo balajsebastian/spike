@@ -1,0 +1,102 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "minutes": "{{count}} min"
+  },
+  "tabs": {
+    "monitor": "Monitor",
+    "settings": "Settings",
+    "feedback": "Feedback",
+    "logout": "Logout"
+  },
+  "logout": {
+    "title": "Log Out",
+    "message": "Are you sure you want to log out?",
+    "confirm": "Log Out"
+  },
+  "feedback": {
+    "cannotOpenEmail": "Cannot Open Email"
+  },
+  "disclaimer": {
+    "title": "Before you start",
+    "intro": "Spike is a personal helper tool that displays glucose readings from your CGM (Dexcom, Libre, or Nightscout). It is provided as-is, with no warranties.",
+    "keepOpenTitle": "Keep Spike open",
+    "keepOpenBody": "Alarms only work while Spike is open on screen. If you lock your phone, switch to another app, or close Spike, it stops checking your glucose and will NOT alarm. Leave it open with the screen on, ideally plugged in.",
+    "notMedicalTitle": "Not a medical device",
+    "notMedicalBody": "This app is NOT a medical device and should NOT be used as your sole source for glucose monitoring. Always rely on your official CGM receiver or app for medical decisions.",
+    "noDataTitle": "No data collection",
+    "noDataBody": "Your credentials are stored securely on your device only. Glucose data is fetched directly from your CGM provider’s servers to your phone. We do not collect, store, or transmit any of your data.",
+    "supplementaryTitle": "Alarms are supplementary",
+    "supplementaryBody": "The alarms in this app are meant to supplement, not replace, your CGM alerts. Do not disable your CGM alarms.",
+    "accept": "I understand, continue"
+  },
+  "login": {
+    "subtitle": "Connect your CGM",
+    "connect": "Connect",
+    "dexcom": {
+      "field1": "Username or email",
+      "field2": "Password",
+      "hint": "Use the sharer's credentials (the account connected to the sensor), not a follower account."
+    },
+    "libre": {
+      "field1": "Email",
+      "field2": "Password",
+      "hint": "Use your LibreLinkUp credentials (the follower app, not LibreLink)."
+    },
+    "nightscout": {
+      "field1": "https://your-site.herokuapp.com",
+      "field2": "Token (optional)",
+      "hint": "Enter your Nightscout site URL. Add a readable token if your site requires authentication."
+    },
+    "errors": {
+      "nightscoutUrl": "Enter your Nightscout URL",
+      "fillAll": "Fill in all fields",
+      "invalidCredentials": "Invalid credentials or account not found"
+    }
+  },
+  "monitor": {
+    "connecting": "CONNECTING...",
+    "noData": "NO DATA",
+    "stale": "STALE · {{count}}m ago",
+    "delayed": "DELAYED · {{count}}m ago",
+    "justNow": "just now",
+    "minutesAgo": "{{count}} min ago",
+    "snoozed": "Snoozed {{count}}m — tap to cancel",
+    "snooze": "Snooze {{count}}m"
+  },
+  "settings": {
+    "sections": {
+      "display": "DISPLAY",
+      "thresholds": "ALERT THRESHOLDS",
+      "alertTypes": "ALERT TYPES",
+      "alarm": "ALARM",
+      "about": "ABOUT"
+    },
+    "theme": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "unit": "Unit",
+    "keepScreenOn": "Keep Screen On",
+    "keepScreenOnWarning": "When the screen turns off, Spike stops checking your glucose and will not alarm.",
+    "urgentLow": "Urgent Low",
+    "low": "Low",
+    "high": "High",
+    "rapidFall": "Rapid Fall",
+    "rapidRise": "Rapid Rise",
+    "sound": "Sound",
+    "repeatEvery": "Repeat Every",
+    "snooze": "Snooze",
+    "snoozeDuration": "Snooze Duration",
+    "snoozeWarning": "Snoozing longer than {{count}} minutes may delay critical alerts. Use with caution.",
+    "version": "Version"
+  },
+  "sounds": {
+    "beep": "Beep",
+    "double-beep": "Double Beep",
+    "arcade": "Arcade",
+    "siren": "Siren",
+    "chime": "Chime",
+    "signal": "Signal"
+  }
+}

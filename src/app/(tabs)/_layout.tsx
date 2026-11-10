@@ -1,5 +1,6 @@
 import { Alert, Linking, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { Tabs } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Activity, Settings, MessageSquare, LogOut } from "lucide-react-native";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -17,6 +18,7 @@ const TAB_ICONS: Record<string, typeof Activity> = {
 function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) {
   const { theme } = useSettingsContext();
   const { clear: logout } = useAuth();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
 
@@ -24,14 +26,14 @@ function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) 
 
   function handleFeedback() {
     Linking.openURL(FEEDBACK_EMAIL).catch(() =>
-      Alert.alert("Cannot Open Email", "balajdariussebastian@gmail.com")
+      Alert.alert(t("feedback.cannotOpenEmail"), "balajdariussebastian@gmail.com")
     );
   }
 
   function handleLogout() {
-    Alert.alert("Log Out", "Are you sure you want to log out?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Log Out", style: "destructive", onPress: logout },
+    Alert.alert(t("logout.title"), t("logout.message"), [
+      { text: t("common.cancel"), style: "cancel" },
+      { text: t("logout.confirm"), style: "destructive", onPress: logout },
     ]);
   }
 
@@ -59,24 +61,26 @@ function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) 
       })}
       <TouchableOpacity style={styles.tab} activeOpacity={0.5} onPress={handleFeedback}>
         <MessageSquare size={20} color={theme.textTertiary} />
-        <Text style={[styles.tabLabel, { color: theme.textTertiary }]}>Feedback</Text>
+        <Text style={[styles.tabLabel, { color: theme.textTertiary }]}>{t("tabs.feedback")}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.tab} activeOpacity={0.5} onPress={handleLogout}>
         <LogOut size={20} color={COLORS.danger} />
-        <Text style={[styles.tabLabel, { color: COLORS.danger }]}>Logout</Text>
+        <Text style={[styles.tabLabel, { color: COLORS.danger }]}>{t("tabs.logout")}</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 export default function TabsLayout() {
+  const { t } = useTranslation();
+
   return (
     <Tabs
       screenOptions={{ headerShown: false }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >
-      <Tabs.Screen name="index" options={{ title: "Monitor" }} />
-      <Tabs.Screen name="settings" options={{ title: "Settings" }} />
+      <Tabs.Screen name="index" options={{ title: t("tabs.monitor") }} />
+      <Tabs.Screen name="settings" options={{ title: t("tabs.settings") }} />
     </Tabs>
   );
 }
