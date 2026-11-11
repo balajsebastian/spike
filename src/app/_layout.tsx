@@ -39,6 +39,16 @@ function AppStack() {
       </Stack.Protected>
       <Stack.Protected guard={!!credentials}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="sound-picker"
+          options={{
+            presentation: "formSheet",
+            animation: "default",
+            sheetAllowedDetents: "fitToContents",
+            sheetGrabberVisible: true,
+            contentStyle: { backgroundColor: theme.background },
+          }}
+        />
       </Stack.Protected>
     </Stack>
   );

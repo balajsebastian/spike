@@ -2,6 +2,7 @@
   "common": {
     "loading": "Cargando...",
     "cancel": "Cancelar",
+    "done": "Listo",
     "minutes": "{{count}} min"
   },
   "tabs": {
@@ -86,6 +87,7 @@
     "rapidFall": "Bajada rápida",
     "rapidRise": "Subida rápida",
     "sound": "Sonido",
+    "soundHint": "Toca un sonido para escucharlo.",
     "repeatOther": "Repetir otras alertas",
     "repeatFooter": "Bajo urgente y Alto urgente se repiten cada {{count}} minutos hasta que la glucosa vuelva al rango.",
     "snooze": "Posponer",

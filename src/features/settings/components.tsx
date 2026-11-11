@@ -1,6 +1,6 @@
 import { Children, Fragment, isValidElement, type ReactNode } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import type { LucideIcon } from "lucide-react-native";
+import { ChevronRight, type LucideIcon } from "lucide-react-native";
 import type { ThemeColors } from "./types";
 
 const ICON_SIZE = 30;
@@ -76,6 +76,42 @@ export function Row({
       </View>
       <View style={[componentStyles.rowTrailing, vertical && componentStyles.rowTrailingVertical]}>{children}</View>
     </View>
+  );
+}
+
+/** A tappable row showing the current value, iOS-style: "Label    Value ›". */
+export function NavRow({
+  label,
+  value,
+  icon: Icon,
+  theme,
+  onPress,
+}: {
+  label: string;
+  value: string;
+  icon?: LucideIcon;
+  theme: ThemeColors;
+  onPress: () => void;
+}) {
+  return (
+    <TouchableOpacity activeOpacity={0.6} onPress={onPress} style={componentStyles.row}>
+      <View style={componentStyles.rowLeading}>
+        {Icon && (
+          <View style={[componentStyles.iconBadge, { backgroundColor: theme.iconBadge }]}>
+            <Icon size={18} color="#fff" strokeWidth={2.25} />
+          </View>
+        )}
+        <Text style={[componentStyles.rowLabel, { color: theme.text }]} numberOfLines={1}>
+          {label}
+        </Text>
+      </View>
+      <View style={[componentStyles.rowTrailing, componentStyles.navTrailing]}>
+        <Text style={[componentStyles.rowLabel, { color: theme.textSecondary }]} numberOfLines={1}>
+          {value}
+        </Text>
+        <ChevronRight size={18} color={theme.textTertiary} />
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -197,6 +233,10 @@ export const componentStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: 12,
+  },
+  navTrailing: {
+    gap: 4,
+    flexShrink: 1,
   },
   rowTrailingVertical: {
     marginLeft: ICON_SIZE + ICON_GAP,

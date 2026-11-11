@@ -2,6 +2,7 @@
   "common": {
     "loading": "Se încarcă...",
     "cancel": "Anulează",
+    "done": "Gata",
     "minutes": "{{count}} min"
   },
   "tabs": {
@@ -86,6 +87,7 @@
     "rapidFall": "Scădere rapidă",
     "rapidRise": "Creștere rapidă",
     "sound": "Sunet",
+    "soundHint": "Atinge un sunet ca să-l asculți.",
     "repeatOther": "Repetă celelalte alerte",
     "repeatFooter": "Scăzut urgent și Ridicat urgent se repetă la fiecare {{count}} minute, până când glicemia revine în interval.",
     "snooze": "Amânare",

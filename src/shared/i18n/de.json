@@ -2,6 +2,7 @@
   "common": {
     "loading": "Wird geladen...",
     "cancel": "Abbrechen",
+    "done": "Fertig",
     "minutes": "{{count}} Min."
   },
   "tabs": {
@@ -86,6 +87,7 @@
     "rapidFall": "Schneller Abfall",
     "rapidRise": "Schneller Anstieg",
     "sound": "Ton",
+    "soundHint": "Tippe auf einen Ton, um ihn anzuhören.",
     "repeatOther": "Andere Alarme wiederholen",
     "repeatFooter": "Dringend niedrig und Dringend hoch werden alle {{count}} Minuten wiederholt, bis die Glukose wieder im Zielbereich ist.",
     "snooze": "Stummschalten",

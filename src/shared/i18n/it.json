@@ -2,6 +2,7 @@
   "common": {
     "loading": "Caricamento...",
     "cancel": "Annulla",
+    "done": "Fine",
     "minutes": "{{count}} min"
   },
   "tabs": {
@@ -86,6 +87,7 @@
     "rapidFall": "Discesa rapida",
     "rapidRise": "Salita rapida",
     "sound": "Suono",
+    "soundHint": "Tocca un suono per ascoltarlo.",
     "repeatOther": "Ripeti altri avvisi",
     "repeatFooter": "Basso urgente e Alto urgente si ripetono ogni {{count}} minuti finché la glicemia non torna nell'intervallo.",
     "snooze": "Posponi",

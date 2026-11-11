@@ -1,11 +1,10 @@
+import { router } from "expo-router";
 import { Platform, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Constants from "expo-constants";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "@/shared/colors";
-import { OptionGroup } from "@/shared/OptionGroup";
 import { useSettingsContext } from "./SettingsContext";
-import { usePreviewSound } from "./usePreviewSound";
 import { URGENT_REPEAT_MINUTES } from "@/features/alarm/constants";
 import { TREND_WINDOW_MINUTES } from "@/features/monitor/constants";
 import {
@@ -23,8 +22,8 @@ import {
   TrendingUp,
   Volume2,
 } from "lucide-react-native";
-import { Section, Row, Segmented, Stepper } from "./components";
-import { formatGlucose, ALARM_SOUNDS } from "./types";
+import { Section, Row, NavRow, Segmented, Stepper } from "./components";
+import { formatGlucose } from "./types";
 import {
   THRESHOLD_MIN,
   THRESHOLD_MAX,
@@ -43,8 +42,6 @@ const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
 export function SettingsScreen() {
   const { settings, theme, update } = useSettingsContext();
   const { t } = useTranslation();
-  const alarmSoundOptions = ALARM_SOUNDS.map((s) => ({ ...s, label: t(`sounds.${s.value}`) }));
-  const previewSound = usePreviewSound();
   const insets = useSafeAreaInsets();
   const unit = settings.unit;
   const unitLabel = unit === "mmol" ? "mmol/L" : "mg/dL";
@@ -243,21 +240,13 @@ export function SettingsScreen() {
           footerColor={COLORS.warning}
           theme={theme}
         >
-          <Row label={t("settings.sound")} icon={Volume2} theme={theme} vertical>
-            <OptionGroup
-              options={alarmSoundOptions}
-              value={settings.alarmSound}
-              onChange={(v) => {
-                update({ alarmSound: v });
-                previewSound(v);
-              }}
-              theme={theme}
-              expand={false}
-              containerStyle={styles.soundContainer}
-              buttonStyle={styles.soundButton}
-              labelStyle={styles.soundLabel}
-            />
-          </Row>
+          <NavRow
+            label={t("settings.sound")}
+            value={t(`sounds.${settings.alarmSound}`)}
+            icon={Volume2}
+            theme={theme}
+            onPress={() => router.push("/sound-picker")}
+          />
           <Row label={t("settings.snooze")} icon={BellOff} theme={theme}>
             <Switch value={settings.snoozeEnabled} onValueChange={(v) => update({ snoozeEnabled: v })} />
           </Row>
@@ -297,19 +286,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     paddingHorizontal: 32,
     paddingTop: 8,
-  },
-  soundContainer: {
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  soundButton: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 18,
-  },
-  soundLabel: {
-    fontSize: 14,
-    fontWeight: "600",
   },
   versionFooter: {
     fontSize: 13,
