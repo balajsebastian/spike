@@ -80,6 +80,7 @@
     "urgentLow": "Urgent Low",
     "low": "Low",
     "high": "High",
+    "urgentHigh": "Urgent High",
     "rapidFall": "Rapid Fall",
     "rapidRise": "Rapid Rise",
     "sound": "Sound",

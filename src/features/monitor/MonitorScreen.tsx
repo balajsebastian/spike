@@ -31,7 +31,7 @@ export function MonitorScreen({ credentials }: Props) {
   const status = getStatusText(reading);
   const isNoData = !reading || now - reading.timestampMs > NO_DATA_MS;
   const color = reading ? getRangeColor(reading.valueMgdl, settings, theme.text) : theme.textTertiary;
-  const isUrgent = alarmLevel === "urgent-low";
+  const isUrgent = alarmLevel === "urgent-low" || alarmLevel === "urgent-high";
   const blinkOpacity = useBlink(isUrgent && !isNoData);
   const displayValue = reading ? formatGlucose(reading.valueMgdl, settings.unit) : "--";
   const isSnoozed = snoozeUntil > now;

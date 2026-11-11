@@ -37,7 +37,7 @@ Have an old phone or tablet in a drawer? Install Spike, plug it in and put it wh
 - Trend arrow and stale-data / sensor signal-loss indication
 - Loud alarm with haptic feedback that plays even in silent mode
 - Multiple alarm sounds (Beep, Double Beep, Arcade, Siren, Chime, Signal)
-- Configurable thresholds (urgent low, low, high)
+- Configurable thresholds (urgent low, low, high, urgent high)
 - Trend alerts (rapid rise/fall)
 - Snooze (1–15 min, default 5)
 - Screen stays on while Spike is open, landscape and tablet support

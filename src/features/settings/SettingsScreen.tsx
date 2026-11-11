@@ -11,6 +11,7 @@ import {
   ArrowUp,
   BellOff,
   ChevronsDown,
+  ChevronsUp,
   Moon,
   Repeat,
   Ruler,
@@ -143,7 +144,31 @@ export function SettingsScreen() {
                 })
               }
               onIncrement={() =>
-                update({ highThreshold: Math.min(THRESHOLD_MAX, settings.highThreshold + THRESHOLD_STEP) })
+                update({
+                  highThreshold: Math.min(
+                    settings.urgentHighThreshold - THRESHOLD_STEP,
+                    settings.highThreshold + THRESHOLD_STEP,
+                  ),
+                })
+              }
+              theme={theme}
+            />
+          </Row>
+          <Row label={t("settings.urgentHigh")} icon={ChevronsUp} theme={theme}>
+            <Stepper
+              displayValue={thresholdDisplay(settings.urgentHighThreshold)}
+              onDecrement={() =>
+                update({
+                  urgentHighThreshold: Math.max(
+                    settings.highThreshold + THRESHOLD_STEP,
+                    settings.urgentHighThreshold - THRESHOLD_STEP,
+                  ),
+                })
+              }
+              onIncrement={() =>
+                update({
+                  urgentHighThreshold: Math.min(THRESHOLD_MAX, settings.urgentHighThreshold + THRESHOLD_STEP),
+                })
               }
               theme={theme}
             />
@@ -159,6 +184,9 @@ export function SettingsScreen() {
           </Row>
           <Row label={t("settings.high")} icon={ArrowUp} theme={theme}>
             <Switch value={settings.highEnabled} onValueChange={(v) => update({ highEnabled: v })} />
+          </Row>
+          <Row label={t("settings.urgentHigh")} icon={ChevronsUp} theme={theme}>
+            <Switch value={settings.urgentHighEnabled} onValueChange={(v) => update({ urgentHighEnabled: v })} />
           </Row>
           <Row label={t("settings.rapidFall")} icon={TrendingDown} theme={theme}>
             <Switch value={settings.fallingEnabled} onValueChange={(v) => update({ fallingEnabled: v })} />

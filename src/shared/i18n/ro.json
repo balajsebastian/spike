@@ -80,6 +80,7 @@
     "urgentLow": "Scăzut urgent",
     "low": "Scăzut",
     "high": "Ridicat",
+    "urgentHigh": "Ridicat urgent",
     "rapidFall": "Scădere rapidă",
     "rapidRise": "Creștere rapidă",
     "sound": "Sunet",

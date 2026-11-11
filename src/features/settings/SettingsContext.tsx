@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import * as SecureStore from "expo-secure-store";
 import { DEFAULT_SETTINGS, THEMES, type Settings, type ThemeColors } from "./types";
+import { THRESHOLD_STEP } from "./constants";
 
 const STORAGE_KEY = "app_settings";
 
@@ -26,7 +27,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         try {
           const parsed = JSON.parse(raw);
           if (parsed && typeof parsed === "object") {
-            setSettings({ ...DEFAULT_SETTINGS, ...parsed });
+            const merged: Settings = { ...DEFAULT_SETTINGS, ...parsed };
+            // Settings saved before Urgent High existed may have a High above its default.
+            merged.urgentHighThreshold = Math.max(
+              merged.urgentHighThreshold,
+              merged.highThreshold + THRESHOLD_STEP,
+            );
+            setSettings(merged);
           }
         } catch {
           SecureStore.deleteItemAsync(STORAGE_KEY);

@@ -80,6 +80,7 @@
     "urgentLow": "Bas urgent",
     "low": "Bas",
     "high": "Haut",
+    "urgentHigh": "Haut urgent",
     "rapidFall": "Baisse rapide",
     "rapidRise": "Hausse rapide",
     "sound": "Son",

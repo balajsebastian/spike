@@ -15,9 +15,11 @@ export interface Settings {
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
+  urgentHighThreshold: number;
   urgentLowEnabled: boolean;
   lowEnabled: boolean;
   highEnabled: boolean;
+  urgentHighEnabled: boolean;
   fallingEnabled: boolean;
   risingEnabled: boolean;
   alarmRepeatMinutes: number;
@@ -32,9 +34,11 @@ export const DEFAULT_SETTINGS: Settings = {
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,
+  urgentHighThreshold: 250,
   urgentLowEnabled: true,
   lowEnabled: true,
   highEnabled: true,
+  urgentHighEnabled: true,
   fallingEnabled: true,
   risingEnabled: true,
   alarmRepeatMinutes: 5,

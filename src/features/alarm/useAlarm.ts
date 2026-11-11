@@ -11,12 +11,13 @@ import {
 } from "./constants";
 import { useSoundPlayers } from "./useSoundPlayers";
 
-export type AlarmLevel = "urgent-low" | "low" | "high" | "falling" | "rising" | null;
+export type AlarmLevel = "urgent-low" | "low" | "urgent-high" | "high" | "falling" | "rising" | null;
 
 function getAlarmLevel(reading: GlucoseReading | null, settings: Settings): AlarmLevel {
   if (!reading) return null;
   if (reading.valueMgdl < settings.urgentLowThreshold) return "urgent-low";
   if (reading.valueMgdl < settings.lowThreshold) return "low";
+  if (reading.valueMgdl > settings.urgentHighThreshold) return "urgent-high";
   if (reading.valueMgdl > settings.highThreshold) return "high";
   if (reading.trend === "DoubleDown" || reading.trend === "SingleDown") return "falling";
   if (reading.trend === "DoubleUp" || reading.trend === "SingleUp") return "rising";
@@ -25,8 +26,10 @@ function getAlarmLevel(reading: GlucoseReading | null, settings: Settings): Alar
 
 function isAlarmEnabled(level: AlarmLevel, settings: Settings): boolean {
   switch (level) {
-    case "urgent-low": return settings.urgentLowEnabled;
+    // An urgent reading is also past the regular threshold, so it still alarms if only that one is on.
+    case "urgent-low": return settings.urgentLowEnabled || settings.lowEnabled;
     case "low": return settings.lowEnabled;
+    case "urgent-high": return settings.urgentHighEnabled || settings.highEnabled;
     case "high": return settings.highEnabled;
     case "falling": return settings.fallingEnabled;
     case "rising": return settings.risingEnabled;
