@@ -1,32 +1,21 @@
-import { Alert, Linking, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { Tabs } from "expo-router";
+import { Alert, Linking, useWindowDimensions } from "react-native";
+import { NativeTabs } from "expo-router/native-tabs";
 import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Activity, Settings, MessageSquare, LogOut } from "lucide-react-native";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
-import { COLORS } from "@/shared/colors";
-import type { BottomTabBarProps } from "expo-router/build/layouts/Tabs";
 
-const FEEDBACK_EMAIL = "mailto:balajdariussebastian@gmail.com?subject=Spike%20Feedback";
+const FEEDBACK_ADDRESS = "balajdariussebastian@gmail.com";
+const FEEDBACK_EMAIL = `mailto:${FEEDBACK_ADDRESS}?subject=Spike%20Feedback`;
 
-const TAB_ICONS: Record<string, typeof Activity> = {
-  index: Activity,
-  settings: Settings,
-};
-
-function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) {
+export default function TabsLayout() {
+  const { t } = useTranslation();
   const { theme } = useSettingsContext();
   const { clear: logout } = useAuth();
-  const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
-
-  if (width > height) return null;
 
   function handleFeedback() {
     Linking.openURL(FEEDBACK_EMAIL).catch(() =>
-      Alert.alert(t("feedback.cannotOpenEmail"), "balajdariussebastian@gmail.com")
+      Alert.alert(t("feedback.cannotOpenEmail"), FEEDBACK_ADDRESS)
     );
   }
 
@@ -38,67 +27,29 @@ function CustomTabBar({ state, descriptors, navigateToTab }: BottomTabBarProps) 
   }
 
   return (
-    <View style={[styles.bar, { backgroundColor: theme.surface, paddingBottom: Math.max(insets.bottom, 8) }]}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
-        const color = isFocused ? theme.text : theme.textTertiary;
-        const Icon = TAB_ICONS[route.name] ?? Activity;
-
-        return (
-          <TouchableOpacity
-            key={route.key}
-            style={styles.tab}
-            activeOpacity={0.5}
-            onPress={() => {
-              if (!isFocused) navigateToTab(route.key);
-            }}
-          >
-            <Icon size={20} color={color} />
-            <Text style={[styles.tabLabel, { color }]}>{options.title ?? route.name}</Text>
-          </TouchableOpacity>
-        );
-      })}
-      <TouchableOpacity style={styles.tab} activeOpacity={0.5} onPress={handleFeedback}>
-        <MessageSquare size={20} color={theme.textTertiary} />
-        <Text style={[styles.tabLabel, { color: theme.textTertiary }]}>{t("tabs.feedback")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.tab} activeOpacity={0.5} onPress={handleLogout}>
-        <LogOut size={20} color={COLORS.danger} />
-        <Text style={[styles.tabLabel, { color: COLORS.danger }]}>{t("tabs.logout")}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-export default function TabsLayout() {
-  const { t } = useTranslation();
-
-  return (
-    <Tabs
-      screenOptions={{ headerShown: false }}
-      tabBar={(props) => <CustomTabBar {...props} />}
+    <NativeTabs
+      hidden={width > height}
+      tintColor={theme.text}
+      iconColor={{ default: theme.textTertiary, selected: theme.text }}
+      backgroundColor={theme.surface}
     >
-      <Tabs.Screen name="index" options={{ title: t("tabs.monitor") }} />
-      <Tabs.Screen name="settings" options={{ title: t("tabs.settings") }} />
-    </Tabs>
+      <NativeTabs.Trigger name="index" contentStyle={{ backgroundColor: theme.background }}>
+        <NativeTabs.Trigger.Icon sf="waveform.path.ecg" md="monitor_heart" />
+        <NativeTabs.Trigger.Label>{t("tabs.monitor")}</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="settings" contentStyle={{ backgroundColor: theme.background }}>
+        <NativeTabs.Trigger.Icon sf={{ default: "gearshape", selected: "gearshape.fill" }} md="settings" />
+        <NativeTabs.Trigger.Label>{t("tabs.settings")}</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+      {/* Action tabs: `disabled` stops native selection, but `tabPress` still fires. */}
+      <NativeTabs.Trigger name="feedback" disabled listeners={{ tabPress: handleFeedback }}>
+        <NativeTabs.Trigger.Icon sf="bubble.left" md="chat_bubble" />
+        <NativeTabs.Trigger.Label>{t("tabs.feedback")}</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="logout" disabled listeners={{ tabPress: handleLogout }}>
+        <NativeTabs.Trigger.Icon sf="rectangle.portrait.and.arrow.right" md="logout" />
+        <NativeTabs.Trigger.Label>{t("tabs.logout")}</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }
-
-const styles = StyleSheet.create({
-  bar: {
-    flexDirection: "row",
-    paddingTop: 8,
-  },
-  tab: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 6,
-    gap: 4,
-  },
-  tabLabel: {
-    fontSize: 11,
-    fontWeight: "500",
-  },
-});
