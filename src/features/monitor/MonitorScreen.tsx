@@ -72,7 +72,7 @@ export function MonitorScreen({ credentials }: Props) {
             windowMinutes={TREND_WINDOW_MINUTES}
             now={now}
             width={Math.min(screenWidth - 48, 640)}
-            height={isLandscape ? 70 : 120}
+            height={isLandscape ? 90 : 150}
             settings={settings}
             theme={theme}
           />
