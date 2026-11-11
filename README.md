@@ -21,7 +21,7 @@ Built for people with diabetes and the people who look after them.
 
 ## Turn an old phone into a home glucose monitor
 
-Have an old phone or tablet in a drawer? Install Spike, turn on **Keep screen on**, plug it in and put it where you spend your time. Everyone in the house can see the glucose level at a glance, and the alarm covers the night.
+Have an old phone or tablet in a drawer? Install Spike, plug it in and put it where you spend your time. Everyone in the house can see the glucose level at a glance, and the alarm covers the night.
 
 ## Supported CGM sources
 
@@ -40,14 +40,14 @@ Have an old phone or tablet in a drawer? Install Spike, turn on **Keep screen on
 - Configurable thresholds (urgent low, low, high)
 - Trend alerts (rapid rise/fall)
 - Snooze (1–15 min, default 5)
-- Keep screen on, landscape and tablet support
+- Screen stays on while Spike is open, landscape and tablet support
 - Dark and light themes
 - mg/dL and mmol/L units
 - No data collection: credentials stay on your device
 
 ## Important: keep Spike open
 
-Alarms only work while Spike is open on screen. If you lock your phone, switch to another app, or close Spike, it stops checking your glucose and **will not alarm**. Leave it open with the screen on (Spike keeps the screen awake by default), ideally plugged in.
+Alarms only work while Spike is open on screen. If you lock your phone, switch to another app, or close Spike, it stops checking your glucose and **will not alarm**. Leave it open (Spike keeps the screen awake while it is open), ideally plugged in.
 
 ## Disclaimer
 

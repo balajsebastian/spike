@@ -77,8 +77,6 @@
     "themeDark": "Scuro",
     "themeLight": "Chiaro",
     "unit": "Unità",
-    "keepScreenOn": "Schermo sempre acceso",
-    "keepScreenOnWarning": "Quando lo schermo si spegne, Spike smette di controllare la glicemia e non suonerà.",
     "urgentLow": "Basso urgente",
     "low": "Basso",
     "high": "Alto",

@@ -77,8 +77,6 @@
     "themeDark": "Oscuro",
     "themeLight": "Claro",
     "unit": "Unidad",
-    "keepScreenOn": "Pantalla siempre encendida",
-    "keepScreenOnWarning": "Cuando la pantalla se apaga, Spike deja de comprobar tu glucosa y no sonará.",
     "urgentLow": "Bajo urgente",
     "low": "Bajo",
     "high": "Alto",

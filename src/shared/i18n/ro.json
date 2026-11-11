@@ -77,8 +77,6 @@
     "themeDark": "Întunecată",
     "themeLight": "Luminoasă",
     "unit": "Unitate",
-    "keepScreenOn": "Ecran mereu aprins",
-    "keepScreenOnWarning": "Când ecranul se stinge, Spike nu mai verifică glicemia și nu va suna.",
     "urgentLow": "Scăzut urgent",
     "low": "Scăzut",
     "high": "Ridicat",

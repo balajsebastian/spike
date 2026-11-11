@@ -12,7 +12,6 @@ export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
 export interface Settings {
   theme: "dark" | "light";
   unit: "mgdl" | "mmol";
-  keepScreenOn: boolean;
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
@@ -30,7 +29,6 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
   theme: "dark",
   unit: "mgdl",
-  keepScreenOn: true,
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,
@@ -52,6 +50,7 @@ export interface ThemeColors {
   textSecondary: string;
   textTertiary: string;
   border: string;
+  iconBadge: string;
 }
 
 export const THEMES: Record<"dark" | "light", ThemeColors> = {
@@ -62,6 +61,7 @@ export const THEMES: Record<"dark" | "light", ThemeColors> = {
     textSecondary: "#999",
     textTertiary: "#555",
     border: "#333",
+    iconBadge: "#3a3a3c",
   },
   light: {
     background: "#f2f2f7",
@@ -70,6 +70,7 @@ export const THEMES: Record<"dark" | "light", ThemeColors> = {
     textSecondary: "#666",
     textTertiary: "#999",
     border: "#c6c6c8",
+    iconBadge: "#8e8e93",
   },
 };
 

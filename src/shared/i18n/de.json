@@ -77,8 +77,6 @@
     "themeDark": "Dunkel",
     "themeLight": "Hell",
     "unit": "Einheit",
-    "keepScreenOn": "Bildschirm anlassen",
-    "keepScreenOnWarning": "Wenn der Bildschirm ausgeht, prüft Spike deine Glukose nicht mehr und gibt keinen Alarm.",
     "urgentLow": "Dringend niedrig",
     "low": "Niedrig",
     "high": "Hoch",

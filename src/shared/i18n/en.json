@@ -77,8 +77,6 @@
     "themeDark": "Dark",
     "themeLight": "Light",
     "unit": "Unit",
-    "keepScreenOn": "Keep Screen On",
-    "keepScreenOnWarning": "When the screen turns off, Spike stops checking your glucose and will not alarm.",
     "urgentLow": "Urgent Low",
     "low": "Low",
     "high": "High",

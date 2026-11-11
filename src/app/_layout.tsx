@@ -14,11 +14,6 @@ function KeepAwake() {
   return null;
 }
 
-function KeepAwakeWrapper() {
-  const { settings } = useSettingsContext();
-  if (!settings.keepScreenOn) return null;
-  return <KeepAwake />;
-}
 
 function AppStack() {
   const { accepted, loading: onboardingLoading } = useOnboarding();
@@ -65,7 +60,8 @@ export default function RootLayout() {
     <SettingsProvider>
       <AuthProvider>
         <OnboardingProvider>
-          <KeepAwakeWrapper />
+          {/* Spike must stay on screen to keep checking glucose, so the screen never sleeps while it is open. */}
+          <KeepAwake />
           <AppStack />
         </OnboardingProvider>
       </AuthProvider>
