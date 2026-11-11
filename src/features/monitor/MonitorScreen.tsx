@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { formatGlucose } from "@/features/settings/types";
@@ -10,7 +10,8 @@ import type { Credentials } from "@/features/auth/types";
 import { useGlucose } from "./useGlucose";
 import { getRangeColor, getStatusText } from "./utils";
 import { useBlink } from "./useBlink";
-import { NO_DATA_MS } from "./constants";
+import { NO_DATA_MS, TREND_WINDOW_MINUTES } from "./constants";
+import { TrendLine } from "./TrendLine";
 
 interface Props {
   credentials: Credentials;
@@ -19,7 +20,12 @@ interface Props {
 export function MonitorScreen({ credentials }: Props) {
   const { settings, theme } = useSettingsContext();
   const { t } = useTranslation();
-  const { reading, error } = useGlucose(credentials);
+  const { reading, error, history } = useGlucose(
+    credentials,
+    settings.showTrendLine ? TREND_WINDOW_MINUTES : null,
+  );
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
   const { alarmLevel, snooze, cancelSnooze, snoozeUntil } = useAlarm(reading, settings);
   const [now, setNow] = useState(() => Date.now());
 
@@ -58,6 +64,20 @@ export function MonitorScreen({ credentials }: Props) {
       <Text style={[styles.ago, { color: status.color ?? theme.textTertiary }]}>
         {status.text}
       </Text>
+
+      {settings.showTrendLine && (
+        <View style={styles.trendLine}>
+          <TrendLine
+            readings={history}
+            windowMinutes={TREND_WINDOW_MINUTES}
+            now={now}
+            width={Math.min(screenWidth - 48, 640)}
+            height={isLandscape ? 70 : 120}
+            settings={settings}
+            theme={theme}
+          />
+        </View>
+      )}
 
       {isSnoozed && settings.snoozeEnabled && (
         <TouchableOpacity style={[styles.snoozeBadge, { backgroundColor: theme.border }]} onPress={cancelSnooze}>
@@ -110,6 +130,9 @@ const styles = StyleSheet.create({
   },
   ago: {
     fontSize: 36,
+  },
+  trendLine: {
+    marginTop: 24,
   },
   snoozeBtn: {
     marginTop: 16,

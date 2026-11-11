@@ -29,6 +29,16 @@ interface NightscoutEntry {
   date: number;
 }
 
+function toReading(entry: NightscoutEntry): GlucoseReading {
+  const trend = mapDirection(entry.direction);
+  return {
+    valueMgdl: entry.sgv,
+    trend,
+    trendArrow: TREND_ARROWS[trend],
+    timestampMs: entry.date,
+  };
+}
+
 export class NightscoutClient implements CGMClient {
   private url: string;
   private token?: string;
@@ -42,11 +52,11 @@ export class NightscoutClient implements CGMClient {
     await this.getLatestReading();
   }
 
-  async getLatestReading(): Promise<GlucoseReading | null> {
-    let endpoint = `${this.url}/api/v1/entries/current.json`;
-    if (this.token) {
-      endpoint += `?token=${encodeURIComponent(this.token)}`;
-    }
+  private async fetchEntries(path: string, params: Record<string, string> = {}): Promise<NightscoutEntry[]> {
+    const query = new URLSearchParams(params);
+    if (this.token) query.set("token", this.token);
+    const qs = query.toString();
+    const endpoint = `${this.url}${path}${qs ? `?${qs}` : ""}`;
 
     const res = await fetch(endpoint, {
       headers: { Accept: "application/json" },
@@ -60,16 +70,24 @@ export class NightscoutClient implements CGMClient {
     }
 
     const entries: NightscoutEntry[] = await res.json();
-    if (!Array.isArray(entries) || entries.length === 0) return null;
+    return Array.isArray(entries) ? entries : [];
+  }
 
-    const entry = entries[0];
-    const trend = mapDirection(entry.direction);
+  async getLatestReading(): Promise<GlucoseReading | null> {
+    const entries = await this.fetchEntries("/api/v1/entries/current.json");
+    return entries.length > 0 ? toReading(entries[0]) : null;
+  }
 
-    return {
-      valueMgdl: entry.sgv,
-      trend,
-      trendArrow: TREND_ARROWS[trend],
-      timestampMs: entry.date,
-    };
+  async getHistory(minutes: number): Promise<GlucoseReading[]> {
+    const since = Date.now() - minutes * 60_000;
+    const entries = await this.fetchEntries("/api/v1/entries/sgv.json", {
+      "find[date][$gte]": String(since),
+      // Enough for one reading per minute (e.g. Libre uploaders).
+      count: String(minutes + 10),
+    });
+    return entries
+      .filter((e) => typeof e.sgv === "number")
+      .map(toReading)
+      .sort((a, b) => a.timestampMs - b.timestampMs);
   }
 }

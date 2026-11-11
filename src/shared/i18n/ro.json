@@ -77,6 +77,8 @@
     "themeDark": "Întunecată",
     "themeLight": "Luminoasă",
     "unit": "Unitate",
+    "trendLine": "Linie de trend",
+    "trendLineFooter": "Afișează valorile din ultimele {{count}} ore sub cifră.",
     "urgentLow": "Scăzut urgent",
     "low": "Scăzut",
     "high": "Ridicat",

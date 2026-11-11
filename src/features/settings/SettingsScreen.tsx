@@ -7,9 +7,11 @@ import { OptionGroup } from "@/shared/OptionGroup";
 import { useSettingsContext } from "./SettingsContext";
 import { usePreviewSound } from "./usePreviewSound";
 import { URGENT_REPEAT_MINUTES } from "@/features/alarm/constants";
+import { TREND_WINDOW_MINUTES } from "@/features/monitor/constants";
 import {
   ArrowDown,
   ArrowUp,
+  ChartSpline,
   BellOff,
   ChevronsDown,
   ChevronsUp,
@@ -67,7 +69,11 @@ export function SettingsScreen() {
       >
         <Text style={[styles.title, { color: theme.text }]}>{t("tabs.settings")}</Text>
 
-        <Section title={t("settings.sections.display")} theme={theme}>
+        <Section
+          title={t("settings.sections.display")}
+          footer={t("settings.trendLineFooter", { count: TREND_WINDOW_MINUTES / 60 })}
+          theme={theme}
+        >
           <Row label={t("settings.theme")} icon={Moon} theme={theme}>
             <Segmented
               options={[
@@ -89,6 +95,9 @@ export function SettingsScreen() {
               onChange={(v) => update({ unit: v })}
               theme={theme}
             />
+          </Row>
+          <Row label={t("settings.trendLine")} icon={ChartSpline} theme={theme}>
+            <Switch value={settings.showTrendLine} onValueChange={(v) => update({ showTrendLine: v })} />
           </Row>
         </Section>
 

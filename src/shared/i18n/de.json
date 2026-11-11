@@ -77,6 +77,8 @@
     "themeDark": "Dunkel",
     "themeLight": "Hell",
     "unit": "Einheit",
+    "trendLine": "Trendlinie",
+    "trendLineFooter": "Zeigt die Werte der letzten {{count}} Stunden unter der Zahl.",
     "urgentLow": "Dringend niedrig",
     "low": "Niedrig",
     "high": "Hoch",

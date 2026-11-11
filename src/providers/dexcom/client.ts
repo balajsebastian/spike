@@ -93,7 +93,19 @@ export class DexcomShareClient implements CGMClient {
     await this.login();
   }
 
-  async getLatestReading(retries = 1): Promise<GlucoseReading | null> {
+  async getLatestReading(): Promise<GlucoseReading | null> {
+    const readings = await this.readValues(30, 1);
+    return readings[0] ?? null;
+  }
+
+  async getHistory(minutes: number): Promise<GlucoseReading[]> {
+    // Share stores one value every 5 minutes.
+    const readings = await this.readValues(minutes, Math.ceil(minutes / 5) + 1);
+    return readings.reverse();
+  }
+
+  /** Newest first, as returned by Share. */
+  private async readValues(minutes: number, maxCount: number, retries = 1): Promise<GlucoseReading[]> {
     if (!this.sessionId) {
       await this.connect();
     }
@@ -103,24 +115,24 @@ export class DexcomShareClient implements CGMClient {
         "Publisher/ReadPublisherLatestGlucoseValues",
         {
           sessionId: this.sessionId,
-          minutes: 30,
-          maxCount: 1,
+          minutes,
+          maxCount,
         }
       );
 
-      if (!Array.isArray(raw) || raw.length === 0) return null;
-      return parseGlucoseReading(raw[0]);
+      if (!Array.isArray(raw)) return [];
+      return raw.map(parseGlucoseReading);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       if (retries > 0 && /Dexcom API error 50[234]/.test(msg)) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        return this.getLatestReading(retries - 1);
+        return this.readValues(minutes, maxCount, retries - 1);
       }
       if (retries > 0 && (msg.includes("500") || msg.includes("SessionNotValid") || msg.includes("SessionIdNotFound"))) {
         this.sessionId = null;
         this.accountId = null;
         await this.connect();
-        return this.getLatestReading(retries - 1);
+        return this.readValues(minutes, maxCount, retries - 1);
       }
       throw err;
     }

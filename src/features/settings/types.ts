@@ -12,6 +12,7 @@ export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
 export interface Settings {
   theme: "dark" | "light";
   unit: "mgdl" | "mmol";
+  showTrendLine: boolean;
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
@@ -31,6 +32,7 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
   theme: "dark",
   unit: "mgdl",
+  showTrendLine: false,
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,

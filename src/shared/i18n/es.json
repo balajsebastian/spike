@@ -77,6 +77,8 @@
     "themeDark": "Oscuro",
     "themeLight": "Claro",
     "unit": "Unidad",
+    "trendLine": "Línea de tendencia",
+    "trendLineFooter": "Muestra las lecturas de las últimas {{count}} horas debajo del número.",
     "urgentLow": "Bajo urgente",
     "low": "Bajo",
     "high": "Alto",

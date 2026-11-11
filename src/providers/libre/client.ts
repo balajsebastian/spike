@@ -54,8 +54,22 @@ interface LibreLoginResponse {
   };
 }
 
+interface LibreGraphPoint {
+  ValueInMgPerDl: number;
+  FactoryTimestamp?: string;
+  Timestamp: string;
+}
+
+interface LibreGraphResponse {
+  data?: {
+    connection?: { glucoseMeasurement?: LibreGraphPoint & { TrendArrow: number } };
+    graphData?: LibreGraphPoint[];
+  };
+}
+
 interface LibreConnectionResponse {
   data?: {
+    patientId?: string;
     glucoseMeasurement?: {
       ValueInMgPerDl: number;
       TrendArrow: number;
@@ -71,6 +85,7 @@ export class LibreLinkUpClient implements CGMClient {
   private password: string;
   private token: string | null = null;
   private accountId: string | null = null;
+  private patientId: string | null = null;
 
   constructor(email: string, password: string) {
     this.email = email;
@@ -128,6 +143,7 @@ export class LibreLinkUpClient implements CGMClient {
     if (!connData.data?.length) {
       throw new Error("No connections found in LibreLinkUp — add a connection in the LibreLinkUp app first");
     }
+    this.patientId = connData.data[0].patientId ?? null;
   }
 
   async getLatestReading(retries = 1): Promise<GlucoseReading | null> {
@@ -161,5 +177,40 @@ export class LibreLinkUpClient implements CGMClient {
       trendArrow: TREND_ARROWS[trend],
       timestampMs,
     };
+  }
+
+  async getHistory(minutes: number, retries = 1): Promise<GlucoseReading[]> {
+    if (!this.token || !this.patientId) await this.connect();
+    if (!this.patientId) return [];
+
+    const res = await fetch(`${this.baseUrl}/llu/connections/${this.patientId}/graph`, {
+      headers: this.headers(),
+    });
+
+    if (!res.ok) {
+      if (retries > 0 && (res.status === 401 || res.status === 403)) {
+        this.token = null;
+        this.accountId = null;
+        await this.connect();
+        return this.getHistory(minutes, retries - 1);
+      }
+      throw new Error(`LibreLinkUp error ${res.status}`);
+    }
+
+    const data: LibreGraphResponse = await res.json();
+    const points: LibreGraphPoint[] = [...(data.data?.graphData ?? [])];
+    const current = data.data?.connection?.glucoseMeasurement;
+    if (current) points.push(current);
+
+    const since = Date.now() - minutes * 60_000;
+    return points
+      .map((p) => ({
+        valueMgdl: p.ValueInMgPerDl,
+        trend: "None" as TrendDirection,
+        trendArrow: TREND_ARROWS.None,
+        timestampMs: parseTimestamp(p.FactoryTimestamp || p.Timestamp),
+      }))
+      .filter((r) => r.timestampMs >= since)
+      .sort((a, b) => a.timestampMs - b.timestampMs);
   }
 }
