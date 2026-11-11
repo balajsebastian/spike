@@ -8,6 +8,8 @@ import {
   HAPTIC_BURSTS,
   HAPTIC_DELAY_MS,
   ALARM_PAUSE_MS,
+  URGENT_REPEAT_MINUTES,
+  REPEAT_GRACE_MS,
 } from "./constants";
 import { useSoundPlayers } from "./useSoundPlayers";
 
@@ -24,6 +26,17 @@ function getAlarmLevel(reading: GlucoseReading | null, settings: Settings): Alar
   return null;
 }
 
+export function isUrgentLevel(level: AlarmLevel): boolean {
+  return level === "urgent-low" || level === "urgent-high";
+}
+
+function severity(level: AlarmLevel): number {
+  if (!level) return 0;
+  if (isUrgentLevel(level)) return 3;
+  if (level === "low" || level === "high") return 2;
+  return 1;
+}
+
 function isAlarmEnabled(level: AlarmLevel, settings: Settings): boolean {
   switch (level) {
     // An urgent reading is also past the regular threshold, so it still alarms if only that one is on.
@@ -38,7 +51,7 @@ function isAlarmEnabled(level: AlarmLevel, settings: Settings): boolean {
 }
 
 export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
-  const lastAlarmTimeRef = useRef(0);
+  const lastAlarmRef = useRef<{ level: AlarmLevel; time: number }>({ level: null, time: 0 });
   const lastReadingTimestampRef = useRef(0);
   const audioConfigured = useRef(false);
   const [snoozeUntil, setSnoozeUntil] = useState(0);
@@ -85,10 +98,13 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     if (snoozeUntil > Date.now()) return;
 
     const now = Date.now();
-    const repeatMs = settings.alarmRepeatMinutes * 60_000;
-    if (now - lastAlarmTimeRef.current < repeatMs) return;
+    const repeatMinutes = isUrgentLevel(level) ? URGENT_REPEAT_MINUTES : settings.nonUrgentRepeatMinutes;
+    const last = lastAlarmRef.current;
+    // Getting worse (trend -> threshold -> urgent) alarms immediately; otherwise wait for the repeat interval.
+    const escalated = severity(level) > severity(last.level);
+    if (!escalated && now - last.time < repeatMinutes * 60_000 - REPEAT_GRACE_MS) return;
 
-    lastAlarmTimeRef.current = now;
+    lastAlarmRef.current = { level, time: now };
     playAlarm();
   }, [reading, settings, playAlarm, snoozeUntil]);
 

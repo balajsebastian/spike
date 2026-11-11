@@ -22,7 +22,7 @@ export interface Settings {
   urgentHighEnabled: boolean;
   fallingEnabled: boolean;
   risingEnabled: boolean;
-  alarmRepeatMinutes: number;
+  nonUrgentRepeatMinutes: number;
   snoozeEnabled: boolean;
   snoozeMinutes: number;
   alarmSound: AlarmSound;
@@ -41,7 +41,7 @@ export const DEFAULT_SETTINGS: Settings = {
   urgentHighEnabled: true,
   fallingEnabled: true,
   risingEnabled: true,
-  alarmRepeatMinutes: 5,
+  nonUrgentRepeatMinutes: 20,
   snoozeEnabled: true,
   snoozeMinutes: 5,
   alarmSound: "beep",

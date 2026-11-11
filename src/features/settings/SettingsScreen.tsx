@@ -6,6 +6,7 @@ import { COLORS } from "@/shared/colors";
 import { OptionGroup } from "@/shared/OptionGroup";
 import { useSettingsContext } from "./SettingsContext";
 import { usePreviewSound } from "./usePreviewSound";
+import { URGENT_REPEAT_MINUTES } from "@/features/alarm/constants";
 import {
   ArrowDown,
   ArrowUp,
@@ -26,8 +27,9 @@ import {
   THRESHOLD_MIN,
   THRESHOLD_MAX,
   THRESHOLD_STEP,
-  ALARM_REPEAT_MIN,
-  ALARM_REPEAT_MAX,
+  NON_URGENT_REPEAT_MIN,
+  NON_URGENT_REPEAT_MAX,
+  NON_URGENT_REPEAT_STEP,
   SNOOZE_MIN,
   SNOOZE_MAX,
   SNOOZE_WARNING_ABOVE,
@@ -175,7 +177,11 @@ export function SettingsScreen() {
           </Row>
         </Section>
 
-        <Section title={t("settings.sections.alertTypes")} theme={theme}>
+        <Section
+          title={t("settings.sections.alertTypes")}
+          footer={t("settings.repeatFooter", { count: URGENT_REPEAT_MINUTES })}
+          theme={theme}
+        >
           <Row label={t("settings.urgentLow")} icon={ChevronsDown} theme={theme}>
             <Switch value={settings.urgentLowEnabled} onValueChange={(v) => update({ urgentLowEnabled: v })} />
           </Row>
@@ -193,6 +199,28 @@ export function SettingsScreen() {
           </Row>
           <Row label={t("settings.rapidRise")} icon={TrendingUp} theme={theme}>
             <Switch value={settings.risingEnabled} onValueChange={(v) => update({ risingEnabled: v })} />
+          </Row>
+          <Row label={t("settings.repeatOther")} icon={Repeat} theme={theme}>
+            <Stepper
+              displayValue={t("common.minutes", { count: settings.nonUrgentRepeatMinutes })}
+              onDecrement={() =>
+                update({
+                  nonUrgentRepeatMinutes: Math.max(
+                    NON_URGENT_REPEAT_MIN,
+                    settings.nonUrgentRepeatMinutes - NON_URGENT_REPEAT_STEP,
+                  ),
+                })
+              }
+              onIncrement={() =>
+                update({
+                  nonUrgentRepeatMinutes: Math.min(
+                    NON_URGENT_REPEAT_MAX,
+                    settings.nonUrgentRepeatMinutes + NON_URGENT_REPEAT_STEP,
+                  ),
+                })
+              }
+              theme={theme}
+            />
           </Row>
         </Section>
 
@@ -219,18 +247,6 @@ export function SettingsScreen() {
               containerStyle={styles.soundContainer}
               buttonStyle={styles.soundButton}
               labelStyle={styles.soundLabel}
-            />
-          </Row>
-          <Row label={t("settings.repeatEvery")} icon={Repeat} theme={theme}>
-            <Stepper
-              displayValue={t("common.minutes", { count: settings.alarmRepeatMinutes })}
-              onDecrement={() =>
-                update({ alarmRepeatMinutes: Math.max(ALARM_REPEAT_MIN, settings.alarmRepeatMinutes - 1) })
-              }
-              onIncrement={() =>
-                update({ alarmRepeatMinutes: Math.min(ALARM_REPEAT_MAX, settings.alarmRepeatMinutes + 1) })
-              }
-              theme={theme}
             />
           </Row>
           <Row label={t("settings.snooze")} icon={BellOff} theme={theme}>

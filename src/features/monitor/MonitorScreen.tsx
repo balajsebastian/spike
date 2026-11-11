@@ -4,7 +4,7 @@ import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native
 import { StatusBar } from "expo-status-bar";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { formatGlucose } from "@/features/settings/types";
-import { useAlarm } from "@/features/alarm/useAlarm";
+import { isUrgentLevel, useAlarm } from "@/features/alarm/useAlarm";
 import { COLORS } from "@/shared/colors";
 import type { Credentials } from "@/features/auth/types";
 import { useGlucose } from "./useGlucose";
@@ -31,7 +31,7 @@ export function MonitorScreen({ credentials }: Props) {
   const status = getStatusText(reading);
   const isNoData = !reading || now - reading.timestampMs > NO_DATA_MS;
   const color = reading ? getRangeColor(reading.valueMgdl, settings, theme.text) : theme.textTertiary;
-  const isUrgent = alarmLevel === "urgent-low" || alarmLevel === "urgent-high";
+  const isUrgent = isUrgentLevel(alarmLevel);
   const blinkOpacity = useBlink(isUrgent && !isNoData);
   const displayValue = reading ? formatGlucose(reading.valueMgdl, settings.unit) : "--";
   const isSnoozed = snoozeUntil > now;
