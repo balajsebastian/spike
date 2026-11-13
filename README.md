@@ -6,6 +6,8 @@ Spike is an always-on glucose display and loud alarm for iOS and Android. Leave 
 
 Built for people with diabetes and the people who look after them.
 
+**Download:** [App Store](https://apps.apple.com/app/id6833041253) · Google Play (coming soon)
+
 <p align="center">
   <img src="docs/banner.png" alt="Spike: glucose alerts you can't sleep through" width="600" />
 </p>
