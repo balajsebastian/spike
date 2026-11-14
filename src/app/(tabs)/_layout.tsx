@@ -44,6 +44,10 @@ export default function TabsLayout() {
       // Before iOS 26 (no Liquid Glass) the bar turns transparent at the scroll edge and content shows through.
       disableTransparentOnScrollEdge
       shadowColor={theme.border}
+      // Android (Material 3): show every label so the active icon doesn't jump up, and use a neutral
+      // indicator instead of the default purple pill, which made the white icon hard to see.
+      labelVisibilityMode="labeled"
+      indicatorColor={theme.border}
     >
       <NativeTabs.Trigger name="index" contentStyle={{ backgroundColor: theme.background }}>
         <NativeTabs.Trigger.Icon sf="waveform.path.ecg" src={TAB_ICONS.monitor} />
