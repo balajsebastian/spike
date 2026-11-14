@@ -32,6 +32,9 @@ export default function TabsLayout() {
       tintColor={theme.text}
       iconColor={{ default: theme.textTertiary, selected: theme.text }}
       backgroundColor={theme.surface}
+      // Before iOS 26 (no Liquid Glass) the bar turns transparent at the scroll edge and content shows through.
+      disableTransparentOnScrollEdge
+      shadowColor={theme.border}
     >
       <NativeTabs.Trigger name="index" contentStyle={{ backgroundColor: theme.background }}>
         <NativeTabs.Trigger.Icon sf="waveform.path.ecg" md="monitor_heart" />
