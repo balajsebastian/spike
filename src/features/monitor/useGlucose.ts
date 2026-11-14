@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
 import { createCGMClient } from "@/providers/factory";
 import type { CGMClient } from "@/providers/types";
+import { CredentialsRejectedError } from "@/providers/errors";
 import type { GlucoseReading } from "@/shared/types";
 import type { Credentials } from "@/features/auth/types";
 
@@ -16,6 +17,8 @@ const NO_HISTORY: GlucoseReading[] = [];
 interface GlucoseState {
   reading: GlucoseReading | null;
   error: string | null;
+  /** The saved login stopped working; polling is stopped until the user logs in again. */
+  credentialsRejected: "invalid" | "locked" | null;
 }
 
 function mergeHistory(existing: GlucoseReading[], incoming: GlucoseReading[], windowMinutes: number): GlucoseReading[] {
@@ -32,6 +35,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
   const [state, setState] = useState<GlucoseState>({
     reading: null,
     error: null,
+    credentialsRejected: null,
   });
   const [history, setHistory] = useState<GlucoseReading[]>([]);
 
@@ -39,6 +43,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTimestampRef = useRef(0);
   const errorsRef = useRef(0);
+  const stoppedRef = useRef(false);
   const credentialsRef = useRef(credentials);
   const historyMinutesRef = useRef(historyMinutes);
   const lastHistoryFetchRef = useRef(0);
@@ -55,6 +60,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
 
   useEffect(function setupPolling() {
     let cancelled = false;
+    stoppedRef.current = false;
     clientRef.current = createCGMClient(credentialsRef.current);
 
     async function updateHistory(client: CGMClient, reading: GlucoseReading | null) {
@@ -85,7 +91,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
 
         if (reading && reading.timestampMs !== lastTimestampRef.current) {
           lastTimestampRef.current = reading.timestampMs;
-          setState({ reading, error: null });
+          setState({ reading, error: null, credentialsRejected: null });
         } else {
           setState((prev) => (prev.error ? { ...prev, error: null } : prev));
         }
@@ -98,6 +104,12 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
         timerRef.current = setTimeout(poll, isStale ? STALE_POLL_MS : POLL_MS);
       } catch (err) {
         if (cancelled) return;
+        if (err instanceof CredentialsRejectedError) {
+          // Every retry is another failed login on the user's real CGM account: stop until they log in again.
+          stoppedRef.current = true;
+          setState((prev) => ({ ...prev, error: null, credentialsRejected: err.locked ? "locked" : "invalid" }));
+          return;
+        }
         errorsRef.current++;
         const backoff = Math.min(
           POLL_MS * Math.pow(2, errorsRef.current - 1),
@@ -112,7 +124,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
     poll();
 
     const sub = AppState.addEventListener("change", (nextState) => {
-      if (nextState === "active") {
+      if (nextState === "active" && !stoppedRef.current) {
         if (timerRef.current) clearTimeout(timerRef.current);
         poll();
       }

@@ -53,7 +53,8 @@
     "errors": {
       "nightscoutUrl": "Enter your Nightscout URL",
       "fillAll": "Fill in all fields",
-      "invalidCredentials": "Invalid credentials or account not found"
+      "invalidCredentials": "Invalid credentials or account not found",
+      "accountLocked": "Account locked after too many failed logins. Try again later."
     }
   },
   "monitor": {
@@ -64,7 +65,10 @@
     "justNow": "just now",
     "minutesAgo": "{{count}} min ago",
     "snoozed": "Snoozed {{count}}m — tap to cancel",
-    "snooze": "Snooze {{count}}m"
+    "snooze": "Snooze {{count}}m",
+    "credentialsRejected": "Your CGM account rejected the saved password. Spike stopped checking glucose so your account doesn't get locked. Log in again to resume alarms.",
+    "accountLocked": "Your CGM account is temporarily locked after too many failed logins. Spike stopped checking glucose. Wait a while, then log in again.",
+    "loginAgain": "Log in again"
   },
   "settings": {
     "sections": {

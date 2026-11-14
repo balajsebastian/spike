@@ -53,7 +53,8 @@
     "errors": {
       "nightscoutUrl": "Gib deine Nightscout-URL ein",
       "fillAll": "Bitte alle Felder ausfüllen",
-      "invalidCredentials": "Falsche Zugangsdaten oder Konto nicht gefunden"
+      "invalidCredentials": "Falsche Zugangsdaten oder Konto nicht gefunden",
+      "accountLocked": "Konto nach zu vielen fehlgeschlagenen Anmeldungen gesperrt. Versuche es später erneut."
     }
   },
   "monitor": {
@@ -64,7 +65,10 @@
     "justNow": "gerade eben",
     "minutesAgo": "vor {{count}} Min.",
     "snoozed": "Stumm für {{count}} Min. — tippen zum Abbrechen",
-    "snooze": "Stumm {{count}} Min."
+    "snooze": "Stumm {{count}} Min.",
+    "credentialsRejected": "Dein CGM-Konto hat das gespeicherte Passwort abgelehnt. Spike prüft keine Werte mehr, damit dein Konto nicht gesperrt wird. Melde dich erneut an, um die Alarme fortzusetzen.",
+    "accountLocked": "Dein CGM-Konto ist nach zu vielen fehlgeschlagenen Anmeldungen vorübergehend gesperrt. Spike prüft keine Werte mehr. Warte eine Weile und melde dich dann erneut an.",
+    "loginAgain": "Erneut anmelden"
   },
   "settings": {
     "sections": {

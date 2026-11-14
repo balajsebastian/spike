@@ -53,7 +53,8 @@
     "errors": {
       "nightscoutUrl": "Inserisci l'URL di Nightscout",
       "fillAll": "Compila tutti i campi",
-      "invalidCredentials": "Credenziali errate o account non trovato"
+      "invalidCredentials": "Credenziali errate o account non trovato",
+      "accountLocked": "Account bloccato dopo troppi accessi non riusciti. Riprova più tardi."
     }
   },
   "monitor": {
@@ -64,7 +65,10 @@
     "justNow": "proprio ora",
     "minutesAgo": "{{count}} min fa",
     "snoozed": "Posposto {{count}} min — tocca per annullare",
-    "snooze": "Posponi {{count}} min"
+    "snooze": "Posponi {{count}} min",
+    "credentialsRejected": "Il tuo account CGM ha rifiutato la password salvata. Spike ha smesso di controllare la glicemia per evitare il blocco dell'account. Accedi di nuovo per riattivare gli allarmi.",
+    "accountLocked": "Il tuo account CGM è temporaneamente bloccato dopo troppi accessi non riusciti. Spike ha smesso di controllare la glicemia. Attendi un po', poi accedi di nuovo.",
+    "loginAgain": "Accedi di nuovo"
   },
   "settings": {
     "sections": {

@@ -7,6 +7,7 @@ import { formatGlucose } from "@/features/settings/types";
 import { isUrgentLevel, useAlarm } from "@/features/alarm/useAlarm";
 import { COLORS } from "@/shared/colors";
 import type { Credentials } from "@/features/auth/types";
+import { useAuth } from "@/features/auth/AuthContext";
 import { useGlucose } from "./useGlucose";
 import { getRangeColor, getStatusText } from "./utils";
 import { useBlink } from "./useBlink";
@@ -20,7 +21,8 @@ interface Props {
 export function MonitorScreen({ credentials }: Props) {
   const { settings, theme } = useSettingsContext();
   const { t } = useTranslation();
-  const { reading, error, history } = useGlucose(
+  const { clear: logout } = useAuth();
+  const { reading, error, credentialsRejected, history } = useGlucose(
     credentials,
     settings.showTrendLine ? TREND_WINDOW_MINUTES : null,
   );
@@ -98,8 +100,19 @@ export function MonitorScreen({ credentials }: Props) {
         </TouchableOpacity>
       )}
 
-      {error && (
+      {error && !credentialsRejected && (
         <Text style={styles.error}>{error}</Text>
+      )}
+
+      {credentialsRejected && (
+        <View style={styles.credentialsBox}>
+          <Text style={styles.credentialsText}>
+            {t(credentialsRejected === "locked" ? "monitor.accountLocked" : "monitor.credentialsRejected")}
+          </Text>
+          <TouchableOpacity style={[styles.loginAgainBtn, { backgroundColor: theme.text }]} onPress={logout}>
+            <Text style={[styles.loginAgainText, { color: theme.background }]}>{t("monitor.loginAgain")}</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
     </View>
@@ -156,6 +169,27 @@ const styles = StyleSheet.create({
   snoozeText: {
     fontSize: 16,
     textAlign: "center",
+  },
+  credentialsBox: {
+    marginTop: 24,
+    paddingHorizontal: 32,
+    alignItems: "center",
+    gap: 14,
+  },
+  credentialsText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: COLORS.danger,
+    textAlign: "center",
+  },
+  loginAgainBtn: {
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 999,
+  },
+  loginAgainText: {
+    fontSize: 16,
+    fontWeight: "600",
   },
   error: {
     fontSize: 12,

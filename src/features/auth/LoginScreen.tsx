@@ -1,4 +1,6 @@
 import { useState } from "react";
+import type { DexcomRegion } from "@/providers/dexcom/types";
+import { CredentialsRejectedError } from "@/providers/errors";
 import { useTranslation } from "react-i18next";
 import {
   Image,
@@ -28,14 +30,15 @@ const SOURCES: { label: string; value: LoginSource }[] = [
   { label: "Nightscout", value: "nightscout" },
 ];
 
-const REGIONS: { label: string; value: "eu" | "us" }[] = [
+const REGIONS: { label: string; value: DexcomRegion }[] = [
   { label: "EU", value: "eu" },
   { label: "US", value: "us" },
+  { label: "JP", value: "jp" },
 ];
 
 type LoginSource = Exclude<CGMSource, "demo">;
 
-function buildConnection(source: LoginSource, field1: string, field2: string, region: "eu" | "us") {
+function buildConnection(source: LoginSource, field1: string, field2: string, region: DexcomRegion) {
   switch (source) {
     case "dexcom":
       return {
@@ -63,7 +66,7 @@ export function LoginScreen({ onLogin }: Props) {
   const [source, setSource] = useState<LoginSource>("dexcom");
   const [field1, setField1] = useState("");
   const [field2, setField2] = useState("");
-  const [region, setRegion] = useState<"eu" | "us">("eu");
+  const [region, setRegion] = useState<DexcomRegion>("eu");
   const [error, setError] = useState<string | null>(null);
   const [testing, setTesting] = useState(false);
 
@@ -105,7 +108,11 @@ export function LoginScreen({ onLogin }: Props) {
       onLogin(credentials);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      setError(msg.includes("500") ? t("login.errors.invalidCredentials") : msg);
+      if (err instanceof CredentialsRejectedError) {
+        setError(t(err.locked ? "login.errors.accountLocked" : "login.errors.invalidCredentials"));
+      } else {
+        setError(msg.includes("500") ? t("login.errors.invalidCredentials") : msg);
+      }
     } finally {
       setTesting(false);
     }

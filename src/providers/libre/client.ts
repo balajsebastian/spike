@@ -1,5 +1,6 @@
 import * as Crypto from "expo-crypto";
 import type { CGMClient } from "../types";
+import { CredentialsRejectedError } from "../errors";
 import {
   type GlucoseReading,
   type TrendDirection,
@@ -46,6 +47,8 @@ async function sha256Hex(input: string): Promise<string> {
 }
 
 interface LibreLoginResponse {
+  /** 2 means the email or password was rejected. */
+  status?: number;
   data?: {
     redirect?: boolean;
     region?: string;
@@ -117,6 +120,9 @@ export class LibreLinkUpClient implements CGMClient {
     }
 
     const loginData: LibreLoginResponse = await loginRes.json();
+    if (loginData.status === 2) {
+      throw new CredentialsRejectedError("LibreLinkUp login rejected");
+    }
 
     if (loginData.data?.redirect && loginData.data?.region) {
       if (redirects <= 0) throw new Error("LibreLinkUp too many redirects");

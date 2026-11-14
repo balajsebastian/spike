@@ -53,7 +53,8 @@
     "errors": {
       "nightscoutUrl": "Saisissez l'URL Nightscout",
       "fillAll": "Remplissez tous les champs",
-      "invalidCredentials": "Identifiants incorrects ou compte introuvable"
+      "invalidCredentials": "Identifiants incorrects ou compte introuvable",
+      "accountLocked": "Compte bloqué après trop de tentatives de connexion. Réessayez plus tard."
     }
   },
   "monitor": {
@@ -64,7 +65,10 @@
     "justNow": "à l'instant",
     "minutesAgo": "il y a {{count}} min",
     "snoozed": "En pause {{count}} min — touchez pour annuler",
-    "snooze": "Pause {{count}} min"
+    "snooze": "Pause {{count}} min",
+    "credentialsRejected": "Votre compte CGM a refusé le mot de passe enregistré. Spike a arrêté de vérifier la glycémie pour éviter le blocage de votre compte. Reconnectez-vous pour réactiver les alarmes.",
+    "accountLocked": "Votre compte CGM est temporairement bloqué après trop de tentatives de connexion. Spike a arrêté de vérifier la glycémie. Patientez un moment, puis reconnectez-vous.",
+    "loginAgain": "Se reconnecter"
   },
   "settings": {
     "sections": {

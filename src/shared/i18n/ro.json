@@ -53,7 +53,8 @@
     "errors": {
       "nightscoutUrl": "Introdu adresa Nightscout",
       "fillAll": "Completează toate câmpurile",
-      "invalidCredentials": "Date de autentificare greșite sau cont inexistent"
+      "invalidCredentials": "Date de autentificare greșite sau cont inexistent",
+      "accountLocked": "Cont blocat după prea multe autentificări eșuate. Încearcă mai târziu."
     }
   },
   "monitor": {
@@ -64,7 +65,10 @@
     "justNow": "chiar acum",
     "minutesAgo": "acum {{count}} min",
     "snoozed": "Amânat {{count}} min — atinge pentru anulare",
-    "snooze": "Amână {{count}} min"
+    "snooze": "Amână {{count}} min",
+    "credentialsRejected": "Contul CGM a respins parola salvată. Spike a oprit verificarea glicemiei ca să nu-ți blocheze contul. Autentifică-te din nou ca să reactivezi alarmele.",
+    "accountLocked": "Contul CGM e blocat temporar după prea multe autentificări eșuate. Spike a oprit verificarea glicemiei. Așteaptă puțin, apoi autentifică-te din nou.",
+    "loginAgain": "Autentifică-te din nou"
   },
   "settings": {
     "sections": {

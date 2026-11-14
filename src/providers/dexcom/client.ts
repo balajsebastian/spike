@@ -3,13 +3,41 @@ import type { GlucoseReading } from "@/shared/types";
 import {
   type DexcomConfig,
   type RawGlucoseReading,
-  APPLICATION_ID,
+  APPLICATION_IDS,
   BASE_URLS,
+  NULL_UUID,
 } from "./types";
 import { parseGlucoseReading } from "./parser";
+import { CredentialsRejectedError } from "../errors";
+
+/** Share's error body is `{ Code, Message }`. Login errors must not be retried (see CredentialsRejectedError). */
+function toLoginError(status: number, text: string): Error {
+  let code = "";
+  let message = "";
+  try {
+    const body = JSON.parse(text);
+    code = String(body?.Code ?? "");
+    message = String(body?.Message ?? "");
+  } catch {
+    // Not JSON: fall through to the generic error.
+  }
+
+  if (code === "SSO_AuthenticateMaxAttemptsExceeded") {
+    return new CredentialsRejectedError(`Dexcom account locked: ${code}`, true);
+  }
+  if (
+    code === "AccountPasswordInvalid" ||
+    (code === "SSO_InternalError" && message.includes("Cannot Authenticate")) ||
+    (code === "InvalidArgument" && /accountName|password/i.test(message))
+  ) {
+    return new CredentialsRejectedError(`Dexcom login rejected: ${code}`);
+  }
+  return new Error(`Dexcom API error ${status}: ${text}`);
+}
 
 export class DexcomShareClient implements CGMClient {
   private baseUrl: string;
+  private applicationId: string;
   private config: DexcomConfig;
   private accountId: string | null = null;
   private sessionId: string | null = null;
@@ -17,8 +45,9 @@ export class DexcomShareClient implements CGMClient {
   constructor(config: DexcomConfig) {
     this.config = config;
     this.baseUrl = BASE_URLS[config.region];
+    this.applicationId = APPLICATION_IDS[config.region];
     if (!this.baseUrl) {
-      throw new Error(`Unknown region: ${config.region}. Use "eu" or "us".`);
+      throw new Error(`Unknown region: ${config.region}. Use "eu", "us" or "jp".`);
     }
   }
 
@@ -34,8 +63,7 @@ export class DexcomShareClient implements CGMClient {
     });
 
     if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Dexcom API error ${res.status}: ${text}`);
+      throw toLoginError(res.status, await res.text());
     }
 
     return res.json() as Promise<T>;
@@ -47,7 +75,7 @@ export class DexcomShareClient implements CGMClient {
       {
         accountName: this.config.username,
         password: this.config.password,
-        applicationId: APPLICATION_ID,
+        applicationId: this.applicationId,
       }
     );
 
@@ -57,6 +85,9 @@ export class DexcomShareClient implements CGMClient {
       this.accountId = response.accountId;
     } else {
       throw new Error(`Unexpected auth response format: ${JSON.stringify(response)}`);
+    }
+    if (this.accountId === NULL_UUID) {
+      throw new CredentialsRejectedError("Dexcom account not found");
     }
 
     return this.accountId;
@@ -72,7 +103,7 @@ export class DexcomShareClient implements CGMClient {
       {
         accountId: this.accountId,
         password: this.config.password,
-        applicationId: APPLICATION_ID,
+        applicationId: this.applicationId,
       }
     );
 
@@ -80,9 +111,8 @@ export class DexcomShareClient implements CGMClient {
       ? response.replace(/"/g, "")
       : String(response);
 
-    const NULL_SESSION_ID = "00000000-0000-0000-0000-000000000000";
-    if (this.sessionId === NULL_SESSION_ID) {
-      throw new Error("Login returned null session ID — check credentials");
+    if (this.sessionId === NULL_UUID) {
+      throw new CredentialsRejectedError("Dexcom login returned an empty session");
     }
 
     return this.sessionId;
@@ -123,6 +153,7 @@ export class DexcomShareClient implements CGMClient {
       if (!Array.isArray(raw)) return [];
       return raw.map(parseGlucoseReading);
     } catch (err) {
+      if (err instanceof CredentialsRejectedError) throw err;
       const msg = err instanceof Error ? err.message : String(err);
       if (retries > 0 && /Dexcom API error 50[234]/.test(msg)) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
