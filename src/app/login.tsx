@@ -1,7 +1,7 @@
 import { useAuth } from "@/features/auth/AuthContext";
-import { LoginScreen } from "@/features/auth/LoginScreen";
+import { LoginContainer } from "@/features/auth/containers/LoginContainer";
 
 export default function LoginRoute() {
   const { save } = useAuth();
-  return <LoginScreen onLogin={save} />;
+  return <LoginContainer onLogin={save} />;
 }

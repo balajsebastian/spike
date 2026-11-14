@@ -1,34 +1,26 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { EdgeInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { BellRing, Lock, Smartphone, Stethoscope, type LucideIcon } from "lucide-react-native";
 import iconImage from "@assets/icon.png";
-import { useSettingsContext } from "@/features/settings/SettingsContext";
-import { COLORS } from "@/shared/colors";
+import type { ThemeColors } from "@/features/settings/types";
+import { DisclaimerPoint } from "./DisclaimerPoint";
 
-interface Props {
-  onAccept: () => void;
-}
-
-interface Point {
-  icon: LucideIcon;
-  titleKey: string;
-  bodyKey: string;
-  /** The one rule that decides whether alarms work at all, so it gets the warning color. */
-  important?: boolean;
-}
-
-const POINTS: Point[] = [
+const POINTS: { icon: LucideIcon; titleKey: string; bodyKey: string; important?: boolean }[] = [
   { icon: Smartphone, titleKey: "disclaimer.keepOpenTitle", bodyKey: "disclaimer.keepOpenBody", important: true },
   { icon: Stethoscope, titleKey: "disclaimer.notMedicalTitle", bodyKey: "disclaimer.notMedicalBody" },
   { icon: BellRing, titleKey: "disclaimer.supplementaryTitle", bodyKey: "disclaimer.supplementaryBody" },
   { icon: Lock, titleKey: "disclaimer.noDataTitle", bodyKey: "disclaimer.noDataBody" },
 ];
 
-export function DisclaimerScreen({ onAccept }: Props) {
-  const { theme } = useSettingsContext();
+interface Props {
+  theme: ThemeColors;
+  insets: EdgeInsets;
+  onAccept: () => void;
+}
+
+export function DisclaimerView({ theme, insets, onAccept }: Props) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -38,30 +30,20 @@ export function DisclaimerScreen({ onAccept }: Props) {
         <Text style={[styles.intro, { color: theme.textSecondary }]}>{t("disclaimer.intro")}</Text>
 
         <View style={[styles.card, { backgroundColor: theme.surface }]}>
-          {POINTS.map((point, index) => {
-            const Icon = point.icon;
-            return (
-              <View key={point.titleKey}>
-                {index > 0 && <View style={[styles.separator, { backgroundColor: theme.border }]} />}
-                <View style={styles.point}>
-                  <View
-                    style={[styles.iconBadge, { backgroundColor: point.important ? COLORS.warning : theme.iconBadge }]}
-                  >
-                    <Icon size={20} color={point.important ? "#000" : "#fff"} strokeWidth={2.2} />
-                  </View>
-                  <View style={styles.pointText}>
-                    <Text style={[styles.pointTitle, { color: point.important ? COLORS.warning : theme.text }]}>
-                      {t(point.titleKey)}
-                    </Text>
-                    <Text style={[styles.pointBody, { color: theme.textSecondary }]}>{t(point.bodyKey)}</Text>
-                  </View>
-                </View>
-              </View>
-            );
-          })}
+          {POINTS.map((point, index) => (
+            <View key={point.titleKey}>
+              {index > 0 && <View style={[styles.separator, { backgroundColor: theme.border }]} />}
+              <DisclaimerPoint
+                icon={point.icon}
+                title={t(point.titleKey)}
+                body={t(point.bodyKey)}
+                important={point.important}
+                theme={theme}
+              />
+            </View>
+          ))}
         </View>
       </ScrollView>
-
       <View
         style={[
           styles.footer,
@@ -115,32 +97,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     overflow: "hidden",
-  },
-  point: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  iconBadge: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  pointText: {
-    flex: 1,
-    gap: 4,
-  },
-  pointTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  pointBody: {
-    fontSize: 14,
-    lineHeight: 20,
   },
   separator: {
     height: StyleSheet.hairlineWidth,

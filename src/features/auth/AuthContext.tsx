@@ -1,5 +1,5 @@
 import { createContext, useContext, type ReactNode } from "react";
-import { useCredentials } from "./useCredentials";
+import { useCredentials } from "./hooks/useCredentials";
 import type { Credentials } from "./types";
 
 interface AuthContextValue {

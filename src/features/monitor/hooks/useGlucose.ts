@@ -5,6 +5,7 @@ import type { CGMClient } from "@/providers/types";
 import { CredentialsRejectedError } from "@/providers/errors";
 import type { GlucoseReading } from "@/shared/types";
 import type { Credentials } from "@/features/auth/types";
+import { mergeHistory } from "../helpers/history";
 
 const POLL_MS = 60_000;
 const STALE_POLL_MS = 15_000;
@@ -19,15 +20,6 @@ interface GlucoseState {
   error: string | null;
   /** The saved login stopped working; polling is stopped until the user logs in again. */
   credentialsRejected: "invalid" | "locked" | null;
-}
-
-function mergeHistory(existing: GlucoseReading[], incoming: GlucoseReading[], windowMinutes: number): GlucoseReading[] {
-  const since = Date.now() - windowMinutes * 60_000;
-  const byTime = new Map<number, GlucoseReading>();
-  for (const r of [...existing, ...incoming]) {
-    if (r.timestampMs >= since) byTime.set(r.timestampMs, r);
-  }
-  return [...byTime.values()].sort((a, b) => a.timestampMs - b.timestampMs);
 }
 
 /** `historyMinutes` turns on the recent-readings history (for the trend line); `null` keeps it off. */

@@ -1,85 +1,12 @@
 import * as Crypto from "expo-crypto";
 import type { CGMClient } from "../types";
 import { CredentialsRejectedError } from "../errors";
-import {
-  type GlucoseReading,
-  type TrendDirection,
-  TREND_ARROWS,
-} from "@/shared/types";
-
-const LIBRE_TREND_MAP: Record<number, TrendDirection> = {
-  1: "SingleDown",
-  2: "FortyFiveDown",
-  3: "Flat",
-  4: "FortyFiveUp",
-  5: "SingleUp",
-};
-
-function mapTrend(arrow: number): TrendDirection {
-  return LIBRE_TREND_MAP[arrow] ?? "None";
-}
-
-function parseTimestamp(ts: string): number {
-  const d = new Date(ts);
-  if (!isNaN(d.getTime())) return d.getTime();
-
-  const match = ts.match(/(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+):(\d+)\s*(AM|PM)?/i);
-  if (match) {
-    const [, month, day, year, hours, minutes, seconds, ampm] = match;
-    let h = parseInt(hours);
-    if (ampm?.toUpperCase() === "PM" && h !== 12) h += 12;
-    if (ampm?.toUpperCase() === "AM" && h === 12) h = 0;
-    return new Date(
-      parseInt(year),
-      parseInt(month) - 1,
-      parseInt(day),
-      h,
-      parseInt(minutes),
-      parseInt(seconds),
-    ).getTime();
-  }
-
-  return Date.now();
-}
+import type { GlucoseReading } from "@/shared/types";
+import type { LibreConnectionResponse, LibreGraphPoint, LibreGraphResponse, LibreLoginResponse } from "./types";
+import { parseGraphPoint, parseMeasurement } from "./parser";
 
 async function sha256Hex(input: string): Promise<string> {
   return Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, input);
-}
-
-interface LibreLoginResponse {
-  /** 2 means the email or password was rejected. */
-  status?: number;
-  data?: {
-    redirect?: boolean;
-    region?: string;
-    authTicket?: { token: string };
-    user?: { id: string | number };
-  };
-}
-
-interface LibreGraphPoint {
-  ValueInMgPerDl: number;
-  FactoryTimestamp?: string;
-  Timestamp: string;
-}
-
-interface LibreGraphResponse {
-  data?: {
-    connection?: { glucoseMeasurement?: LibreGraphPoint & { TrendArrow: number } };
-    graphData?: LibreGraphPoint[];
-  };
-}
-
-interface LibreConnectionResponse {
-  data?: {
-    patientId?: string;
-    glucoseMeasurement?: {
-      ValueInMgPerDl: number;
-      TrendArrow: number;
-      FactoryTimestamp?: string;
-      Timestamp: string;
-    };
-  }[];
 }
 
 export class LibreLinkUpClient implements CGMClient {
@@ -172,17 +99,7 @@ export class LibreLinkUpClient implements CGMClient {
     const data: LibreConnectionResponse = await res.json();
     const measurement = data.data?.[0]?.glucoseMeasurement;
 
-    if (!measurement) return null;
-
-    const trend = mapTrend(measurement.TrendArrow);
-    const timestampMs = parseTimestamp(measurement.FactoryTimestamp || measurement.Timestamp);
-
-    return {
-      valueMgdl: measurement.ValueInMgPerDl,
-      trend,
-      trendArrow: TREND_ARROWS[trend],
-      timestampMs,
-    };
+    return measurement ? parseMeasurement(measurement) : null;
   }
 
   async getHistory(minutes: number, retries = 1): Promise<GlucoseReading[]> {
@@ -210,12 +127,7 @@ export class LibreLinkUpClient implements CGMClient {
 
     const since = Date.now() - minutes * 60_000;
     return points
-      .map((p) => ({
-        valueMgdl: p.ValueInMgPerDl,
-        trend: "None" as TrendDirection,
-        trendArrow: TREND_ARROWS.None,
-        timestampMs: parseTimestamp(p.FactoryTimestamp || p.Timestamp),
-      }))
+      .map(parseGraphPoint)
       .filter((r) => r.timestampMs >= since)
       .sort((a, b) => a.timestampMs - b.timestampMs);
   }

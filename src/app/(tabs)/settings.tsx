@@ -1,5 +1,5 @@
-import { SettingsScreen } from "@/features/settings/SettingsScreen";
+import { SettingsContainer } from "@/features/settings/containers/SettingsContainer";
 
 export default function SettingsRoute() {
-  return <SettingsScreen />;
+  return <SettingsContainer />;
 }

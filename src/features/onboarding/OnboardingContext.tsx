@@ -1,5 +1,5 @@
 import { createContext, useContext, type ReactNode } from "react";
-import { useDisclaimer } from "./useDisclaimer";
+import { useDisclaimer } from "./hooks/useDisclaimer";
 
 interface OnboardingContextValue {
   accepted: boolean;

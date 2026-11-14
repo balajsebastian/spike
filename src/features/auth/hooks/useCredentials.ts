@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import * as SecureStore from "expo-secure-store";
-import type { Credentials } from "./types";
+import type { Credentials } from "../types";
 
 const STORAGE_KEY = "cgm_credentials";
 

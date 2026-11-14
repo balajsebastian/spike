@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Animated, Easing } from "react-native";
-import { BLINK_CYCLE_MS, BLINK_ON_MS, BLINK_DIM_OPACITY, BLINK_FADE_MS } from "./constants";
+import { BLINK_CYCLE_MS, BLINK_ON_MS, BLINK_DIM_OPACITY, BLINK_FADE_MS } from "../constants";
 
 export function useBlink(active: boolean): Animated.Value {
   const [opacity] = useState(() => new Animated.Value(1));

@@ -1,13 +1,9 @@
 import Svg, { Circle, Line, Text as SvgText } from "react-native-svg";
 import type { GlucoseReading } from "@/shared/types";
 import { formatGlucose, type Settings, type ThemeColors } from "@/features/settings/types";
-import { getRangeColor } from "./utils";
+import { getRangeColor } from "../helpers/range";
+import { trendDots, valueDomain } from "../helpers/trendChart";
 
-// One dot per 5 minutes keeps 1-minute sources (e.g. Libre) from turning into a smear.
-const BUCKET_MS = 5 * 60_000;
-const DOMAIN_PADDING = 20;
-const MIN_MGDL = 40;
-const MAX_MGDL = 400;
 const DOT_RADIUS = 4;
 const LAST_DOT_RADIUS = 5;
 const HALO_RADIUS = 11;
@@ -25,15 +21,6 @@ interface Props {
   theme: ThemeColors;
 }
 
-function bucketReadings(readings: GlucoseReading[]): GlucoseReading[] {
-  const buckets = new Map<number, GlucoseReading>();
-  for (const r of readings) {
-    // Later readings win, so each bucket keeps its most recent value.
-    buckets.set(Math.floor(r.timestampMs / BUCKET_MS), r);
-  }
-  return [...buckets.values()];
-}
-
 /**
  * Dexcom-style dots for the last couple of hours, so a glance tells a sudden drop from a gradual one.
  * Only the low/high lines are labelled: the big number stays the main thing.
@@ -41,13 +28,9 @@ function bucketReadings(readings: GlucoseReading[]): GlucoseReading[] {
 export function TrendLine({ readings, windowMinutes, now, width, height, settings, theme }: Props) {
   if (readings.length < 2 || width <= 0) return null;
 
-  const dots = bucketReadings(readings);
-  const last = readings[readings.length - 1];
-  if (dots[dots.length - 1] !== last) dots.push(last);
-
-  const values = dots.map((r) => r.valueMgdl);
-  const minY = Math.max(MIN_MGDL, Math.min(...values, settings.lowThreshold) - DOMAIN_PADDING);
-  const maxY = Math.min(MAX_MGDL, Math.max(...values, settings.highThreshold) + DOMAIN_PADDING);
+  const dots = trendDots(readings);
+  const last = dots[dots.length - 1];
+  const { minY, maxY } = valueDomain(dots, settings);
   const startX = now - windowMinutes * 60_000;
 
   const plotLeft = LABEL_WIDTH;

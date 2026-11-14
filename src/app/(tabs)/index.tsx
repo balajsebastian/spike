@@ -1,10 +1,10 @@
 import { useAuth } from "@/features/auth/AuthContext";
-import { MonitorScreen } from "@/features/monitor/MonitorScreen";
+import { MonitorContainer } from "@/features/monitor/containers/MonitorContainer";
 
 export default function MonitorRoute() {
   const { credentials } = useAuth();
 
   if (!credentials) return null;
 
-  return <MonitorScreen credentials={credentials} />;
+  return <MonitorContainer credentials={credentials} />;
 }

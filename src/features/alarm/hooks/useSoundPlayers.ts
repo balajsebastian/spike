@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useAudioPlayer } from "expo-audio";
 import type { AlarmSound } from "@/features/settings/types";
-import { SOUND_SOURCES } from "./sounds";
+import { SOUND_SOURCES } from "../sounds";
 
 export function useSoundPlayers() {
   const beepPlayer = useAudioPlayer(SOUND_SOURCES.beep);

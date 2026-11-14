@@ -1,5 +1,5 @@
-import { useSoundPlayers } from "@/features/alarm/useSoundPlayers";
-import type { AlarmSound } from "./types";
+import { useSoundPlayers } from "@/features/alarm/hooks/useSoundPlayers";
+import type { AlarmSound } from "../types";
 
 export function usePreviewSound() {
   const players = useSoundPlayers();

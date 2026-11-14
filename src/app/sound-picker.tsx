@@ -1,5 +1,5 @@
-import { SoundPickerSheet } from "@/features/settings/SoundPickerSheet";
+import { SoundPickerContainer } from "@/features/settings/containers/SoundPickerContainer";
 
 export default function SoundPickerRoute() {
-  return <SoundPickerSheet />;
+  return <SoundPickerContainer />;
 }
