@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { setAudioModeAsync } from "expo-audio";
 import * as Haptics from "expo-haptics";
 import type { GlucoseReading } from "@/shared/types";
-import type { Settings } from "@/features/settings/types";
+import type { AlarmSoundKind, Settings } from "@/features/settings/types";
 import {
   ALARM_ROUNDS,
   HAPTIC_BURSTS,
@@ -35,6 +35,17 @@ function severity(level: AlarmLevel): number {
   if (isUrgentLevel(level)) return 3;
   if (level === "low" || level === "high") return 2;
   return 1;
+}
+
+function soundKind(level: Exclude<AlarmLevel, null>): AlarmSoundKind {
+  switch (level) {
+    case "urgent-low": return "urgentLow";
+    case "low": return "low";
+    case "urgent-high": return "urgentHigh";
+    case "high": return "high";
+    case "falling":
+    case "rising": return "trend";
+  }
 }
 
 function isAlarmEnabled(level: AlarmLevel, settings: Settings): boolean {
@@ -73,8 +84,8 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     setSnoozeUntil(0);
   };
 
-  const playAlarm = useCallback(async () => {
-    const player = players[settings.alarmSound];
+  const playAlarm = useCallback(async (level: Exclude<AlarmLevel, null>) => {
+    const player = players[settings.alarmSounds[soundKind(level)]];
     for (let round = 0; round < ALARM_ROUNDS; round++) {
       for (let j = 0; j < HAPTIC_BURSTS; j++) {
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -86,7 +97,7 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
         await new Promise((r) => setTimeout(r, ALARM_PAUSE_MS));
       }
     }
-  }, [settings.alarmSound, players]);
+  }, [settings.alarmSounds, players]);
 
   useEffect(() => {
     if (!reading) return;
@@ -105,7 +116,7 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     if (!escalated && now - last.time < repeatMinutes * 60_000 - REPEAT_GRACE_MS) return;
 
     lastAlarmRef.current = { level, time: now };
-    playAlarm();
+    playAlarm(level);
   }, [reading, settings, playAlarm, snoozeUntil]);
 
   return {

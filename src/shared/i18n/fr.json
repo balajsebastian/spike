@@ -71,6 +71,7 @@
       "display": "AFFICHAGE",
       "thresholds": "SEUILS D'ALERTE",
       "alertTypes": "TYPES D'ALERTE",
+      "sounds": "SONS D'ALARME",
       "alarm": "ALARME",
       "about": "À PROPOS"
     },
@@ -86,7 +87,7 @@
     "urgentHigh": "Haut urgent",
     "rapidFall": "Baisse rapide",
     "rapidRise": "Hausse rapide",
-    "sound": "Son",
+    "rapidChange": "Hausse/baisse rapide",
     "soundHint": "Touchez un son pour l'écouter.",
     "repeatOther": "Répéter les autres alertes",
     "repeatFooter": "Bas urgent et Haut urgent se répètent toutes les {{count}} minutes jusqu'au retour de la glycémie dans la plage.",

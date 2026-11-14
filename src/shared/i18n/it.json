@@ -71,6 +71,7 @@
       "display": "SCHERMO",
       "thresholds": "SOGLIE DI AVVISO",
       "alertTypes": "TIPI DI AVVISO",
+      "sounds": "SUONI DI ALLARME",
       "alarm": "ALLARME",
       "about": "INFORMAZIONI"
     },
@@ -86,7 +87,7 @@
     "urgentHigh": "Alto urgente",
     "rapidFall": "Discesa rapida",
     "rapidRise": "Salita rapida",
-    "sound": "Suono",
+    "rapidChange": "Salita/discesa rapida",
     "soundHint": "Tocca un suono per ascoltarlo.",
     "repeatOther": "Ripeti altri avvisi",
     "repeatFooter": "Basso urgente e Alto urgente si ripetono ogni {{count}} minuti finché la glicemia non torna nell'intervallo.",

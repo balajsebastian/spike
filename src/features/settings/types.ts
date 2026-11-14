@@ -9,6 +9,15 @@ export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
   { label: "Signal", value: "signal" },
 ];
 
+/** Each alarm kind has its own sound, so you can tell what is happening without looking. */
+export type AlarmSoundKind = "urgentLow" | "low" | "high" | "urgentHigh" | "trend";
+
+export const ALARM_SOUND_KINDS: AlarmSoundKind[] = ["urgentLow", "low", "high", "urgentHigh", "trend"];
+
+export function isAlarmSoundKind(value: unknown): value is AlarmSoundKind {
+  return ALARM_SOUND_KINDS.includes(value as AlarmSoundKind);
+}
+
 export interface Settings {
   theme: "dark" | "light";
   unit: "mgdl" | "mmol";
@@ -26,7 +35,7 @@ export interface Settings {
   nonUrgentRepeatMinutes: number;
   snoozeEnabled: boolean;
   snoozeMinutes: number;
-  alarmSound: AlarmSound;
+  alarmSounds: Record<AlarmSoundKind, AlarmSound>;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -46,7 +55,14 @@ export const DEFAULT_SETTINGS: Settings = {
   nonUrgentRepeatMinutes: 20,
   snoozeEnabled: true,
   snoozeMinutes: 5,
-  alarmSound: "beep",
+  // Most urgent gets the most alarming sound.
+  alarmSounds: {
+    urgentLow: "siren",
+    low: "double-beep",
+    high: "chime",
+    urgentHigh: "signal",
+    trend: "beep",
+  },
 };
 
 export interface ThemeColors {

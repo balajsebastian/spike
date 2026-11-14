@@ -1,26 +1,29 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Check } from "lucide-react-native";
 import { componentStyles } from "./components";
 import { useSettingsContext } from "./SettingsContext";
 import { usePreviewSound } from "./usePreviewSound";
-import { ALARM_SOUNDS } from "./types";
+import { ALARM_SOUNDS, isAlarmSoundKind } from "./types";
+import { ALARM_SOUND_KIND_INFO } from "./alarmSoundKinds";
 
 /**
- * iOS-ringtone-style list shown in a form sheet sized to its content:
+ * iOS-ringtone-style list shown in a form sheet sized to its content, for one alarm kind:
  * tapping a sound selects it and plays it, so you can compare before closing.
  */
 export function SoundPickerSheet() {
   const { t } = useTranslation();
   const { settings, theme, update } = useSettingsContext();
   const previewSound = usePreviewSound();
+  const params = useLocalSearchParams<{ kind?: string }>();
+  const kind = isAlarmSoundKind(params.kind) ? params.kind : "urgentLow";
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
         <Text style={[styles.title, { color: theme.text }]}>
-          {t("settings.sound")}
+          {t(ALARM_SOUND_KIND_INFO[kind].labelKey)}
         </Text>
         <TouchableOpacity
           style={styles.done}
@@ -38,7 +41,7 @@ export function SoundPickerSheet() {
           style={[componentStyles.card, { backgroundColor: theme.surface }]}
         >
           {ALARM_SOUNDS.map((sound, index) => {
-            const selected = sound.value === settings.alarmSound;
+            const selected = sound.value === settings.alarmSounds[kind];
             return (
               <View key={sound.value}>
                 {index > 0 && (
@@ -53,7 +56,7 @@ export function SoundPickerSheet() {
                   activeOpacity={0.6}
                   style={componentStyles.row}
                   onPress={() => {
-                    update({ alarmSound: sound.value });
+                    update({ alarmSounds: { ...settings.alarmSounds, [kind]: sound.value } });
                     previewSound(sound.value);
                   }}
                 >

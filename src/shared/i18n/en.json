@@ -71,6 +71,7 @@
       "display": "DISPLAY",
       "thresholds": "ALERT THRESHOLDS",
       "alertTypes": "ALERT TYPES",
+      "sounds": "ALARM SOUNDS",
       "alarm": "ALARM",
       "about": "ABOUT"
     },
@@ -86,7 +87,7 @@
     "urgentHigh": "Urgent High",
     "rapidFall": "Rapid Fall",
     "rapidRise": "Rapid Rise",
-    "sound": "Sound",
+    "rapidChange": "Rapid Rise/Fall",
     "soundHint": "Tap a sound to hear it.",
     "repeatOther": "Repeat Other Alerts",
     "repeatFooter": "Urgent Low and Urgent High repeat every {{count}} minutes until glucose is back in range.",

@@ -20,10 +20,10 @@ import {
   Timer,
   TrendingDown,
   TrendingUp,
-  Volume2,
 } from "lucide-react-native";
 import { Section, Row, NavRow, Segmented, Stepper } from "./components";
-import { formatGlucose } from "./types";
+import { ALARM_SOUND_KINDS, formatGlucose } from "./types";
+import { ALARM_SOUND_KIND_INFO } from "./alarmSoundKinds";
 import {
   THRESHOLD_MIN,
   THRESHOLD_MAX,
@@ -230,6 +230,19 @@ export function SettingsScreen() {
           </Row>
         </Section>
 
+        <Section title={t("settings.sections.sounds")} theme={theme}>
+          {ALARM_SOUND_KINDS.map((kind) => (
+            <NavRow
+              key={kind}
+              label={t(ALARM_SOUND_KIND_INFO[kind].labelKey)}
+              value={t(`sounds.${settings.alarmSounds[kind]}`)}
+              icon={ALARM_SOUND_KIND_INFO[kind].icon}
+              theme={theme}
+              onPress={() => router.push({ pathname: "/sound-picker", params: { kind } })}
+            />
+          ))}
+        </Section>
+
         <Section
           title={t("settings.sections.alarm")}
           footer={
@@ -240,13 +253,6 @@ export function SettingsScreen() {
           footerColor={COLORS.warning}
           theme={theme}
         >
-          <NavRow
-            label={t("settings.sound")}
-            value={t(`sounds.${settings.alarmSound}`)}
-            icon={Volume2}
-            theme={theme}
-            onPress={() => router.push("/sound-picker")}
-          />
           <Row label={t("settings.snooze")} icon={BellOff} theme={theme}>
             <Switch value={settings.snoozeEnabled} onValueChange={(v) => update({ snoozeEnabled: v })} />
           </Row>

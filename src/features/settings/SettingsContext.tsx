@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import * as SecureStore from "expo-secure-store";
-import { DEFAULT_SETTINGS, THEMES, type Settings, type ThemeColors } from "./types";
+import { DEFAULT_SETTINGS, THEMES, type AlarmSound, type Settings, type ThemeColors } from "./types";
 import { THRESHOLD_STEP } from "./constants";
 
 const STORAGE_KEY = "app_settings";
@@ -27,7 +27,23 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         try {
           const parsed = JSON.parse(raw);
           if (parsed && typeof parsed === "object") {
-            const merged: Settings = { ...DEFAULT_SETTINGS, ...parsed };
+            const { alarmSound: legacySound, ...rest } = parsed as Partial<Settings> & { alarmSound?: AlarmSound };
+            const merged: Settings = {
+              ...DEFAULT_SETTINGS,
+              ...rest,
+              alarmSounds: { ...DEFAULT_SETTINGS.alarmSounds, ...rest.alarmSounds },
+            };
+            // Settings saved with a single sound: a sound the user picked (anything but the old default)
+            // stays on every alarm so nothing changes without them knowing.
+            if (!rest.alarmSounds && legacySound && legacySound !== "beep") {
+              merged.alarmSounds = {
+                urgentLow: legacySound,
+                low: legacySound,
+                high: legacySound,
+                urgentHigh: legacySound,
+                trend: legacySound,
+              };
+            }
             // Settings saved before Urgent High existed may have a High above its default.
             merged.urgentHighThreshold = Math.max(
               merged.urgentHighThreshold,

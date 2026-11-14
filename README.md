@@ -41,7 +41,7 @@ Have an old phone or tablet in a drawer? Install Spike, plug it in and put it wh
 - Large, readable glucose display, built for the nightstand and for a glance across the room
 - Trend arrow and stale-data / sensor signal-loss indication
 - Loud alarm with haptic feedback that plays even in silent mode
-- Multiple alarm sounds (Beep, Double Beep, Arcade, Siren, Chime, Signal)
+- A different sound for each alarm type, so you can tell what's happening without looking (Beep, Double Beep, Arcade, Siren, Chime, Signal)
 - Configurable thresholds (urgent low, low, high, urgent high)
 - Trend alerts (rapid rise/fall)
 - Snooze (1–15 min, default 5)

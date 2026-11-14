@@ -71,6 +71,7 @@
       "display": "PANTALLA",
       "thresholds": "UMBRALES DE ALERTA",
       "alertTypes": "TIPOS DE ALERTA",
+      "sounds": "SONIDOS DE ALARMA",
       "alarm": "ALARMA",
       "about": "ACERCA DE"
     },
@@ -86,7 +87,7 @@
     "urgentHigh": "Alto urgente",
     "rapidFall": "Bajada rápida",
     "rapidRise": "Subida rápida",
-    "sound": "Sonido",
+    "rapidChange": "Subida/bajada rápida",
     "soundHint": "Toca un sonido para escucharlo.",
     "repeatOther": "Repetir otras alertas",
     "repeatFooter": "Bajo urgente y Alto urgente se repiten cada {{count}} minutos hasta que la glucosa vuelva al rango.",

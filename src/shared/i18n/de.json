@@ -71,6 +71,7 @@
       "display": "ANZEIGE",
       "thresholds": "ALARMGRENZEN",
       "alertTypes": "ALARMARTEN",
+      "sounds": "ALARMTÖNE",
       "alarm": "ALARM",
       "about": "ÜBER"
     },
@@ -86,7 +87,7 @@
     "urgentHigh": "Dringend hoch",
     "rapidFall": "Schneller Abfall",
     "rapidRise": "Schneller Anstieg",
-    "sound": "Ton",
+    "rapidChange": "Schneller Anstieg/Abfall",
     "soundHint": "Tippe auf einen Ton, um ihn anzuhören.",
     "repeatOther": "Andere Alarme wiederholen",
     "repeatFooter": "Dringend niedrig und Dringend hoch werden alle {{count}} Minuten wiederholt, bis die Glukose wieder im Zielbereich ist.",

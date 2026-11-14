@@ -71,6 +71,7 @@
       "display": "AFIȘARE",
       "thresholds": "PRAGURI DE ALERTĂ",
       "alertTypes": "TIPURI DE ALERTĂ",
+      "sounds": "SUNETE ALARMĂ",
       "alarm": "ALARMĂ",
       "about": "DESPRE"
     },
@@ -86,7 +87,7 @@
     "urgentHigh": "Ridicat urgent",
     "rapidFall": "Scădere rapidă",
     "rapidRise": "Creștere rapidă",
-    "sound": "Sunet",
+    "rapidChange": "Creștere/scădere rapidă",
     "soundHint": "Atinge un sunet ca să-l asculți.",
     "repeatOther": "Repetă celelalte alerte",
     "repeatFooter": "Scăzut urgent și Ridicat urgent se repetă la fiecare {{count}} minute, până când glicemia revine în interval.",
