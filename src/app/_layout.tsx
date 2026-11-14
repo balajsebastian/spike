@@ -1,13 +1,19 @@
+import { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
 import { Stack, ErrorBoundary as ExpoErrorBoundary } from "expo-router";
 import { useKeepAwake } from "expo-keep-awake";
 import { SettingsProvider, useSettingsContext } from "@/features/settings/SettingsContext";
 import { AuthProvider, useAuth } from "@/features/auth/AuthContext";
 import { OnboardingProvider, useOnboarding } from "@/features/onboarding/OnboardingContext";
 import { useTranslation } from "react-i18next";
+import { useStartupUpdate } from "@/shared/lib/useStartupUpdate";
 import "@/shared/lib/i18n";
 
 export { ExpoErrorBoundary as ErrorBoundary };
+
+// Hold the splash while we check for an OTA update (see useStartupUpdate).
+SplashScreen.preventAutoHideAsync();
 
 function KeepAwake() {
   useKeepAwake();
@@ -66,6 +72,15 @@ const styles = StyleSheet.create({
 });
 
 export default function RootLayout() {
+  const updateChecked = useStartupUpdate();
+
+  useEffect(() => {
+    if (updateChecked) SplashScreen.hide();
+  }, [updateChecked]);
+
+  // Nothing mounts (no polling, no alarm) until we know the app will not restart into an update.
+  if (!updateChecked) return null;
+
   return (
     <SettingsProvider>
       <AuthProvider>
