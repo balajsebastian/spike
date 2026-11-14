@@ -8,9 +8,8 @@ Built for people with diabetes and the people who look after them.
 
 <p>
   <a href="https://apps.apple.com/app/id6833041253"><img src="docs/app-store-badge.svg" alt="Download on the App Store" height="48" /></a>
+  <a href="https://play.google.com/store/apps/details?id=com.sebastianbalaj.spike"><img src="docs/google-play-badge.png" alt="Get it on Google Play" height="71" align="top" /></a>
 </p>
-
-Google Play: coming soon.
 
 <p align="center">
   <img src="docs/banner.png" alt="Spike: glucose alerts you can't sleep through" width="600" />
