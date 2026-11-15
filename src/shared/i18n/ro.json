@@ -73,6 +73,7 @@
   "settings": {
     "sections": {
       "display": "AFIȘARE",
+      "nightMode": "MOD NOAPTE",
       "thresholds": "PRAGURI DE ALERTĂ",
       "alertTypes": "TIPURI DE ALERTĂ",
       "sounds": "SUNETE ALARMĂ",
@@ -85,6 +86,11 @@
     "unit": "Unitate",
     "trendLine": "Linie de trend",
     "trendLineFooter": "Afișează valorile din ultimele {{count}} ore sub cifră.",
+    "nightMode": "Mod noapte",
+    "nightStart": "Începe",
+    "nightEnd": "Se termină",
+    "nightBrightness": "Luminozitate noaptea",
+    "nightModeFooter": "Estompează monitorul între aceste ore. Revine la luminozitate maximă cât timp sună o alarmă.",
     "urgentLow": "Scăzut urgent",
     "low": "Scăzut",
     "high": "Ridicat",

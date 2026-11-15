@@ -73,6 +73,7 @@
   "settings": {
     "sections": {
       "display": "ANZEIGE",
+      "nightMode": "NACHTMODUS",
       "thresholds": "ALARMGRENZEN",
       "alertTypes": "ALARMARTEN",
       "sounds": "ALARMTÖNE",
@@ -85,6 +86,11 @@
     "unit": "Einheit",
     "trendLine": "Trendlinie",
     "trendLineFooter": "Zeigt die Werte der letzten {{count}} Stunden unter der Zahl.",
+    "nightMode": "Nachtmodus",
+    "nightStart": "Beginn",
+    "nightEnd": "Ende",
+    "nightBrightness": "Helligkeit nachts",
+    "nightModeFooter": "Dimmt den Monitor zwischen diesen Uhrzeiten. Solange ein Alarm läuft, wird er wieder voll hell.",
     "urgentLow": "Dringend niedrig",
     "low": "Niedrig",
     "high": "Hoch",

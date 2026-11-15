@@ -7,3 +7,7 @@ export const NON_URGENT_REPEAT_STEP = 5;
 export const SNOOZE_MIN = 1;
 export const SNOOZE_MAX = 15;
 export const SNOOZE_WARNING_ABOVE = 5;
+export const NIGHT_TIME_STEP = 30;
+export const NIGHT_BRIGHTNESS_MIN = 10;
+export const NIGHT_BRIGHTNESS_MAX = 80;
+export const NIGHT_BRIGHTNESS_STEP = 10;

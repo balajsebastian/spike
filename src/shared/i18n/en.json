@@ -73,6 +73,7 @@
   "settings": {
     "sections": {
       "display": "DISPLAY",
+      "nightMode": "NIGHT MODE",
       "thresholds": "ALERT THRESHOLDS",
       "alertTypes": "ALERT TYPES",
       "sounds": "ALARM SOUNDS",
@@ -85,6 +86,11 @@
     "unit": "Unit",
     "trendLine": "Trend Line",
     "trendLineFooter": "Shows the last {{count}} hours of readings under the number.",
+    "nightMode": "Night Mode",
+    "nightStart": "Starts",
+    "nightEnd": "Ends",
+    "nightBrightness": "Night Brightness",
+    "nightModeFooter": "Dims the monitor between these hours. It goes back to full brightness while an alarm is going off.",
     "urgentLow": "Urgent Low",
     "low": "Low",
     "high": "High",

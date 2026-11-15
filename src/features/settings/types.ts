@@ -36,6 +36,12 @@ export interface Settings {
   snoozeEnabled: boolean;
   snoozeMinutes: number;
   alarmSounds: Record<AlarmSoundKind, AlarmSound>;
+  /** Dims the monitor between `nightStartMinutes` and `nightEndMinutes` (minutes after midnight). */
+  nightModeEnabled: boolean;
+  nightStartMinutes: number;
+  nightEndMinutes: number;
+  /** How bright the monitor stays at night, in percent. */
+  nightBrightness: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -63,6 +69,10 @@ export const DEFAULT_SETTINGS: Settings = {
     urgentHigh: "signal",
     trend: "beep",
   },
+  nightModeEnabled: false,
+  nightStartMinutes: 23 * 60,
+  nightEndMinutes: 7 * 60,
+  nightBrightness: 30,
 };
 
 export interface ThemeColors {

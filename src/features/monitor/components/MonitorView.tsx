@@ -17,6 +17,8 @@ interface Props {
   readingFontSize: number;
   status: { text: string; color?: string };
   blinkOpacity: Animated.Value;
+  /** Opacity of the black night-mode overlay (0 = off). */
+  nightDim: number;
   trend: { readings: GlucoseReading[]; windowMinutes: number; width: number; height: number } | null;
   now: number;
   settings: Settings;
@@ -36,6 +38,7 @@ export function MonitorView({
   readingFontSize,
   status,
   blinkOpacity,
+  nightDim,
   trend,
   now,
   settings,
@@ -87,6 +90,9 @@ export function MonitorView({
       {credentialsRejected && (
         <CredentialsNotice reason={credentialsRejected} theme={theme} onLoginAgain={onLoginAgain} />
       )}
+
+      {/* Dims everything, light theme included; touches go through to the snooze button underneath. */}
+      {nightDim > 0 && <View pointerEvents="none" style={[styles.nightOverlay, { opacity: nightDim }]} />}
     </View>
   );
 }
@@ -109,6 +115,10 @@ const styles = StyleSheet.create({
   },
   trendBelow: {
     marginTop: 24,
+  },
+  nightOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "#000",
   },
   error: {
     fontSize: 12,

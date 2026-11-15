@@ -73,6 +73,7 @@
   "settings": {
     "sections": {
       "display": "SCHERMO",
+      "nightMode": "MODALITÀ NOTTE",
       "thresholds": "SOGLIE DI AVVISO",
       "alertTypes": "TIPI DI AVVISO",
       "sounds": "SUONI DI ALLARME",
@@ -85,6 +86,11 @@
     "unit": "Unità",
     "trendLine": "Linea di tendenza",
     "trendLineFooter": "Mostra le letture delle ultime {{count}} ore sotto il numero.",
+    "nightMode": "Modalità notte",
+    "nightStart": "Inizio",
+    "nightEnd": "Fine",
+    "nightBrightness": "Luminosità notturna",
+    "nightModeFooter": "Attenua il monitor tra questi orari. Torna alla massima luminosità mentre suona un allarme.",
     "urgentLow": "Basso urgente",
     "low": "Basso",
     "high": "Alto",

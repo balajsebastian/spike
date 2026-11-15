@@ -2,8 +2,9 @@ import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { EdgeInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import type { AlarmSoundKind, Settings, ThemeColors } from "../types";
-import type { StepDirection, ThresholdKey } from "../helpers/steppers";
+import type { NightTimeKey, StepDirection, ThresholdKey } from "../helpers/steppers";
 import { DisplaySection } from "./DisplaySection";
+import { NightModeSection } from "./NightModeSection";
 import { ThresholdsSection } from "./ThresholdsSection";
 import { AlertTypesSection } from "./AlertTypesSection";
 import { SoundsSection } from "./SoundsSection";
@@ -21,6 +22,8 @@ interface Props {
   onStepThreshold: (key: ThresholdKey, direction: StepDirection) => void;
   onStepRepeat: (direction: StepDirection) => void;
   onStepSnooze: (direction: StepDirection) => void;
+  onStepNightTime: (key: NightTimeKey, direction: StepDirection) => void;
+  onStepNightBrightness: (direction: StepDirection) => void;
   onPickSound: (kind: AlarmSoundKind) => void;
 }
 
@@ -36,6 +39,8 @@ export function SettingsView({
   onStepThreshold,
   onStepRepeat,
   onStepSnooze,
+  onStepNightTime,
+  onStepNightBrightness,
   onPickSound,
 }: Props) {
   const { t } = useTranslation();
@@ -57,6 +62,13 @@ export function SettingsView({
         <Text style={[styles.title, { color: theme.text }]}>{t("tabs.settings")}</Text>
 
         <DisplaySection settings={settings} theme={theme} trendHours={trendHours} onChange={onChange} />
+        <NightModeSection
+          settings={settings}
+          theme={theme}
+          onChange={onChange}
+          onStepTime={onStepNightTime}
+          onStepBrightness={onStepNightBrightness}
+        />
         <ThresholdsSection settings={settings} theme={theme} onStep={onStepThreshold} />
         <AlertTypesSection
           settings={settings}

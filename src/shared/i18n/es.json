@@ -73,6 +73,7 @@
   "settings": {
     "sections": {
       "display": "PANTALLA",
+      "nightMode": "MODO NOCHE",
       "thresholds": "UMBRALES DE ALERTA",
       "alertTypes": "TIPOS DE ALERTA",
       "sounds": "SONIDOS DE ALARMA",
@@ -85,6 +86,11 @@
     "unit": "Unidad",
     "trendLine": "Línea de tendencia",
     "trendLineFooter": "Muestra las lecturas de las últimas {{count}} horas debajo del número.",
+    "nightMode": "Modo noche",
+    "nightStart": "Empieza",
+    "nightEnd": "Termina",
+    "nightBrightness": "Brillo nocturno",
+    "nightModeFooter": "Atenúa el monitor entre estas horas. Vuelve al brillo máximo mientras suena una alarma.",
     "urgentLow": "Bajo urgente",
     "low": "Bajo",
     "high": "Alto",

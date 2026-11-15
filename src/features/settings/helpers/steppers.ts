@@ -3,6 +3,10 @@ import {
   NON_URGENT_REPEAT_MAX,
   NON_URGENT_REPEAT_MIN,
   NON_URGENT_REPEAT_STEP,
+  NIGHT_BRIGHTNESS_MAX,
+  NIGHT_BRIGHTNESS_MIN,
+  NIGHT_BRIGHTNESS_STEP,
+  NIGHT_TIME_STEP,
   SNOOZE_MAX,
   SNOOZE_MIN,
   THRESHOLD_MAX,
@@ -11,6 +15,7 @@ import {
 } from "../constants";
 
 export type StepDirection = -1 | 1;
+export type NightTimeKey = "nightStartMinutes" | "nightEndMinutes";
 export type ThresholdKey = "urgentLowThreshold" | "lowThreshold" | "highThreshold" | "urgentHighThreshold";
 
 /** One step down or up, never past `min` / `max`. */
@@ -51,4 +56,24 @@ export function stepRepeat(settings: Settings, direction: StepDirection): Partia
 
 export function stepSnooze(settings: Settings, direction: StepDirection): Partial<Settings> {
   return { snoozeMinutes: stepWithin(settings.snoozeMinutes, direction, 1, SNOOZE_MIN, SNOOZE_MAX) };
+}
+
+const MINUTES_PER_DAY = 24 * 60;
+
+/** Times wrap around midnight: 23:30 + 30 min is 00:00. */
+export function stepNightTime(settings: Settings, key: NightTimeKey, direction: StepDirection): Partial<Settings> {
+  const next = (settings[key] + direction * NIGHT_TIME_STEP + MINUTES_PER_DAY) % MINUTES_PER_DAY;
+  return { [key]: next };
+}
+
+export function stepNightBrightness(settings: Settings, direction: StepDirection): Partial<Settings> {
+  return {
+    nightBrightness: stepWithin(
+      settings.nightBrightness,
+      direction,
+      NIGHT_BRIGHTNESS_STEP,
+      NIGHT_BRIGHTNESS_MIN,
+      NIGHT_BRIGHTNESS_MAX,
+    ),
+  };
 }
