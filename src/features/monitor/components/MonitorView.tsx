@@ -11,6 +11,10 @@ import { CredentialsNotice } from "./CredentialsNotice";
 
 interface Props {
   display: ReadingDisplay;
+  /** Number and chart side by side (landscape with the trend line). */
+  split: boolean;
+  columnWidth: number | null;
+  readingFontSize: number;
   status: { text: string; color?: string };
   blinkOpacity: Animated.Value;
   trend: { readings: GlucoseReading[]; windowMinutes: number; width: number; height: number } | null;
@@ -27,6 +31,9 @@ interface Props {
 
 export function MonitorView({
   display,
+  split,
+  columnWidth,
+  readingFontSize,
   status,
   blinkOpacity,
   trend,
@@ -44,20 +51,25 @@ export function MonitorView({
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <StatusBar hidden />
 
-      <GlucoseDisplay
-        value={display.value}
-        trendArrow={display.trendArrow}
-        color={display.color}
-        opacity={blinkOpacity}
-        status={status.text}
-        statusColor={status.color ?? theme.textTertiary}
-      />
-
-      {trend && (
-        <View style={styles.trendLine}>
-          <TrendLine {...trend} now={now} settings={settings} theme={theme} />
+      <View style={split ? styles.splitRow : styles.stacked}>
+        <View style={split ? [styles.splitColumn, { width: columnWidth ?? undefined }] : styles.stacked}>
+          <GlucoseDisplay
+            value={display.value}
+            trendArrow={display.trendArrow}
+            color={display.color}
+            fontSize={readingFontSize}
+            opacity={blinkOpacity}
+            status={status.text}
+            statusColor={status.color ?? theme.textTertiary}
+          />
         </View>
-      )}
+
+        {trend && (
+          <View style={split ? [styles.splitColumn, { width: columnWidth ?? undefined }] : styles.trendBelow}>
+            <TrendLine {...trend} now={now} settings={settings} theme={theme} />
+          </View>
+        )}
+      </View>
 
       {snooze && (
         <SnoozeControl
@@ -85,7 +97,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  trendLine: {
+  stacked: {
+    alignItems: "center",
+  },
+  splitRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  splitColumn: {
+    alignItems: "center",
+  },
+  trendBelow: {
     marginTop: 24,
   },
   error: {

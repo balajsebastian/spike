@@ -32,3 +32,4 @@ export function getReadingDisplay(
 export function snoozeMinutesLeft(snoozeUntil: number, now: number): number | null {
   return snoozeUntil > now ? Math.round((snoozeUntil - now) / 60_000) : null;
 }
+
