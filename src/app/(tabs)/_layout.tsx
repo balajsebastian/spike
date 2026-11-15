@@ -21,6 +21,8 @@ export default function TabsLayout() {
   const { theme } = useSettingsContext();
   const { clear: logout } = useAuth();
   const { width, height } = useWindowDimensions();
+  // Landscape is the nightstand view: just the glucose.
+  const tabBarHidden = width > height;
 
   function handleFeedback() {
     Linking.openURL(FEEDBACK_EMAIL).catch(() =>
@@ -37,10 +39,11 @@ export default function TabsLayout() {
 
   return (
     <NativeTabs
-      hidden={width > height}
+      hidden={tabBarHidden}
       tintColor={theme.text}
       iconColor={{ default: theme.textTertiary, selected: theme.text }}
-      backgroundColor={theme.surface}
+      // With the bar hidden (landscape), Android still paints this color behind the system navigation bar.
+      backgroundColor={tabBarHidden ? theme.background : theme.surface}
       // Before iOS 26 (no Liquid Glass) the bar turns transparent at the scroll edge and content shows through.
       disableTransparentOnScrollEdge
       shadowColor={theme.border}
