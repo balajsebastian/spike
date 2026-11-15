@@ -4,14 +4,14 @@ import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { useAuth } from "@/features/auth/AuthContext";
 import type { Credentials } from "@/features/auth/types";
 import { useAlarm } from "@/features/alarm/hooks/useAlarm";
-import { isAlarmEnabled, isUrgentLevel } from "@/features/alarm/helpers/alarmLevel";
+import { isUrgentLevel } from "@/features/alarm/helpers/alarmLevel";
 import { useGlucose } from "../hooks/useGlucose";
 import { useBlink } from "../hooks/useBlink";
 import { useNow } from "../hooks/useNow";
 import { getStatusText } from "../helpers/status";
 import { getReadingDisplay, snoozeMinutesLeft } from "../helpers/display";
 import { getMonitorLayout } from "../helpers/layout";
-import { getNightDim } from "../helpers/nightMode";
+import { getNightDim, isAlarmRinging } from "../helpers/nightMode";
 import { TREND_WINDOW_MINUTES } from "../constants";
 import { MonitorView } from "../components/MonitorView";
 
@@ -33,13 +33,12 @@ export function MonitorContainer({ credentials }: Props) {
     credentials,
     settings.showTrendLine ? TREND_WINDOW_MINUTES : null,
   );
-  const { alarmLevel, snooze, cancelSnooze, snoozeUntil } = useAlarm(reading, settings);
+  const { alarmLevel, snooze, cancelSnooze, snoozeUntil, lastAlarmAt } = useAlarm(reading, settings);
 
   const display = getReadingDisplay(reading, now, settings, { normal: theme.text, noData: theme.textTertiary });
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
   const minutesLeft = snoozeMinutesLeft(snoozeUntil, now);
-  const alarmActive = !!alarmLevel && isAlarmEnabled(alarmLevel, settings) && snoozeUntil <= now;
-  const nightDim = getNightDim(settings, now, alarmActive);
+  const nightDim = getNightDim(settings, now, isAlarmRinging(lastAlarmAt, snoozeUntil, now));
   const layout = getMonitorLayout({
     width: screenWidth,
     height: screenHeight,

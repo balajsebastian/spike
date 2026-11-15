@@ -28,6 +28,8 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
   const lastReadingTimestampRef = useRef(0);
   const audioConfigured = useRef(false);
   const [snoozeUntil, setSnoozeUntil] = useState(0);
+  // When the alarm last went off, so the screen can light up while it rings (night mode).
+  const [lastAlarmAt, setLastAlarmAt] = useState(0);
 
   const players = useSoundPlayers();
 
@@ -80,6 +82,7 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     if (!due) return;
 
     lastAlarmRef.current = { level, time: now };
+    setLastAlarmAt(now);
     playAlarm(level);
   }, [reading, settings, playAlarm, snoozeUntil]);
 
@@ -88,5 +91,6 @@ export function useAlarm(reading: GlucoseReading | null, settings: Settings) {
     snooze,
     cancelSnooze,
     snoozeUntil,
+    lastAlarmAt,
   };
 }
