@@ -45,9 +45,28 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
   }, [credentials]);
 
   useEffect(function syncHistorySetting() {
+    const wasOff = historyMinutesRef.current === null;
     historyMinutesRef.current = historyMinutes;
     // Re-fetch the full history on the next poll.
     lastHistoryFetchRef.current = 0;
+
+    // Just turned on: fetch now instead of leaving the chart empty until the next poll (up to a minute).
+    const client = clientRef.current;
+    if (!wasOff || historyMinutes === null || !client || stoppedRef.current) return;
+    let cancelled = false;
+    client
+      .getHistory(historyMinutes)
+      .then((fetched) => {
+        if (cancelled) return;
+        lastHistoryFetchRef.current = Date.now();
+        setHistory((prev) => mergeHistory(prev, fetched, historyMinutes));
+      })
+      .catch(() => {
+        // The next poll tries again.
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [historyMinutes]);
 
   useEffect(function setupPolling() {
