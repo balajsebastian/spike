@@ -21,7 +21,7 @@ export function GlucoseDisplay({ value, trendArrow, color, fontSize, opacity, st
   return (
     <>
       <Animated.View style={[styles.readingRow, { opacity }]}>
-        <Text style={[styles.reading, { color, fontSize }]} adjustsFontSizeToFit numberOfLines={1}>
+        <Text style={[styles.reading, { color, fontSize }]} numberOfLines={1}>
           {value}
         </Text>
         {trendArrow && <Text style={[styles.trend, { color, fontSize: fontSize * TREND_ARROW_RATIO }]}>{trendArrow}</Text>}
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
+  // The size comes from the screen (helpers/layout.ts), so the text is never auto-shrunk.
   reading: {
     fontWeight: "700",
     fontVariant: ["tabular-nums"],
-    textAlign: "center",
   },
   trend: {
     fontWeight: "700",

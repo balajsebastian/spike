@@ -43,6 +43,7 @@ export function MonitorContainer({ credentials }: Props) {
     insets,
     showTrend: settings.showTrendLine,
     reserveSnooze: settings.snoozeEnabled,
+    unit: settings.unit,
   });
 
   return (
