@@ -20,6 +20,8 @@ interface GlucoseState {
   error: string | null;
   /** The saved login stopped working; polling is stopped until the user logs in again. */
   credentialsRejected: "invalid" | "locked" | null;
+  /** At least one poll succeeded, so a missing reading means the account has none (not that we're still connecting). */
+  connected: boolean;
 }
 
 /** `historyMinutes` turns on the recent-readings history (for the trend line); `null` keeps it off. */
@@ -28,6 +30,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
     reading: null,
     error: null,
     credentialsRejected: null,
+    connected: false,
   });
   const [history, setHistory] = useState<GlucoseReading[]>([]);
 
@@ -102,9 +105,9 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
 
         if (reading && reading.timestampMs !== lastTimestampRef.current) {
           lastTimestampRef.current = reading.timestampMs;
-          setState({ reading, error: null, credentialsRejected: null });
+          setState({ reading, error: null, credentialsRejected: null, connected: true });
         } else {
-          setState((prev) => (prev.error ? { ...prev, error: null } : prev));
+          setState((prev) => (prev.error || !prev.connected ? { ...prev, error: null, connected: true } : prev));
         }
 
         await updateHistory(client, reading);

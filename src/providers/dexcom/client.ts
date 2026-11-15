@@ -11,6 +11,8 @@ import { parseGlucoseReading } from "./parser";
 import { CredentialsRejectedError } from "../errors";
 import { toLoginError } from "./errors";
 
+const LATEST_LOOKBACK_MINUTES = 24 * 60;
+
 export class DexcomShareClient implements CGMClient {
   private baseUrl: string;
   private applicationId: string;
@@ -100,7 +102,9 @@ export class DexcomShareClient implements CGMClient {
   }
 
   async getLatestReading(): Promise<GlucoseReading | null> {
-    const readings = await this.readValues(30, 1);
+    // Look back a full day (like pydexcom) so an old last reading shows as "no data" with its age,
+    // instead of looking like there's nothing on the account.
+    const readings = await this.readValues(LATEST_LOOKBACK_MINUTES, 1);
     return readings[0] ?? null;
   }
 

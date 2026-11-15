@@ -28,7 +28,7 @@ export function MonitorContainer({ credentials }: Props) {
   const insets = useSafeAreaInsets();
   const now = useNow(CLOCK_TICK_MS);
 
-  const { reading, error, credentialsRejected, history } = useGlucose(
+  const { reading, error, credentialsRejected, connected, history } = useGlucose(
     credentials,
     settings.showTrendLine ? TREND_WINDOW_MINUTES : null,
   );
@@ -52,7 +52,7 @@ export function MonitorContainer({ credentials }: Props) {
       split={layout.split}
       columnWidth={layout.columnWidth}
       readingFontSize={layout.readingFontSize}
-      status={getStatusText(reading)}
+      status={getStatusText(reading, connected)}
       blinkOpacity={blinkOpacity}
       trend={layout.trend && { readings: history, windowMinutes: TREND_WINDOW_MINUTES, ...layout.trend }}
       now={now}

@@ -3,8 +3,12 @@ import { COLORS } from "@/shared/colors";
 import { i18n } from "@/shared/lib/i18n";
 import { NO_DATA_MS, STALE_MS, DELAYED_MS } from "../constants";
 
-export function getStatusText(reading: GlucoseReading | null): { text: string; color?: string } {
-  if (!reading) return { text: i18n.t("monitor.connecting") };
+export function getStatusText(reading: GlucoseReading | null, connected: boolean): { text: string; color?: string } {
+  if (!reading) {
+    return connected
+      ? { text: i18n.t("monitor.noData"), color: COLORS.danger }
+      : { text: i18n.t("monitor.connecting") };
+  }
 
   const ms = Date.now() - reading.timestampMs;
   const min = Math.floor(ms / 60_000);
