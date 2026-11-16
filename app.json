@@ -20,7 +20,8 @@
       "bundleIdentifier": "com.sebastianbalaj.spike",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "appStoreUrl": "https://apps.apple.com/app/id6833041253"
     },
     "android": {
       "adaptiveIcon": {
@@ -39,7 +40,8 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.SYSTEM_ALERT_WINDOW"
-      ]
+      ],
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.sebastianbalaj.spike"
     },
     "scheme": "spike-cgm",
     "extra": {

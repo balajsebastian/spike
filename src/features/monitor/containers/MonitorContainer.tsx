@@ -4,6 +4,7 @@ import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { useAuth } from "@/features/auth/AuthContext";
 import type { Credentials } from "@/features/auth/types";
 import { useAlarm } from "@/features/alarm/hooks/useAlarm";
+import { useStoreReviewPrompt } from "@/features/storeReview/hooks/useStoreReviewPrompt";
 import { isUrgentLevel } from "@/features/alarm/helpers/alarmLevel";
 import { useGlucose } from "../hooks/useGlucose";
 import { useBlink } from "../hooks/useBlink";
@@ -50,6 +51,10 @@ export function MonitorContainer({ credentials }: Props) {
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
   const minutesLeft = snoozeMinutesLeft(snoozeUntil, now);
   const nightDim = getNightDim(settings, now, isAlarmRinging(lastAlarmAt, snoozeUntil, now));
+  // Rating prompt only on a good moment: a fresh reading in range, nothing ringing, not at night or on the nightstand.
+  useStoreReviewPrompt(
+    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && nightDim === 0 && screenWidth <= screenHeight,
+  );
   const layout = getMonitorLayout({
     width: screenWidth,
     height: screenHeight,
