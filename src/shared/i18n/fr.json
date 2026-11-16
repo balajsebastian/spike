@@ -113,5 +113,10 @@
     "siren": "Sirène",
     "chime": "Carillon",
     "signal": "Signal"
+  },
+  "storeUpdate": {
+    "available": "Une nouvelle version de Spike est disponible",
+    "update": "Mettre à jour",
+    "later": "Plus tard"
   }
 }

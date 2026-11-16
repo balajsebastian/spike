@@ -113,5 +113,10 @@
     "siren": "Sirenă",
     "chime": "Clopoțel",
     "signal": "Semnal"
+  },
+  "storeUpdate": {
+    "available": "Este disponibilă o versiune nouă de Spike",
+    "update": "Actualizează",
+    "later": "Mai târziu"
   }
 }
