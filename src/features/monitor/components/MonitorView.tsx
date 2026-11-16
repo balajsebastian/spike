@@ -27,6 +27,8 @@ interface Props {
   theme: ThemeColors;
   snooze: { minutesLeft: number | null; canSnooze: boolean } | null;
   error: string | null;
+  /** "Volume is at 10%…", or null when it's loud enough. */
+  volumeWarning: string | null;
   credentialsRejected: "invalid" | "locked" | null;
   onSnooze: () => void;
   onCancelSnooze: () => void;
@@ -48,6 +50,7 @@ export function MonitorView({
   theme,
   snooze,
   error,
+  volumeWarning,
   credentialsRejected,
   onSnooze,
   onCancelSnooze,
@@ -91,6 +94,12 @@ export function MonitorView({
 
       {error && !credentialsRejected && <Text style={styles.error}>{error}</Text>}
 
+      {volumeWarning && (
+        <Text style={styles.volumeWarning} allowFontScaling={false}>
+          {volumeWarning}
+        </Text>
+      )}
+
       {credentialsRejected && (
         <CredentialsNotice reason={credentialsRejected} theme={theme} onLoginAgain={onLoginAgain} />
       )}
@@ -128,6 +137,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.danger,
     marginTop: 20,
+    paddingHorizontal: 20,
+    textAlign: "center",
+  },
+  volumeWarning: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.warning,
+    marginTop: 16,
     paddingHorizontal: 20,
     textAlign: "center",
   },

@@ -5,3 +5,5 @@ export const ALARM_PAUSE_MS = 2500;
 export const URGENT_REPEAT_MINUTES = 5;
 // Readings arrive on a fixed cadence with some jitter, so a repeat that is due "almost now" still fires on this reading.
 export const REPEAT_GRACE_MS = 30_000;
+/** Below this media volume (0–1) an alarm may be too quiet to wake anyone. */
+export const LOW_VOLUME = 0.3;

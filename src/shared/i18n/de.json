@@ -70,7 +70,8 @@
     "accountLocked": "Dein CGM-Konto ist nach zu vielen fehlgeschlagenen Anmeldungen vorübergehend gesperrt. Spike prüft keine Werte mehr. Warte eine Weile und melde dich dann erneut an.",
     "loginAgain": "Erneut anmelden",
     "trendStart": "vor {{count}} Std.",
-    "trendNow": "jetzt"
+    "trendNow": "jetzt",
+    "lowVolume": "Lautstärke ist bei {{percent}}%, Alarme könnten zu leise sein, um dich zu wecken. Dreh sie lauter."
   },
   "settings": {
     "sections": {

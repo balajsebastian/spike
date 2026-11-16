@@ -70,7 +70,8 @@
     "accountLocked": "Contul CGM e blocat temporar după prea multe autentificări eșuate. Spike a oprit verificarea glicemiei. Așteaptă puțin, apoi autentifică-te din nou.",
     "loginAgain": "Autentifică-te din nou",
     "trendStart": "acum {{count}} h",
-    "trendNow": "acum"
+    "trendNow": "acum",
+    "lowVolume": "Volumul e la {{percent}}%, alarmele s-ar putea să nu te trezească. Dă-l mai tare."
   },
   "settings": {
     "sections": {

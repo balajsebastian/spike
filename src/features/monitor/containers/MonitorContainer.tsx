@@ -1,9 +1,12 @@
-import { useWindowDimensions } from "react-native";
+import { Platform, useWindowDimensions } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { useAuth } from "@/features/auth/AuthContext";
 import type { Credentials } from "@/features/auth/types";
 import { useAlarm } from "@/features/alarm/hooks/useAlarm";
+import { useMediaVolume } from "@/features/alarm/hooks/useMediaVolume";
+import { LOW_VOLUME } from "@/features/alarm/constants";
 import { useStoreReviewPrompt } from "@/features/storeReview/hooks/useStoreReviewPrompt";
 import { isUrgentLevel } from "@/features/alarm/helpers/alarmLevel";
 import { useGlucose } from "../hooks/useGlucose";
@@ -27,6 +30,7 @@ interface Props {
 
 /** Polls the CGM, runs the alarm, and turns it all into what the monitor screen shows. */
 export function MonitorContainer({ credentials }: Props) {
+  const { t } = useTranslation();
   const { settings, theme } = useSettingsContext();
   const { clear: logout } = useAuth();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
@@ -47,6 +51,12 @@ export function MonitorContainer({ credentials }: Props) {
     polledAt,
   );
 
+  const volume = useMediaVolume();
+  // Android turns the volume up for alarms by itself; iOS can't, so tell the user.
+  const volumeWarning =
+    Platform.OS === "ios" && volume !== null && volume < LOW_VOLUME
+      ? t("monitor.lowVolume", { percent: Math.round(volume * 100) })
+      : null;
   const delta = settings.showDelta ? getDelta(history, reading) : null;
   const display = getReadingDisplay(reading, now, settings, { normal: theme.text, noData: theme.textTertiary });
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
@@ -84,6 +94,7 @@ export function MonitorContainer({ credentials }: Props) {
       theme={theme}
       snooze={settings.snoozeEnabled ? { minutesLeft, canSnooze: !!alarmLevel || noDataAlarm } : null}
       error={error}
+      volumeWarning={volumeWarning}
       credentialsRejected={credentialsRejected}
       onSnooze={() => snooze(settings.snoozeMinutes)}
       onCancelSnooze={cancelSnooze}

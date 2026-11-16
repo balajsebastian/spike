@@ -70,7 +70,8 @@
     "accountLocked": "Your CGM account is temporarily locked after too many failed logins. Spike stopped checking glucose. Wait a while, then log in again.",
     "loginAgain": "Log in again",
     "trendStart": "{{count}}h ago",
-    "trendNow": "now"
+    "trendNow": "now",
+    "lowVolume": "Volume is at {{percent}}%, alarms may be too quiet to wake you. Turn it up."
   },
   "settings": {
     "sections": {

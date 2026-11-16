@@ -70,7 +70,8 @@
     "accountLocked": "Votre compte CGM est temporairement bloqué après trop de tentatives de connexion. Spike a arrêté de vérifier la glycémie. Patientez un moment, puis reconnectez-vous.",
     "loginAgain": "Se reconnecter",
     "trendStart": "il y a {{count}} h",
-    "trendNow": "maintenant"
+    "trendNow": "maintenant",
+    "lowVolume": "Le volume est à {{percent}} %, les alarmes risquent de ne pas vous réveiller. Montez-le."
   },
   "settings": {
     "sections": {
