@@ -68,7 +68,9 @@
     "snooze": "Pause {{count}} min",
     "credentialsRejected": "Votre compte CGM a refusé le mot de passe enregistré. Spike a arrêté de vérifier la glycémie pour éviter le blocage de votre compte. Reconnectez-vous pour réactiver les alarmes.",
     "accountLocked": "Votre compte CGM est temporairement bloqué après trop de tentatives de connexion. Spike a arrêté de vérifier la glycémie. Patientez un moment, puis reconnectez-vous.",
-    "loginAgain": "Se reconnecter"
+    "loginAgain": "Se reconnecter",
+    "trendStart": "il y a {{count}} h",
+    "trendNow": "maintenant"
   },
   "settings": {
     "sections": {

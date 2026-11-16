@@ -1,4 +1,5 @@
 import Svg, { Circle, Line, Text as SvgText } from "react-native-svg";
+import { useTranslation } from "react-i18next";
 import type { GlucoseReading } from "@/shared/types";
 import { formatGlucose, type Settings, type ThemeColors } from "@/features/settings/types";
 import { getRangeColor } from "../helpers/range";
@@ -13,6 +14,9 @@ const HALO_RADIUS = 11;
 const OLDEST_OPACITY = 0.35;
 const LABEL_WIDTH = 34;
 const LABEL_SIZE = 12;
+// Room under the dots for "12h ago … now", and the gap between them and the chart.
+const TIME_AXIS_HEIGHT = 18;
+const TIME_AXIS_GAP = 6;
 
 interface Props {
   readings: GlucoseReading[];
@@ -29,6 +33,7 @@ interface Props {
  * Only the low/high lines are labelled: the big number stays the main thing.
  */
 export function TrendLine({ readings, windowMinutes, now, width, height, settings, theme }: Props) {
+  const { t } = useTranslation();
   if (readings.length < 2 || width <= 0) return null;
 
   const dots = trendDots(readings, windowMinutes);
@@ -40,13 +45,20 @@ export function TrendLine({ readings, windowMinutes, now, width, height, setting
   // Leave room for the halo around the latest dot.
   const plotRight = width - HALO_RADIUS - 1;
   const plotTop = HALO_RADIUS + 1;
-  const plotBottom = height - HALO_RADIUS - 1;
+  const plotBottom = height - TIME_AXIS_HEIGHT - HALO_RADIUS - 1;
   const x = (ms: number) => plotLeft + ((ms - startX) / (now - startX)) * (plotRight - plotLeft);
   const dotSpacing = (plotRight - plotLeft) / (windowMinutes / bucketMinutes(windowMinutes));
   const dotRadius = Math.max(MIN_DOT_RADIUS, Math.min(MAX_DOT_RADIUS, dotSpacing * DOT_SPACING_RATIO));
   const y = (mgdl: number) => plotTop + (1 - (mgdl - minY) / (maxY - minY)) * (plotBottom - plotTop);
 
   const thresholds = [settings.highThreshold, settings.lowThreshold];
+  // Right under whatever is lowest (the low line or a dot), not at the bottom of the padded range.
+  const chartBottom = Math.max(
+    y(settings.lowThreshold),
+    ...dots.map((r) => y(r.valueMgdl) + dotRadius),
+    y(last.valueMgdl) + HALO_RADIUS,
+  );
+  const timeAxisY = Math.min(height - 2, chartBottom + TIME_AXIS_GAP + LABEL_SIZE);
   const lastColor = getRangeColor(last.valueMgdl, settings, theme.text);
 
   return (
@@ -90,6 +102,13 @@ export function TrendLine({ readings, windowMinutes, now, width, height, setting
           />
         );
       })}
+
+      <SvgText x={plotLeft} y={timeAxisY} fontSize={LABEL_SIZE} fill={theme.textTertiary} textAnchor="start">
+        {t("monitor.trendStart", { count: windowMinutes / 60 })}
+      </SvgText>
+      <SvgText x={plotRight} y={timeAxisY} fontSize={LABEL_SIZE} fill={theme.textTertiary} textAnchor="end">
+        {t("monitor.trendNow")}
+      </SvgText>
 
       <Circle cx={x(last.timestampMs)} cy={y(last.valueMgdl)} r={HALO_RADIUS} fill={lastColor} opacity={0.25} />
       <Circle cx={x(last.timestampMs)} cy={y(last.valueMgdl)} r={LAST_DOT_RADIUS} fill={lastColor} />

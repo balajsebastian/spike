@@ -68,7 +68,9 @@
     "snooze": "Snooze {{count}}m",
     "credentialsRejected": "Your CGM account rejected the saved password. Spike stopped checking glucose so your account doesn't get locked. Log in again to resume alarms.",
     "accountLocked": "Your CGM account is temporarily locked after too many failed logins. Spike stopped checking glucose. Wait a while, then log in again.",
-    "loginAgain": "Log in again"
+    "loginAgain": "Log in again",
+    "trendStart": "{{count}}h ago",
+    "trendNow": "now"
   },
   "settings": {
     "sections": {

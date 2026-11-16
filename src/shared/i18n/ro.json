@@ -68,7 +68,9 @@
     "snooze": "Amână {{count}} min",
     "credentialsRejected": "Contul CGM a respins parola salvată. Spike a oprit verificarea glicemiei ca să nu-ți blocheze contul. Autentifică-te din nou ca să reactivezi alarmele.",
     "accountLocked": "Contul CGM e blocat temporar după prea multe autentificări eșuate. Spike a oprit verificarea glicemiei. Așteaptă puțin, apoi autentifică-te din nou.",
-    "loginAgain": "Autentifică-te din nou"
+    "loginAgain": "Autentifică-te din nou",
+    "trendStart": "acum {{count}} h",
+    "trendNow": "acum"
   },
   "settings": {
     "sections": {

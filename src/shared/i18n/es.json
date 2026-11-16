@@ -68,7 +68,9 @@
     "snooze": "Posponer {{count}} min",
     "credentialsRejected": "Tu cuenta de CGM rechazó la contraseña guardada. Spike dejó de comprobar la glucosa para que tu cuenta no se bloquee. Vuelve a iniciar sesión para reanudar las alarmas.",
     "accountLocked": "Tu cuenta de CGM está bloqueada temporalmente tras demasiados intentos fallidos. Spike dejó de comprobar la glucosa. Espera un rato y vuelve a iniciar sesión.",
-    "loginAgain": "Iniciar sesión de nuevo"
+    "loginAgain": "Iniciar sesión de nuevo",
+    "trendStart": "hace {{count}} h",
+    "trendNow": "ahora"
   },
   "settings": {
     "sections": {

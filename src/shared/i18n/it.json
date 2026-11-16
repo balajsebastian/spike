@@ -68,7 +68,9 @@
     "snooze": "Posponi {{count}} min",
     "credentialsRejected": "Il tuo account CGM ha rifiutato la password salvata. Spike ha smesso di controllare la glicemia per evitare il blocco dell'account. Accedi di nuovo per riattivare gli allarmi.",
     "accountLocked": "Il tuo account CGM è temporaneamente bloccato dopo troppi accessi non riusciti. Spike ha smesso di controllare la glicemia. Attendi un po', poi accedi di nuovo.",
-    "loginAgain": "Accedi di nuovo"
+    "loginAgain": "Accedi di nuovo",
+    "trendStart": "{{count}} h fa",
+    "trendNow": "ora"
   },
   "settings": {
     "sections": {

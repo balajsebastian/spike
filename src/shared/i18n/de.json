@@ -68,7 +68,9 @@
     "snooze": "Stumm {{count}} Min.",
     "credentialsRejected": "Dein CGM-Konto hat das gespeicherte Passwort abgelehnt. Spike prüft keine Werte mehr, damit dein Konto nicht gesperrt wird. Melde dich erneut an, um die Alarme fortzusetzen.",
     "accountLocked": "Dein CGM-Konto ist nach zu vielen fehlgeschlagenen Anmeldungen vorübergehend gesperrt. Spike prüft keine Werte mehr. Warte eine Weile und melde dich dann erneut an.",
-    "loginAgain": "Erneut anmelden"
+    "loginAgain": "Erneut anmelden",
+    "trendStart": "vor {{count}} Std.",
+    "trendNow": "jetzt"
   },
   "settings": {
     "sections": {
