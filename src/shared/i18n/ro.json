@@ -147,25 +147,14 @@
     "openSettings": "Deschide setările",
     "gotIt": "Am înțeles",
     "items": {
-      "noData": {
-        "title": "Alarmă Lipsă date",
-        "body": "Sună când nu mai vin citiri o vreme, de exemplu când senzorul pierde semnalul. Pornită implicit."
+      "brightness": {
+        "title": "Mod noapte mai întunecat",
+        "body": "Modul noapte scade luminozitatea ecranului peste noapte și îl luminează din nou când sună o alarmă."
       },
-      "predicted": {
-        "title": "Scăzut / Ridicat estimat",
-        "body": "Te avertizează înainte ca glicemia să treacă de limită. Oprită implicit: o pornești din Setări."
-      },
-      "delta": {
-        "title": "Delta",
-        "body": "Schimbarea din ultimele 5 minute, sub săgeată. Oprită implicit."
-      },
-      "trendWindow": {
-        "title": "Grafic mai lung",
-        "body": "Vezi 2, 6 sau 12 ore de citiri, ca să vezi toată noaptea."
-      },
-      "info": {
-        "title": "Setări explicate",
-        "body": "Apasă ⓘ lângă o setare ca să vezi ce face."
+      "volume": {
+        "title": "Alarme mai tari",
+        "body_android": "Spike dă volumul la maxim cât sună o alarmă, apoi îl readuce la cât era.",
+        "body_ios": "Dacă volumul e prea mic ca alarma să te trezească, monitorul îți spune."
       }
     }
   }

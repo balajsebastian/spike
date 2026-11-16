@@ -6,7 +6,7 @@ import type { ThemeColors } from "@/features/settings/types";
 import { DisclaimerPoint } from "@/features/onboarding/components/DisclaimerPoint";
 
 interface Props {
-  items: { key: string; icon: LucideIcon }[];
+  items: { key: string; icon: LucideIcon; title: string; body: string }[];
   theme: ThemeColors;
   onOpenSettings: () => void;
   onClose: () => void;
@@ -23,14 +23,8 @@ export function WhatsNewView({ items, theme, onOpenSettings, onClose }: Props) {
 
       <View style={styles.content}>
         <View>
-          {items.map(({ key, icon }) => (
-            <DisclaimerPoint
-              key={key}
-              icon={icon}
-              title={t(`whatsNew.items.${key}.title`)}
-              body={t(`whatsNew.items.${key}.body`)}
-              theme={theme}
-            />
+          {items.map(({ key, icon, title, body }) => (
+            <DisclaimerPoint key={key} icon={icon} title={title} body={body} theme={theme} />
           ))}
         </View>
 

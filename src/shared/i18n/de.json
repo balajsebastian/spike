@@ -147,25 +147,14 @@
     "openSettings": "Einstellungen öffnen",
     "gotIt": "Verstanden",
     "items": {
-      "noData": {
-        "title": "Keine-Daten-Alarm",
-        "body": "Klingelt, wenn eine Weile keine Werte mehr kommen, z. B. wenn der Sensor das Signal verliert. Standardmäßig an."
+      "brightness": {
+        "title": "Dunklerer Nachtmodus",
+        "body": "Der Nachtmodus senkt nachts die Bildschirmhelligkeit und macht ihn bei einem Alarm wieder hell."
       },
-      "predicted": {
-        "title": "Niedrig / Hoch erwartet",
-        "body": "Warnt dich, bevor der Wert eine Grenze überschreitet. Standardmäßig aus: in den Einstellungen einschalten."
-      },
-      "delta": {
-        "title": "Delta",
-        "body": "Die Änderung der letzten 5 Minuten, unter dem Pfeil. Standardmäßig aus."
-      },
-      "trendWindow": {
-        "title": "Längere Trendlinie",
-        "body": "Zeige 2, 6 oder 12 Stunden an Werten, um die ganze Nacht zu sehen."
-      },
-      "info": {
-        "title": "Einstellungen erklärt",
-        "body": "Tippe auf ⓘ neben einer Einstellung, um zu sehen, was sie tut."
+      "volume": {
+        "title": "Lautere Alarme",
+        "body_android": "Spike dreht die Lautstärke während eines Alarms ganz auf und stellt sie danach zurück.",
+        "body_ios": "Wenn die Lautstärke zu leise ist, um dich zu wecken, sagt es dir der Monitor."
       }
     }
   }

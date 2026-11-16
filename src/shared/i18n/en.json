@@ -147,25 +147,14 @@
     "openSettings": "Open Settings",
     "gotIt": "Got it",
     "items": {
-      "noData": {
-        "title": "No Data alarm",
-        "body": "Rings when readings stop for a while, like when the sensor loses signal. On by default."
+      "brightness": {
+        "title": "Darker night mode",
+        "body": "Night mode lowers your screen brightness during the night and lights it back up when an alarm goes off."
       },
-      "predicted": {
-        "title": "Predicted Low / High",
-        "body": "Warns you before glucose crosses a line. Off by default: turn it on in Settings."
-      },
-      "delta": {
-        "title": "Delta",
-        "body": "The change over the last 5 minutes, under the arrow. Off by default."
-      },
-      "trendWindow": {
-        "title": "Longer trend line",
-        "body": "Show 2, 6 or 12 hours of readings, so you can see the whole night."
-      },
-      "info": {
-        "title": "Settings explained",
-        "body": "Tap ⓘ next to a setting to see what it does."
+      "volume": {
+        "title": "Louder alarms",
+        "body_android": "Spike turns the volume all the way up while an alarm rings, then puts it back.",
+        "body_ios": "If your volume is too low for an alarm to wake you, the monitor tells you."
       }
     }
   }

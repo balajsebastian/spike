@@ -147,25 +147,14 @@
     "openSettings": "Ouvrir les réglages",
     "gotIt": "Compris",
     "items": {
-      "noData": {
-        "title": "Alarme Pas de données",
-        "body": "Sonne quand les valeurs n'arrivent plus pendant un moment, par exemple si le capteur perd le signal. Activée par défaut."
+      "brightness": {
+        "title": "Mode nuit plus sombre",
+        "body": "Le mode nuit baisse la luminosité de l'écran la nuit et la remonte quand une alarme sonne."
       },
-      "predicted": {
-        "title": "Bas / Haut prévu",
-        "body": "Vous prévient avant que la glycémie franchisse une limite. Désactivée par défaut : activez-la dans les réglages."
-      },
-      "delta": {
-        "title": "Delta",
-        "body": "La variation des 5 dernières minutes, sous la flèche. Désactivé par défaut."
-      },
-      "trendWindow": {
-        "title": "Courbe plus longue",
-        "body": "Affichez 2, 6 ou 12 heures de valeurs, pour voir toute la nuit."
-      },
-      "info": {
-        "title": "Réglages expliqués",
-        "body": "Touchez ⓘ à côté d'un réglage pour voir ce qu'il fait."
+      "volume": {
+        "title": "Alarmes plus fortes",
+        "body_android": "Spike monte le volume au maximum pendant une alarme, puis le remet comme avant.",
+        "body_ios": "Si le volume est trop bas pour qu'une alarme vous réveille, l'écran vous le signale."
       }
     }
   }
