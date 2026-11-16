@@ -55,6 +55,12 @@ export const listStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  rowInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    flexShrink: 1,
+  },
   rowLabel: {
     fontSize: 16,
     flexShrink: 1,

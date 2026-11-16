@@ -16,11 +16,7 @@ export function DisplaySection({ settings, theme, onChange }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Section
-      title={t("settings.sections.display")}
-      footer={t("settings.trendLineFooter", { count: settings.trendWindowHours })}
-      theme={theme}
-    >
+    <Section title={t("settings.sections.display")} theme={theme}>
       <Row label={t("settings.theme")} icon={Moon} theme={theme}>
         <Segmented
           options={[
@@ -43,14 +39,14 @@ export function DisplaySection({ settings, theme, onChange }: Props) {
           theme={theme}
         />
       </Row>
-      <Row label={t("settings.delta")} icon={Diff} theme={theme}>
+      <Row label={t("settings.delta")} icon={Diff} info={t("settings.info.delta")} theme={theme}>
         <Switch value={settings.showDelta} onValueChange={(showDelta) => onChange({ showDelta })} />
       </Row>
-      <Row label={t("settings.trendLine")} icon={ChartSpline} theme={theme}>
+      <Row label={t("settings.trendLine")} icon={ChartSpline} info={t("settings.info.trendLine")} theme={theme}>
         <Switch value={settings.showTrendLine} onValueChange={(showTrendLine) => onChange({ showTrendLine })} />
       </Row>
       {settings.showTrendLine && (
-        <Row label={t("settings.trendWindow")} icon={History} theme={theme}>
+        <Row label={t("settings.trendWindow")} icon={History} info={t("settings.info.trendWindow")} theme={theme}>
           <Segmented
             options={TREND_WINDOW_HOURS.map((hours) => ({ label: `${hours}h`, value: String(hours) }))}
             value={String(settings.trendWindowHours)}

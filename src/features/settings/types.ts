@@ -71,8 +71,9 @@ export const DEFAULT_SETTINGS: Settings = {
   lowEnabled: true,
   highEnabled: true,
   urgentHighEnabled: true,
-  predictedLowEnabled: true,
-  predictedHighEnabled: true,
+  // Off until they've proven themselves on real nights: a false alarm wakes people up.
+  predictedLowEnabled: false,
+  predictedHighEnabled: false,
   fallingEnabled: true,
   risingEnabled: true,
   nonUrgentRepeatMinutes: 20,

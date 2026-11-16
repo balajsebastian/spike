@@ -27,11 +27,16 @@ export function AlarmSection({ settings, theme, snoozeWarningAbove, onChange, on
       footerColor={COLORS.warning}
       theme={theme}
     >
-      <Row label={t("settings.snooze")} icon={BellOff} theme={theme}>
+      <Row label={t("settings.snooze")} icon={BellOff} info={t("settings.info.snooze")} theme={theme}>
         <Switch value={settings.snoozeEnabled} onValueChange={(snoozeEnabled) => onChange({ snoozeEnabled })} />
       </Row>
       {settings.snoozeEnabled && (
-        <Row label={t("settings.snoozeDuration")} icon={Timer} theme={theme}>
+        <Row
+          label={t("settings.snoozeDuration")}
+          icon={Timer}
+          info={t("settings.info.snoozeDuration")}
+          theme={theme}
+        >
           <Stepper
             displayValue={t("common.minutes", { count: settings.snoozeMinutes })}
             onStep={onStepSnooze}

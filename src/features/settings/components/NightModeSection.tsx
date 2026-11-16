@@ -20,8 +20,8 @@ export function NightModeSection({ settings, theme, onChange, onStepTime, onStep
   const { t } = useTranslation();
 
   return (
-    <Section title={t("settings.sections.nightMode")} footer={t("settings.nightModeFooter")} theme={theme}>
-      <Row label={t("settings.nightMode")} icon={MoonStar} theme={theme}>
+    <Section title={t("settings.sections.nightMode")} theme={theme}>
+      <Row label={t("settings.nightMode")} icon={MoonStar} info={t("settings.info.nightMode")} theme={theme}>
         <Switch
           value={settings.nightModeEnabled}
           onValueChange={(nightModeEnabled) => onChange({ nightModeEnabled })}
@@ -43,7 +43,12 @@ export function NightModeSection({ settings, theme, onChange, onStepTime, onStep
               theme={theme}
             />
           </Row>
-          <Row label={t("settings.nightBrightness")} icon={SunDim} theme={theme}>
+          <Row
+            label={t("settings.nightBrightness")}
+            icon={SunDim}
+            info={t("settings.info.nightBrightness")}
+            theme={theme}
+          >
             <Stepper displayValue={`${settings.nightBrightness}%`} onStep={onStepBrightness} theme={theme} />
           </Row>
         </>

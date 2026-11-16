@@ -30,15 +30,16 @@ type ToggleKey =
   | "fallingEnabled"
   | "risingEnabled";
 
-const TOGGLE_ROWS: { key: ToggleKey; labelKey: string; icon: LucideIcon }[] = [
+/** `infoKey` explains the less obvious alerts (Low / High speak for themselves). */
+const TOGGLE_ROWS: { key: ToggleKey; labelKey: string; infoKey?: string; icon: LucideIcon }[] = [
   { key: "urgentLowEnabled", labelKey: "settings.urgentLow", icon: ChevronsDown },
   { key: "lowEnabled", labelKey: "settings.low", icon: ArrowDown },
   { key: "highEnabled", labelKey: "settings.high", icon: ArrowUp },
   { key: "urgentHighEnabled", labelKey: "settings.urgentHigh", icon: ChevronsUp },
-  { key: "predictedLowEnabled", labelKey: "settings.predictedLow", icon: ArrowDownToLine },
-  { key: "predictedHighEnabled", labelKey: "settings.predictedHigh", icon: ArrowUpToLine },
-  { key: "fallingEnabled", labelKey: "settings.rapidFall", icon: TrendingDown },
-  { key: "risingEnabled", labelKey: "settings.rapidRise", icon: TrendingUp },
+  { key: "predictedLowEnabled", labelKey: "settings.predictedLow", infoKey: "settings.info.predictedLow", icon: ArrowDownToLine },
+  { key: "predictedHighEnabled", labelKey: "settings.predictedHigh", infoKey: "settings.info.predictedHigh", icon: ArrowUpToLine },
+  { key: "fallingEnabled", labelKey: "settings.rapidFall", infoKey: "settings.info.rapidFall", icon: TrendingDown },
+  { key: "risingEnabled", labelKey: "settings.rapidRise", infoKey: "settings.info.rapidRise", icon: TrendingUp },
 ];
 
 interface Props {
@@ -63,25 +64,23 @@ export function AlertTypesSection({
   const { t } = useTranslation();
 
   return (
-    <Section
-      title={t("settings.sections.alertTypes")}
-      footer={[
-        t("settings.predictedFooter", { count: predictionMinutes }),
-        t("settings.repeatFooter", { count: urgentRepeatMinutes }),
-        t("settings.noDataFooter"),
-      ].join(" ")}
-      theme={theme}
-    >
-      {TOGGLE_ROWS.map(({ key, labelKey, icon }) => (
-        <Row key={key} label={t(labelKey)} icon={icon} theme={theme}>
+    <Section title={t("settings.sections.alertTypes")} theme={theme}>
+      {TOGGLE_ROWS.map(({ key, labelKey, infoKey, icon }) => (
+        <Row
+          key={key}
+          label={t(labelKey)}
+          icon={icon}
+          info={infoKey && t(infoKey, { count: predictionMinutes })}
+          theme={theme}
+        >
           <Switch value={settings[key]} onValueChange={(value) => onChange({ [key]: value })} />
         </Row>
       ))}
-      <Row label={t("settings.noData")} icon={WifiOff} theme={theme}>
+      <Row label={t("settings.noData")} icon={WifiOff} info={t("settings.info.noData")} theme={theme}>
         <Switch value={settings.noDataEnabled} onValueChange={(noDataEnabled) => onChange({ noDataEnabled })} />
       </Row>
       {settings.noDataEnabled && (
-        <Row label={t("settings.noDataAfter")} icon={Timer} theme={theme}>
+        <Row label={t("settings.noDataAfter")} icon={Timer} info={t("settings.info.noDataAfter")} theme={theme}>
           <Stepper
             displayValue={t("common.minutes", { count: settings.noDataMinutes })}
             onStep={onStepNoData}
@@ -89,7 +88,12 @@ export function AlertTypesSection({
           />
         </Row>
       )}
-      <Row label={t("settings.repeatOther")} icon={Repeat} theme={theme}>
+      <Row
+        label={t("settings.repeatOther")}
+        icon={Repeat}
+        info={t("settings.info.repeatOther", { count: urgentRepeatMinutes })}
+        theme={theme}
+      >
         <Stepper
           displayValue={t("common.minutes", { count: settings.nonUrgentRepeatMinutes })}
           onStep={onStepRepeat}
