@@ -55,6 +55,17 @@ function AppStack() {
             contentStyle: { backgroundColor: theme.background },
           }}
         />
+        <Stack.Screen
+          name="whats-new"
+          options={{
+            presentation: "formSheet",
+            animation: "default",
+            sheetAllowedDetents: "fitToContents",
+            sheetGrabberVisible: true,
+            // Lighter than the black monitor behind it, like iOS's own sheets.
+            contentStyle: { backgroundColor: theme.surface },
+          }}
+        />
       </Stack.Protected>
     </Stack>
   );

@@ -140,5 +140,32 @@
     "available": "È disponibile una nuova versione di Spike",
     "update": "Aggiorna",
     "later": "Più tardi"
+  },
+  "whatsNew": {
+    "title": "Novità di Spike",
+    "openSettings": "Apri impostazioni",
+    "gotIt": "Ho capito",
+    "items": {
+      "noData": {
+        "title": "Allarme Nessun dato",
+        "body": "Suona quando le letture smettono di arrivare per un po', ad esempio se il sensore perde il segnale. Attivo di default."
+      },
+      "predicted": {
+        "title": "Basso / Alto previsto",
+        "body": "Ti avvisa prima che la glicemia superi un limite. Disattivato di default: attivalo nelle impostazioni."
+      },
+      "delta": {
+        "title": "Delta",
+        "body": "La variazione degli ultimi 5 minuti, sotto la freccia. Disattivato di default."
+      },
+      "trendWindow": {
+        "title": "Linea di tendenza più lunga",
+        "body": "Mostra 2, 6 o 12 ore di letture, per vedere tutta la notte."
+      },
+      "info": {
+        "title": "Impostazioni spiegate",
+        "body": "Tocca ⓘ accanto a un'impostazione per vedere cosa fa."
+      }
+    }
   }
 }

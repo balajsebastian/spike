@@ -140,5 +140,32 @@
     "available": "A new version of Spike is available",
     "update": "Update",
     "later": "Later"
+  },
+  "whatsNew": {
+    "title": "What's new in Spike",
+    "openSettings": "Open Settings",
+    "gotIt": "Got it",
+    "items": {
+      "noData": {
+        "title": "No Data alarm",
+        "body": "Rings when readings stop for a while, like when the sensor loses signal. On by default."
+      },
+      "predicted": {
+        "title": "Predicted Low / High",
+        "body": "Warns you before glucose crosses a line. Off by default: turn it on in Settings."
+      },
+      "delta": {
+        "title": "Delta",
+        "body": "The change over the last 5 minutes, under the arrow. Off by default."
+      },
+      "trendWindow": {
+        "title": "Longer trend line",
+        "body": "Show 2, 6 or 12 hours of readings, so you can see the whole night."
+      },
+      "info": {
+        "title": "Settings explained",
+        "body": "Tap ⓘ next to a setting to see what it does."
+      }
+    }
   }
 }

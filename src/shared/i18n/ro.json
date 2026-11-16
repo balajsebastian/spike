@@ -140,5 +140,32 @@
     "available": "Este disponibilă o versiune nouă de Spike",
     "update": "Actualizează",
     "later": "Mai târziu"
+  },
+  "whatsNew": {
+    "title": "Ce e nou în Spike",
+    "openSettings": "Deschide setările",
+    "gotIt": "Am înțeles",
+    "items": {
+      "noData": {
+        "title": "Alarmă Lipsă date",
+        "body": "Sună când nu mai vin citiri o vreme, de exemplu când senzorul pierde semnalul. Pornită implicit."
+      },
+      "predicted": {
+        "title": "Scăzut / Ridicat estimat",
+        "body": "Te avertizează înainte ca glicemia să treacă de limită. Oprită implicit: o pornești din Setări."
+      },
+      "delta": {
+        "title": "Delta",
+        "body": "Schimbarea din ultimele 5 minute, sub săgeată. Oprită implicit."
+      },
+      "trendWindow": {
+        "title": "Grafic mai lung",
+        "body": "Vezi 2, 6 sau 12 ore de citiri, ca să vezi toată noaptea."
+      },
+      "info": {
+        "title": "Setări explicate",
+        "body": "Apasă ⓘ lângă o setare ca să vezi ce face."
+      }
+    }
   }
 }

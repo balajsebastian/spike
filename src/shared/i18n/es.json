@@ -140,5 +140,32 @@
     "available": "Hay una nueva versión de Spike disponible",
     "update": "Actualizar",
     "later": "Más tarde"
+  },
+  "whatsNew": {
+    "title": "Novedades en Spike",
+    "openSettings": "Abrir ajustes",
+    "gotIt": "Entendido",
+    "items": {
+      "noData": {
+        "title": "Alarma Sin datos",
+        "body": "Suena cuando dejan de llegar lecturas durante un rato, por ejemplo si el sensor pierde la señal. Activada por defecto."
+      },
+      "predicted": {
+        "title": "Bajo / Alto previsto",
+        "body": "Te avisa antes de que la glucosa cruce un límite. Desactivada por defecto: actívala en Ajustes."
+      },
+      "delta": {
+        "title": "Delta",
+        "body": "El cambio de los últimos 5 minutos, bajo la flecha. Desactivado por defecto."
+      },
+      "trendWindow": {
+        "title": "Línea de tendencia más larga",
+        "body": "Muestra 2, 6 o 12 horas de lecturas, para ver toda la noche."
+      },
+      "info": {
+        "title": "Ajustes explicados",
+        "body": "Toca ⓘ junto a un ajuste para ver qué hace."
+      }
+    }
   }
 }
