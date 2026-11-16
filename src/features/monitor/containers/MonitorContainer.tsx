@@ -13,7 +13,8 @@ import { getStatusText } from "../helpers/status";
 import { formatDelta, getDelta } from "../helpers/delta";
 import { getReadingDisplay, snoozeMinutesLeft } from "../helpers/display";
 import { getMonitorLayout } from "../helpers/layout";
-import { getNightDim, isAlarmRinging } from "../helpers/nightMode";
+import { getNightBrightness, isAlarmRinging } from "../helpers/nightMode";
+import { useScreenBrightness } from "../hooks/useScreenBrightness";
 import { MonitorView } from "../components/MonitorView";
 
 const CLOCK_TICK_MS = 10_000;
@@ -50,10 +51,13 @@ export function MonitorContainer({ credentials }: Props) {
   const display = getReadingDisplay(reading, now, settings, { normal: theme.text, noData: theme.textTertiary });
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
   const minutesLeft = snoozeMinutesLeft(snoozeUntil, now);
-  const nightDim = getNightDim(settings, now, isAlarmRinging(lastAlarmAt, snoozeUntil, now));
+  const nightBrightness = getNightBrightness(settings, now, isAlarmRinging(lastAlarmAt, snoozeUntil, now));
+  const brightnessApplied = useScreenBrightness(nightBrightness);
+  // If the real brightness can't be changed, dim with a black overlay instead.
+  const nightDim = nightBrightness !== null && !brightnessApplied ? 1 - nightBrightness : 0;
   // Rating prompt only on a good moment: a fresh reading in range, nothing ringing, not at night or on the nightstand.
   useStoreReviewPrompt(
-    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && nightDim === 0 && screenWidth <= screenHeight,
+    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && nightBrightness === null && screenWidth <= screenHeight,
   );
   const layout = getMonitorLayout({
     width: screenWidth,

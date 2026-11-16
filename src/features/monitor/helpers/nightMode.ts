@@ -20,13 +20,13 @@ export function isWithinNight(minutes: number, start: number, end: number): bool
 }
 
 /**
- * How dark the black overlay over the monitor should be: 0 is off, 0.7 lets 30% through.
- * An alarm that just went off gets full brightness, so the number can be read.
+ * The screen brightness for night mode (0–1), or null when the screen should be at its normal brightness:
+ * night mode off, outside the night hours, or an alarm that just went off (so the number can be read).
  */
-export function getNightDim(settings: NightSettings, now: number, alarmActive: boolean): number {
-  if (!settings.nightModeEnabled || alarmActive) return 0;
+export function getNightBrightness(settings: NightSettings, now: number, alarmActive: boolean): number | null {
+  if (!settings.nightModeEnabled || alarmActive) return null;
   const date = new Date(now);
   const minutes = date.getHours() * 60 + date.getMinutes();
-  if (!isWithinNight(minutes, settings.nightStartMinutes, settings.nightEndMinutes)) return 0;
-  return 1 - settings.nightBrightness / 100;
+  if (!isWithinNight(minutes, settings.nightStartMinutes, settings.nightEndMinutes)) return null;
+  return settings.nightBrightness / 100;
 }
