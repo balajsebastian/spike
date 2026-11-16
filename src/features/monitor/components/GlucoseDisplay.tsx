@@ -21,12 +21,18 @@ export function GlucoseDisplay({ value, trendArrow, color, fontSize, opacity, st
   return (
     <>
       <Animated.View style={[styles.readingRow, { opacity }]}>
-        <Text style={[styles.reading, { color, fontSize }]} numberOfLines={1}>
+        <Text style={[styles.reading, { color, fontSize }]} numberOfLines={1} allowFontScaling={false}>
           {value}
         </Text>
-        {trendArrow && <Text style={[styles.trend, { color, fontSize: fontSize * TREND_ARROW_RATIO }]}>{trendArrow}</Text>}
+        {trendArrow && (
+          <Text style={[styles.trend, { color, fontSize: fontSize * TREND_ARROW_RATIO }]} allowFontScaling={false}>
+            {trendArrow}
+          </Text>
+        )}
       </Animated.View>
-      <Text style={[styles.status, { color: statusColor }]}>{status}</Text>
+      <Text style={[styles.status, { color: statusColor }]} allowFontScaling={false}>
+        {status}
+      </Text>
     </>
   );
 }
@@ -37,7 +43,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  // The size comes from the screen (helpers/layout.ts), so the text is never auto-shrunk.
+  // The size comes from the screen (helpers/layout.ts), so the text is never auto-shrunk
+  // and ignores the system text size (Larger Text would push it past the screen edge).
   reading: {
     fontWeight: "700",
     fontVariant: ["tabular-nums"],
