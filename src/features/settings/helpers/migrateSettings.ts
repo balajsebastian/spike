@@ -24,6 +24,7 @@ export function migrateSettings(stored: StoredSettings): Settings {
       high: legacySound,
       urgentHigh: legacySound,
       trend: legacySound,
+      noData: legacySound,
     };
   }
 

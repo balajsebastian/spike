@@ -29,11 +29,15 @@ export function MonitorContainer({ credentials }: Props) {
   const insets = useSafeAreaInsets();
   const now = useNow(CLOCK_TICK_MS);
 
-  const { reading, error, credentialsRejected, connected, history } = useGlucose(
+  const { reading, error, credentialsRejected, connected, polledAt, history } = useGlucose(
     credentials,
     settings.showTrendLine ? TREND_WINDOW_MINUTES : null,
   );
-  const { alarmLevel, snooze, cancelSnooze, snoozeUntil, lastAlarmAt } = useAlarm(reading, settings);
+  const { alarmLevel, noDataAlarm, snooze, cancelSnooze, snoozeUntil, lastAlarmAt } = useAlarm(
+    reading,
+    settings,
+    polledAt,
+  );
 
   const display = getReadingDisplay(reading, now, settings, { normal: theme.text, noData: theme.textTertiary });
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
@@ -61,7 +65,7 @@ export function MonitorContainer({ credentials }: Props) {
       now={now}
       settings={settings}
       theme={theme}
-      snooze={settings.snoozeEnabled ? { minutesLeft, canSnooze: !!alarmLevel } : null}
+      snooze={settings.snoozeEnabled ? { minutesLeft, canSnooze: !!alarmLevel || noDataAlarm } : null}
       error={error}
       credentialsRejected={credentialsRejected}
       onSnooze={() => snooze(settings.snoozeMinutes)}

@@ -21,6 +21,7 @@ interface Props {
   onChange: (partial: Partial<Settings>) => void;
   onStepThreshold: (key: ThresholdKey, direction: StepDirection) => void;
   onStepRepeat: (direction: StepDirection) => void;
+  onStepNoData: (direction: StepDirection) => void;
   onStepSnooze: (direction: StepDirection) => void;
   onStepNightTime: (key: NightTimeKey, direction: StepDirection) => void;
   onStepNightBrightness: (direction: StepDirection) => void;
@@ -38,6 +39,7 @@ export function SettingsView({
   onChange,
   onStepThreshold,
   onStepRepeat,
+  onStepNoData,
   onStepSnooze,
   onStepNightTime,
   onStepNightBrightness,
@@ -76,6 +78,7 @@ export function SettingsView({
           urgentRepeatMinutes={urgentRepeatMinutes}
           onChange={onChange}
           onStepRepeat={onStepRepeat}
+          onStepNoData={onStepNoData}
         />
         <SoundsSection settings={settings} theme={theme} onPickSound={onPickSound} />
         <AlarmSection

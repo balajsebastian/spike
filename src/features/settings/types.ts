@@ -10,9 +10,9 @@ export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
 ];
 
 /** Each alarm kind has its own sound, so you can tell what is happening without looking. */
-export type AlarmSoundKind = "urgentLow" | "low" | "high" | "urgentHigh" | "trend";
+export type AlarmSoundKind = "urgentLow" | "low" | "high" | "urgentHigh" | "trend" | "noData";
 
-export const ALARM_SOUND_KINDS: AlarmSoundKind[] = ["urgentLow", "low", "high", "urgentHigh", "trend"];
+export const ALARM_SOUND_KINDS: AlarmSoundKind[] = ["urgentLow", "low", "high", "urgentHigh", "trend", "noData"];
 
 export function isAlarmSoundKind(value: unknown): value is AlarmSoundKind {
   return ALARM_SOUND_KINDS.includes(value as AlarmSoundKind);
@@ -33,6 +33,9 @@ export interface Settings {
   fallingEnabled: boolean;
   risingEnabled: boolean;
   nonUrgentRepeatMinutes: number;
+  /** Alarms when no new reading has arrived for `noDataMinutes` (sensor, app or internet down). */
+  noDataEnabled: boolean;
+  noDataMinutes: number;
   snoozeEnabled: boolean;
   snoozeMinutes: number;
   alarmSounds: Record<AlarmSoundKind, AlarmSound>;
@@ -59,6 +62,8 @@ export const DEFAULT_SETTINGS: Settings = {
   fallingEnabled: true,
   risingEnabled: true,
   nonUrgentRepeatMinutes: 20,
+  noDataEnabled: true,
+  noDataMinutes: 20,
   snoozeEnabled: true,
   snoozeMinutes: 5,
   // Most urgent gets the most alarming sound.
@@ -68,6 +73,7 @@ export const DEFAULT_SETTINGS: Settings = {
     high: "chime",
     urgentHigh: "signal",
     trend: "beep",
+    noData: "arcade",
   },
   nightModeEnabled: false,
   nightStartMinutes: 23 * 60,

@@ -33,6 +33,9 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
     connected: false,
   });
   const [history, setHistory] = useState<GlucoseReading[]>([]);
+  // When we last asked the CGM for data (successfully or not). The no-data alarm is only checked after a
+  // real poll, so coming back from the background doesn't ring before the fresh reading has had a chance to load.
+  const [polledAt, setPolledAt] = useState(0);
 
   const clientRef = useRef<CGMClient | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -113,6 +116,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
         await updateHistory(client, reading);
         if (cancelled) return;
 
+        setPolledAt(Date.now());
         errorsRef.current = 0;
         const isStale = reading && (Date.now() - reading.timestampMs) > STALE_THRESHOLD_MS;
         timerRef.current = setTimeout(poll, isStale ? STALE_POLL_MS : POLL_MS);
@@ -124,6 +128,7 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
           setState((prev) => ({ ...prev, error: null, credentialsRejected: err.locked ? "locked" : "invalid" }));
           return;
         }
+        setPolledAt(Date.now());
         errorsRef.current++;
         const backoff = Math.min(
           POLL_MS * Math.pow(2, errorsRef.current - 1),
@@ -151,5 +156,5 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
     };
   }, [credentials.source]);
 
-  return { ...state, history: historyMinutes === null ? NO_HISTORY : history };
+  return { ...state, polledAt, history: historyMinutes === null ? NO_HISTORY : history };
 }

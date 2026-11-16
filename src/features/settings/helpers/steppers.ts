@@ -7,6 +7,9 @@ import {
   NIGHT_BRIGHTNESS_MIN,
   NIGHT_BRIGHTNESS_STEP,
   NIGHT_TIME_STEP,
+  NO_DATA_MAX,
+  NO_DATA_MIN,
+  NO_DATA_STEP,
   SNOOZE_MAX,
   SNOOZE_MIN,
   THRESHOLD_MAX,
@@ -52,6 +55,10 @@ export function stepRepeat(settings: Settings, direction: StepDirection): Partia
       NON_URGENT_REPEAT_MAX,
     ),
   };
+}
+
+export function stepNoDataMinutes(settings: Settings, direction: StepDirection): Partial<Settings> {
+  return { noDataMinutes: stepWithin(settings.noDataMinutes, direction, NO_DATA_STEP, NO_DATA_MIN, NO_DATA_MAX) };
 }
 
 export function stepSnooze(settings: Settings, direction: StepDirection): Partial<Settings> {

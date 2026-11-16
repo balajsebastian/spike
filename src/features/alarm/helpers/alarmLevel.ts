@@ -1,5 +1,6 @@
 import type { GlucoseReading } from "@/shared/types";
 import type { AlarmSoundKind, Settings } from "@/features/settings/types";
+import { isRepeatDue } from "./repeat";
 
 export type AlarmLevel = "urgent-low" | "low" | "urgent-high" | "high" | "falling" | "rising" | null;
 export type ActiveAlarmLevel = Exclude<AlarmLevel, null>;
@@ -70,5 +71,5 @@ export function isAlarmDue(
 ): boolean {
   if (severity(level) > severity(last.level)) return true;
   const repeatMinutes = isUrgentLevel(level) ? urgentRepeatMinutes : nonUrgentRepeatMinutes;
-  return now - last.time >= repeatMinutes * 60_000 - graceMs;
+  return isRepeatDue(last.time, now, repeatMinutes, graceMs);
 }
