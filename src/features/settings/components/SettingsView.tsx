@@ -15,8 +15,8 @@ interface Props {
   theme: ThemeColors;
   insets: EdgeInsets;
   appVersion: string;
-  trendHours: number;
   urgentRepeatMinutes: number;
+  predictionMinutes: number;
   snoozeWarningAbove: number | null;
   onChange: (partial: Partial<Settings>) => void;
   onStepThreshold: (key: ThresholdKey, direction: StepDirection) => void;
@@ -33,8 +33,8 @@ export function SettingsView({
   theme,
   insets,
   appVersion,
-  trendHours,
   urgentRepeatMinutes,
+  predictionMinutes,
   snoozeWarningAbove,
   onChange,
   onStepThreshold,
@@ -63,7 +63,7 @@ export function SettingsView({
       >
         <Text style={[styles.title, { color: theme.text }]}>{t("tabs.settings")}</Text>
 
-        <DisplaySection settings={settings} theme={theme} trendHours={trendHours} onChange={onChange} />
+        <DisplaySection settings={settings} theme={theme} onChange={onChange} />
         <NightModeSection
           settings={settings}
           theme={theme}
@@ -76,6 +76,7 @@ export function SettingsView({
           settings={settings}
           theme={theme}
           urgentRepeatMinutes={urgentRepeatMinutes}
+          predictionMinutes={predictionMinutes}
           onChange={onChange}
           onStepRepeat={onStepRepeat}
           onStepNoData={onStepNoData}

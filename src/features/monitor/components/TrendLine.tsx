@@ -2,9 +2,12 @@ import Svg, { Circle, Line, Text as SvgText } from "react-native-svg";
 import type { GlucoseReading } from "@/shared/types";
 import { formatGlucose, type Settings, type ThemeColors } from "@/features/settings/types";
 import { getRangeColor } from "../helpers/range";
-import { trendDots, valueDomain } from "../helpers/trendChart";
+import { bucketMinutes, trendDots, valueDomain } from "../helpers/trendChart";
 
-const DOT_RADIUS = 4;
+const MAX_DOT_RADIUS = 4;
+const MIN_DOT_RADIUS = 2;
+// Dots take at most this share of the space between them, so long windows don't merge into a line.
+const DOT_SPACING_RATIO = 0.35;
 const LAST_DOT_RADIUS = 5;
 const HALO_RADIUS = 11;
 const OLDEST_OPACITY = 0.35;
@@ -22,13 +25,13 @@ interface Props {
 }
 
 /**
- * Dexcom-style dots for the last couple of hours, so a glance tells a sudden drop from a gradual one.
+ * Dexcom-style dots for the last few hours, so a glance tells a sudden drop from a gradual one.
  * Only the low/high lines are labelled: the big number stays the main thing.
  */
 export function TrendLine({ readings, windowMinutes, now, width, height, settings, theme }: Props) {
   if (readings.length < 2 || width <= 0) return null;
 
-  const dots = trendDots(readings);
+  const dots = trendDots(readings, windowMinutes);
   const last = dots[dots.length - 1];
   const { minY, maxY } = valueDomain(dots, settings);
   const startX = now - windowMinutes * 60_000;
@@ -39,6 +42,8 @@ export function TrendLine({ readings, windowMinutes, now, width, height, setting
   const plotTop = HALO_RADIUS + 1;
   const plotBottom = height - HALO_RADIUS - 1;
   const x = (ms: number) => plotLeft + ((ms - startX) / (now - startX)) * (plotRight - plotLeft);
+  const dotSpacing = (plotRight - plotLeft) / (windowMinutes / bucketMinutes(windowMinutes));
+  const dotRadius = Math.max(MIN_DOT_RADIUS, Math.min(MAX_DOT_RADIUS, dotSpacing * DOT_SPACING_RATIO));
   const y = (mgdl: number) => plotTop + (1 - (mgdl - minY) / (maxY - minY)) * (plotBottom - plotTop);
 
   const thresholds = [settings.highThreshold, settings.lowThreshold];
@@ -79,7 +84,7 @@ export function TrendLine({ readings, windowMinutes, now, width, height, setting
             key={r.timestampMs}
             cx={x(r.timestampMs)}
             cy={y(r.valueMgdl)}
-            r={DOT_RADIUS}
+            r={dotRadius}
             fill={getRangeColor(r.valueMgdl, settings, theme.textSecondary)}
             opacity={OLDEST_OPACITY + (1 - OLDEST_OPACITY) * Math.max(0, Math.min(1, age))}
           />

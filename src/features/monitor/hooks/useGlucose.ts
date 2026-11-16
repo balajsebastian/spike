@@ -51,14 +51,15 @@ export function useGlucose(credentials: Credentials, historyMinutes: number | nu
   }, [credentials]);
 
   useEffect(function syncHistorySetting() {
-    const wasOff = historyMinutesRef.current === null;
+    const previous = historyMinutesRef.current;
     historyMinutesRef.current = historyMinutes;
     // Re-fetch the full history on the next poll.
     lastHistoryFetchRef.current = 0;
 
-    // Just turned on: fetch now instead of leaving the chart empty until the next poll (up to a minute).
+    // Just turned on or showing more hours: fetch now instead of leaving the chart short until the next poll.
     const client = clientRef.current;
-    if (!wasOff || historyMinutes === null || !client || stoppedRef.current) return;
+    if (historyMinutes === null || !client || stoppedRef.current) return;
+    if (previous !== null && historyMinutes <= previous) return;
     let cancelled = false;
     client
       .getHistory(historyMinutes)

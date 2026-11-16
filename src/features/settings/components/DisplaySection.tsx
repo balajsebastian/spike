@@ -1,7 +1,7 @@
 import { Switch } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChartSpline, Moon, Ruler } from "lucide-react-native";
-import type { Settings, ThemeColors } from "../types";
+import { ChartSpline, Diff, History, Moon, Ruler } from "lucide-react-native";
+import { TREND_WINDOW_HOURS, type Settings, type ThemeColors } from "../types";
 import { Section } from "./Section";
 import { Row } from "./Row";
 import { Segmented } from "./Segmented";
@@ -9,17 +9,16 @@ import { Segmented } from "./Segmented";
 interface Props {
   settings: Settings;
   theme: ThemeColors;
-  trendHours: number;
   onChange: (partial: Partial<Settings>) => void;
 }
 
-export function DisplaySection({ settings, theme, trendHours, onChange }: Props) {
+export function DisplaySection({ settings, theme, onChange }: Props) {
   const { t } = useTranslation();
 
   return (
     <Section
       title={t("settings.sections.display")}
-      footer={t("settings.trendLineFooter", { count: trendHours })}
+      footer={t("settings.trendLineFooter", { count: settings.trendWindowHours })}
       theme={theme}
     >
       <Row label={t("settings.theme")} icon={Moon} theme={theme}>
@@ -44,9 +43,22 @@ export function DisplaySection({ settings, theme, trendHours, onChange }: Props)
           theme={theme}
         />
       </Row>
+      <Row label={t("settings.delta")} icon={Diff} theme={theme}>
+        <Switch value={settings.showDelta} onValueChange={(showDelta) => onChange({ showDelta })} />
+      </Row>
       <Row label={t("settings.trendLine")} icon={ChartSpline} theme={theme}>
         <Switch value={settings.showTrendLine} onValueChange={(showTrendLine) => onChange({ showTrendLine })} />
       </Row>
+      {settings.showTrendLine && (
+        <Row label={t("settings.trendWindow")} icon={History} theme={theme}>
+          <Segmented
+            options={TREND_WINDOW_HOURS.map((hours) => ({ label: `${hours}h`, value: String(hours) }))}
+            value={String(settings.trendWindowHours)}
+            onChange={(value) => onChange({ trendWindowHours: Number(value) as Settings["trendWindowHours"] })}
+            theme={theme}
+          />
+        </Row>
+      )}
     </Section>
   );
 }

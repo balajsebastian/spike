@@ -5,6 +5,8 @@ import {
   ArrowUp,
   ChevronsDown,
   ChevronsUp,
+  ArrowDownToLine,
+  ArrowUpToLine,
   Repeat,
   Timer,
   TrendingDown,
@@ -18,13 +20,23 @@ import { Section } from "./Section";
 import { Row } from "./Row";
 import { Stepper } from "./Stepper";
 
-type ToggleKey = "urgentLowEnabled" | "lowEnabled" | "highEnabled" | "urgentHighEnabled" | "fallingEnabled" | "risingEnabled";
+type ToggleKey =
+  | "urgentLowEnabled"
+  | "lowEnabled"
+  | "highEnabled"
+  | "urgentHighEnabled"
+  | "predictedLowEnabled"
+  | "predictedHighEnabled"
+  | "fallingEnabled"
+  | "risingEnabled";
 
 const TOGGLE_ROWS: { key: ToggleKey; labelKey: string; icon: LucideIcon }[] = [
   { key: "urgentLowEnabled", labelKey: "settings.urgentLow", icon: ChevronsDown },
   { key: "lowEnabled", labelKey: "settings.low", icon: ArrowDown },
   { key: "highEnabled", labelKey: "settings.high", icon: ArrowUp },
   { key: "urgentHighEnabled", labelKey: "settings.urgentHigh", icon: ChevronsUp },
+  { key: "predictedLowEnabled", labelKey: "settings.predictedLow", icon: ArrowDownToLine },
+  { key: "predictedHighEnabled", labelKey: "settings.predictedHigh", icon: ArrowUpToLine },
   { key: "fallingEnabled", labelKey: "settings.rapidFall", icon: TrendingDown },
   { key: "risingEnabled", labelKey: "settings.rapidRise", icon: TrendingUp },
 ];
@@ -33,18 +45,31 @@ interface Props {
   settings: Settings;
   theme: ThemeColors;
   urgentRepeatMinutes: number;
+  predictionMinutes: number;
   onChange: (partial: Partial<Settings>) => void;
   onStepRepeat: (direction: StepDirection) => void;
   onStepNoData: (direction: StepDirection) => void;
 }
 
-export function AlertTypesSection({ settings, theme, urgentRepeatMinutes, onChange, onStepRepeat, onStepNoData }: Props) {
+export function AlertTypesSection({
+  settings,
+  theme,
+  urgentRepeatMinutes,
+  predictionMinutes,
+  onChange,
+  onStepRepeat,
+  onStepNoData,
+}: Props) {
   const { t } = useTranslation();
 
   return (
     <Section
       title={t("settings.sections.alertTypes")}
-      footer={`${t("settings.repeatFooter", { count: urgentRepeatMinutes })} ${t("settings.noDataFooter")}`}
+      footer={[
+        t("settings.predictedFooter", { count: predictionMinutes }),
+        t("settings.repeatFooter", { count: urgentRepeatMinutes }),
+        t("settings.noDataFooter"),
+      ].join(" ")}
       theme={theme}
     >
       {TOGGLE_ROWS.map(({ key, labelKey, icon }) => (

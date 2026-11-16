@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS, type AlarmSound, type Settings } from "../types";
+import { DEFAULT_SETTINGS, TREND_WINDOW_HOURS, type AlarmSound, type Settings } from "../types";
 import { THRESHOLD_STEP } from "../constants";
 
 type StoredSettings = Partial<Settings> & {
@@ -23,10 +23,13 @@ export function migrateSettings(stored: StoredSettings): Settings {
       low: legacySound,
       high: legacySound,
       urgentHigh: legacySound,
+      predicted: legacySound,
       trend: legacySound,
       noData: legacySound,
     };
   }
+
+  if (!TREND_WINDOW_HOURS.includes(merged.trendWindowHours)) merged.trendWindowHours = DEFAULT_SETTINGS.trendWindowHours;
 
   // Settings saved before Urgent High existed may have a High above its default.
   merged.urgentHighThreshold = Math.max(merged.urgentHighThreshold, merged.highThreshold + THRESHOLD_STEP);

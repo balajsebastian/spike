@@ -9,13 +9,15 @@ import { useGlucose } from "../hooks/useGlucose";
 import { useBlink } from "../hooks/useBlink";
 import { useNow } from "../hooks/useNow";
 import { getStatusText } from "../helpers/status";
+import { formatDelta, getDelta } from "../helpers/delta";
 import { getReadingDisplay, snoozeMinutesLeft } from "../helpers/display";
 import { getMonitorLayout } from "../helpers/layout";
 import { getNightDim, isAlarmRinging } from "../helpers/nightMode";
-import { TREND_WINDOW_MINUTES } from "../constants";
 import { MonitorView } from "../components/MonitorView";
 
 const CLOCK_TICK_MS = 10_000;
+// Delta and predicted alerts only need the last few readings, so a short history is kept even without the trend line.
+const SHORT_HISTORY_MINUTES = 20;
 
 interface Props {
   credentials: Credentials;
@@ -28,17 +30,22 @@ export function MonitorContainer({ credentials }: Props) {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const now = useNow(CLOCK_TICK_MS);
+  const trendWindowMinutes = settings.trendWindowHours * 60;
+  const needsShortHistory = settings.showDelta || settings.predictedLowEnabled || settings.predictedHighEnabled;
+  const historyMinutes = settings.showTrendLine ? trendWindowMinutes : needsShortHistory ? SHORT_HISTORY_MINUTES : null;
 
   const { reading, error, credentialsRejected, connected, polledAt, history } = useGlucose(
     credentials,
-    settings.showTrendLine ? TREND_WINDOW_MINUTES : null,
+    historyMinutes,
   );
   const { alarmLevel, noDataAlarm, snooze, cancelSnooze, snoozeUntil, lastAlarmAt } = useAlarm(
     reading,
+    history,
     settings,
     polledAt,
   );
 
+  const delta = settings.showDelta ? getDelta(history, reading) : null;
   const display = getReadingDisplay(reading, now, settings, { normal: theme.text, noData: theme.textTertiary });
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
   const minutesLeft = snoozeMinutesLeft(snoozeUntil, now);
@@ -59,9 +66,10 @@ export function MonitorContainer({ credentials }: Props) {
       columnWidth={layout.columnWidth}
       readingFontSize={layout.readingFontSize}
       status={getStatusText(reading, connected)}
+      delta={delta === null ? null : formatDelta(delta, settings.unit)}
       blinkOpacity={blinkOpacity}
       nightDim={nightDim}
-      trend={layout.trend && { readings: history, windowMinutes: TREND_WINDOW_MINUTES, ...layout.trend }}
+      trend={layout.trend && { readings: history, windowMinutes: trendWindowMinutes, ...layout.trend }}
       now={now}
       settings={settings}
       theme={theme}

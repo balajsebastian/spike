@@ -16,6 +16,8 @@ interface Props {
   columnWidth: number | null;
   readingFontSize: number;
   status: { text: string; color?: string };
+  /** Formatted change over the last 5 minutes, shown under the arrow; null hides it. */
+  delta: string | null;
   blinkOpacity: Animated.Value;
   /** Opacity of the black night-mode overlay (0 = off). */
   nightDim: number;
@@ -37,6 +39,7 @@ export function MonitorView({
   columnWidth,
   readingFontSize,
   status,
+  delta,
   blinkOpacity,
   nightDim,
   trend,
@@ -59,6 +62,7 @@ export function MonitorView({
           <GlucoseDisplay
             value={display.value}
             trendArrow={display.trendArrow}
+            delta={delta}
             color={display.color}
             fontSize={readingFontSize}
             opacity={blinkOpacity}

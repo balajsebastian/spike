@@ -4,9 +4,13 @@ import type { AlarmSoundKind, Settings } from "@/features/settings/types";
 import { REPEAT_GRACE_MS, URGENT_REPEAT_MINUTES } from "../constants";
 import { type LastAlarm, getAlarmLevel, isAlarmDue, isAlarmEnabled, soundKind } from "../helpers/alarmLevel";
 
-/** Rings on each new reading that is out of range or moving fast, respecting repeats and snooze. */
+/**
+ * Rings on each new reading that is out of range, on track to leave it, or moving fast,
+ * respecting repeats and snooze. `predicted` is where glucose is headed (mg/dL), or null.
+ */
 export function useGlucoseAlarm(
   reading: GlucoseReading | null,
+  predicted: number | null,
   settings: Settings,
   snoozeUntil: number,
   ring: (kind: AlarmSoundKind, at: number) => void,
@@ -18,7 +22,7 @@ export function useGlucoseAlarm(
     if (!reading || reading.timestampMs === lastReadingTimestampRef.current) return;
     lastReadingTimestampRef.current = reading.timestampMs;
 
-    const level = getAlarmLevel(reading, settings);
+    const level = getAlarmLevel(reading, settings, predicted);
     if (!level || !isAlarmEnabled(level, settings)) return;
 
     const now = Date.now();
@@ -35,5 +39,7 @@ export function useGlucoseAlarm(
 
     lastAlarmRef.current = { level, time: now };
     ring(soundKind(level), now);
+    // `predicted` is read when a new reading arrives, not a trigger of its own.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reading, settings, snoozeUntil, ring]);
 }

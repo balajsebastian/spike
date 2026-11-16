@@ -10,18 +10,25 @@ export const ALARM_SOUNDS: { label: string; value: AlarmSound }[] = [
 ];
 
 /** Each alarm kind has its own sound, so you can tell what is happening without looking. */
-export type AlarmSoundKind = "urgentLow" | "low" | "high" | "urgentHigh" | "trend" | "noData";
+export type AlarmSoundKind = "urgentLow" | "low" | "high" | "urgentHigh" | "predicted" | "trend" | "noData";
 
-export const ALARM_SOUND_KINDS: AlarmSoundKind[] = ["urgentLow", "low", "high", "urgentHigh", "trend", "noData"];
+export const ALARM_SOUND_KINDS: AlarmSoundKind[] = ["urgentLow", "low", "high", "urgentHigh", "predicted", "trend", "noData"];
 
 export function isAlarmSoundKind(value: unknown): value is AlarmSoundKind {
   return ALARM_SOUND_KINDS.includes(value as AlarmSoundKind);
 }
 
+/** How far back the trend line goes. LibreLinkUp keeps about 12 hours, so that's the longest. */
+export const TREND_WINDOW_HOURS = [2, 6, 12] as const;
+export type TrendWindowHours = (typeof TREND_WINDOW_HOURS)[number];
+
 export interface Settings {
   theme: "dark" | "light";
   unit: "mgdl" | "mmol";
   showTrendLine: boolean;
+  trendWindowHours: TrendWindowHours;
+  /** Shows the change over the last 5 minutes next to "x min ago". */
+  showDelta: boolean;
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
@@ -30,6 +37,9 @@ export interface Settings {
   lowEnabled: boolean;
   highEnabled: boolean;
   urgentHighEnabled: boolean;
+  /** In range now, but on track to cross low / high within a few minutes. */
+  predictedLowEnabled: boolean;
+  predictedHighEnabled: boolean;
   fallingEnabled: boolean;
   risingEnabled: boolean;
   nonUrgentRepeatMinutes: number;
@@ -51,6 +61,8 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: "dark",
   unit: "mgdl",
   showTrendLine: false,
+  trendWindowHours: 2,
+  showDelta: false,
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,
@@ -59,6 +71,8 @@ export const DEFAULT_SETTINGS: Settings = {
   lowEnabled: true,
   highEnabled: true,
   urgentHighEnabled: true,
+  predictedLowEnabled: true,
+  predictedHighEnabled: true,
   fallingEnabled: true,
   risingEnabled: true,
   nonUrgentRepeatMinutes: 20,
@@ -72,6 +86,7 @@ export const DEFAULT_SETTINGS: Settings = {
     low: "double-beep",
     high: "chime",
     urgentHigh: "signal",
+    predicted: "beep",
     trend: "beep",
     noData: "arcade",
   },

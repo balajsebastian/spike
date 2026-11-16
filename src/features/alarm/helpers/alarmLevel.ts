@@ -2,15 +2,28 @@ import type { GlucoseReading } from "@/shared/types";
 import type { AlarmSoundKind, Settings } from "@/features/settings/types";
 import { isRepeatDue } from "./repeat";
 
-export type AlarmLevel = "urgent-low" | "low" | "urgent-high" | "high" | "falling" | "rising" | null;
+export type AlarmLevel =
+  | "urgent-low"
+  | "low"
+  | "urgent-high"
+  | "high"
+  | "predicted-low"
+  | "predicted-high"
+  | "falling"
+  | "rising"
+  | null;
 export type ActiveAlarmLevel = Exclude<AlarmLevel, null>;
 
-export function getAlarmLevel(reading: GlucoseReading | null, settings: Settings): AlarmLevel {
+/** `predicted` is where glucose is headed in a few minutes (mg/dL), or null when unknown. */
+export function getAlarmLevel(reading: GlucoseReading | null, settings: Settings, predicted: number | null = null): AlarmLevel {
   if (!reading) return null;
   if (reading.valueMgdl < settings.urgentLowThreshold) return "urgent-low";
   if (reading.valueMgdl < settings.lowThreshold) return "low";
   if (reading.valueMgdl > settings.urgentHighThreshold) return "urgent-high";
   if (reading.valueMgdl > settings.highThreshold) return "high";
+  // In range now, but on track to cross a line soon.
+  if (predicted !== null && settings.predictedLowEnabled && predicted < settings.lowThreshold) return "predicted-low";
+  if (predicted !== null && settings.predictedHighEnabled && predicted > settings.highThreshold) return "predicted-high";
   if (reading.trend === "DoubleDown" || reading.trend === "SingleDown") return "falling";
   if (reading.trend === "DoubleUp" || reading.trend === "SingleUp") return "rising";
   return null;
@@ -20,11 +33,12 @@ export function isUrgentLevel(level: AlarmLevel): boolean {
   return level === "urgent-low" || level === "urgent-high";
 }
 
-/** Higher is worse: trend < threshold < urgent. Getting worse alarms right away. */
+/** Higher is worse: trend < predicted < threshold < urgent. Getting worse alarms right away. */
 export function severity(level: AlarmLevel): number {
   if (!level) return 0;
-  if (isUrgentLevel(level)) return 3;
-  if (level === "low" || level === "high") return 2;
+  if (isUrgentLevel(level)) return 4;
+  if (level === "low" || level === "high") return 3;
+  if (level === "predicted-low" || level === "predicted-high") return 2;
   return 1;
 }
 
@@ -35,6 +49,8 @@ export function isAlarmEnabled(level: AlarmLevel, settings: Settings): boolean {
     case "low": return settings.lowEnabled;
     case "urgent-high": return settings.urgentHighEnabled || settings.highEnabled;
     case "high": return settings.highEnabled;
+    case "predicted-low": return settings.predictedLowEnabled;
+    case "predicted-high": return settings.predictedHighEnabled;
     case "falling": return settings.fallingEnabled;
     case "rising": return settings.risingEnabled;
     default: return false;
@@ -47,6 +63,8 @@ export function soundKind(level: ActiveAlarmLevel): AlarmSoundKind {
     case "low": return "low";
     case "urgent-high": return "urgentHigh";
     case "high": return "high";
+    case "predicted-low":
+    case "predicted-high": return "predicted";
     case "falling":
     case "rising": return "trend";
   }
