@@ -38,7 +38,7 @@
     "dexcom": {
       "field1": "Benutzername oder E-Mail",
       "field2": "Passwort",
-      "hint": "Verwende das Konto der Person, die ihre Daten teilt (das mit dem Sensor verbundene Konto), kein Follower-Konto."
+      "hint": "Verwende das Konto der Person, die ihre Daten teilt (das mit dem Sensor verbundene Konto), kein Follower-Konto. Share muss in der Dexcom-App aktiviert sein. Wenn keine Werte ankommen, lade einen Follower ein (das kannst du selbst sein)."
     },
     "libre": {
       "field1": "E-Mail",

@@ -30,7 +30,7 @@ Have an old phone or tablet in a drawer? Install Spike, plug it in and put it wh
 
 ## Supported CGM sources
 
-- **Dexcom Share** (G6, G7, ONE): tested
+- **Dexcom Share** (G6, G7, ONE): tested. Log in with the account connected to the sensor, not a follower's. Share must be turned on in the Dexcom app, with at least one follower invited (it can be you).
 - **LibreLinkUp** (Libre 2, Libre 3): beta
 - **Nightscout** (any CGM via your own instance): beta
 
