@@ -36,9 +36,9 @@
     "subtitle": "Connect your CGM",
     "connect": "Connect",
     "dexcom": {
-      "field1": "Username or email",
+      "field1": "Username, email or phone",
       "field2": "Password",
-      "hint": "Use the sharer's credentials (the account connected to the sensor), not a follower account."
+      "hint": "Use the sharer's credentials (the account connected to the sensor), not a follower account. Share must be turned on in the Dexcom app. If no readings come in, invite a follower (it can be you)."
     },
     "libre": {
       "field1": "Email",
@@ -54,6 +54,7 @@
       "nightscoutUrl": "Enter your Nightscout URL",
       "fillAll": "Fill in all fields",
       "invalidCredentials": "Invalid credentials or account not found",
+      "invalidDexcom": "Invalid credentials or account not found. Check that the region (EU, US, JP) matches your Dexcom account.",
       "accountLocked": "Account locked after too many failed logins. Try again later."
     }
   },
@@ -126,7 +127,7 @@
       "noDataAfter": "How long without a new reading before the No Data alarm goes off.",
       "repeatOther": "How often Low, High, predicted, rapid-change and No Data alarms repeat while the situation lasts. Urgent Low and Urgent High always repeat every {{count}} minutes.",
       "snooze": "Shows a Snooze button on the monitor while an alarm is active, to silence alarms for a few minutes.",
-      "snoozeDuration": "How long Snooze silences all alarms. A long snooze can delay a critical alert."
+      "snoozeDuration": "How long Snooze silences alarms. If you drop to Urgent Low while snoozed, the snooze ends and the alarm goes off."
     }
   },
   "sounds": {

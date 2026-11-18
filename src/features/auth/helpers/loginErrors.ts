@@ -10,10 +10,12 @@ export function validateLoginForm(source: LoginSource, field1: string, field2: s
 }
 
 /** A failed login as an i18n key (known cases) or the raw message (anything else). */
-export function describeLoginError(err: unknown): { key: string } | { message: string } {
+export function describeLoginError(err: unknown, source: LoginSource): { key: string } | { message: string } {
+  // A Dexcom account only exists in its own region, so a wrong region looks exactly like a wrong password.
+  const invalidKey = source === "dexcom" ? "login.errors.invalidDexcom" : "login.errors.invalidCredentials";
   if (err instanceof CredentialsRejectedError) {
-    return { key: err.locked ? "login.errors.accountLocked" : "login.errors.invalidCredentials" };
+    return { key: err.locked ? "login.errors.accountLocked" : invalidKey };
   }
   const message = err instanceof Error ? err.message : String(err);
-  return message.includes("500") ? { key: "login.errors.invalidCredentials" } : { message };
+  return message.includes("500") ? { key: invalidKey } : { message };
 }

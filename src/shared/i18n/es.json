@@ -36,9 +36,9 @@
     "subtitle": "Conecta tu sensor",
     "connect": "Conectar",
     "dexcom": {
-      "field1": "Usuario o correo",
+      "field1": "Usuario, correo o teléfono",
       "field2": "Contraseña",
-      "hint": "Usa la cuenta de quien comparte los datos (la cuenta conectada al sensor), no una cuenta de seguidor."
+      "hint": "Usa la cuenta de quien comparte los datos (la cuenta conectada al sensor), no una cuenta de seguidor. Share debe estar activado en la app de Dexcom. Si no llegan lecturas, invita a un seguidor (puedes ser tú)."
     },
     "libre": {
       "field1": "Correo",
@@ -54,6 +54,7 @@
       "nightscoutUrl": "Introduce la URL de Nightscout",
       "fillAll": "Rellena todos los campos",
       "invalidCredentials": "Credenciales incorrectas o cuenta no encontrada",
+      "invalidDexcom": "Credenciales incorrectas o cuenta no encontrada. Comprueba que la región (EU, US, JP) coincide con tu cuenta de Dexcom.",
       "accountLocked": "Cuenta bloqueada tras demasiados intentos fallidos. Inténtalo más tarde."
     }
   },
@@ -126,7 +127,7 @@
       "noDataAfter": "Cuánto tiempo sin lectura nueva hasta que suena la alarma Sin datos.",
       "repeatOther": "Cada cuánto se repiten las alarmas de Bajo, Alto, previstas, cambio rápido y Sin datos mientras dure la situación. Bajo urgente y Alto urgente siempre se repiten cada {{count}} minutos.",
       "snooze": "Muestra un botón para posponer en el monitor mientras hay una alarma activa, para silenciar las alarmas unos minutos.",
-      "snoozeDuration": "Cuánto tiempo silencia todas las alarmas al posponer. Posponer mucho puede retrasar una alerta crítica."
+      "snoozeDuration": "Cuánto tiempo silencia las alarmas al posponer. Si bajas a Bajo urgente mientras está pospuesto, se cancela y suena la alarma."
     }
   },
   "sounds": {

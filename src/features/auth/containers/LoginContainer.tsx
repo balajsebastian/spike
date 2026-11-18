@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { DexcomRegion } from "@/providers/dexcom/types";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import type { Credentials } from "../types";
-import { DEMO_EMAIL, buildConnection, type LoginSource } from "../helpers/connection";
+import { DEMO_EMAIL, buildConnection, defaultDexcomRegion, type LoginSource } from "../helpers/connection";
 import { describeLoginError, validateLoginForm } from "../helpers/loginErrors";
 import { LoginForm } from "../components/LoginForm";
 
@@ -18,7 +18,7 @@ export function LoginContainer({ onLogin }: Props) {
   const [source, setSource] = useState<LoginSource>("dexcom");
   const [field1, setField1] = useState("");
   const [field2, setField2] = useState("");
-  const [region, setRegion] = useState<DexcomRegion>("eu");
+  const [region, setRegion] = useState<DexcomRegion>(defaultDexcomRegion);
   const [error, setError] = useState<string | null>(null);
   const [testing, setTesting] = useState(false);
 
@@ -51,7 +51,7 @@ export function LoginContainer({ onLogin }: Props) {
       await client.connect();
       onLogin(credentials);
     } catch (err) {
-      const described = describeLoginError(err);
+      const described = describeLoginError(err, source);
       setError("key" in described ? t(described.key) : described.message);
     } finally {
       setTesting(false);

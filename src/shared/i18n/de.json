@@ -36,9 +36,9 @@
     "subtitle": "Verbinde deinen Sensor",
     "connect": "Verbinden",
     "dexcom": {
-      "field1": "Benutzername oder E-Mail",
+      "field1": "Benutzername, E-Mail oder Telefon",
       "field2": "Passwort",
-      "hint": "Verwende das Konto der Person, die ihre Daten teilt (das mit dem Sensor verbundene Konto), kein Follower-Konto."
+      "hint": "Verwende das Konto der Person, die ihre Daten teilt (das mit dem Sensor verbundene Konto), kein Follower-Konto. Share muss in der Dexcom-App aktiviert sein. Wenn keine Werte ankommen, lade einen Follower ein (das kannst du selbst sein)."
     },
     "libre": {
       "field1": "E-Mail",
@@ -54,6 +54,7 @@
       "nightscoutUrl": "Gib deine Nightscout-URL ein",
       "fillAll": "Bitte alle Felder ausfüllen",
       "invalidCredentials": "Falsche Zugangsdaten oder Konto nicht gefunden",
+      "invalidDexcom": "Falsche Zugangsdaten oder Konto nicht gefunden. Prüfe, ob die Region (EU, US, JP) zu deinem Dexcom-Konto passt.",
       "accountLocked": "Konto nach zu vielen fehlgeschlagenen Anmeldungen gesperrt. Versuche es später erneut."
     }
   },
@@ -126,7 +127,7 @@
       "noDataAfter": "Wie lange ohne neuen Wert, bis der Keine-Daten-Alarm losgeht.",
       "repeatOther": "Wie oft Niedrig-, Hoch-, erwartete, Schnellwechsel- und Keine-Daten-Alarme wiederholt werden, solange die Lage anhält. Dringend niedrig und Dringend hoch wiederholen sich immer alle {{count}} Minuten.",
       "snooze": "Zeigt während eines Alarms eine Stummschalten-Taste auf dem Monitor, um Alarme ein paar Minuten stummzuschalten.",
-      "snoozeDuration": "Wie lange Stummschalten alle Alarme stummschaltet. Langes Stummschalten kann einen kritischen Alarm verzögern."
+      "snoozeDuration": "Wie lange Stummschalten die Alarme stummschaltet. Fällt der Wert währenddessen auf Dringend niedrig, endet die Stummschaltung und der Alarm ertönt."
     }
   },
   "sounds": {

@@ -36,9 +36,9 @@
     "subtitle": "Conectează-ți senzorul",
     "connect": "Conectează",
     "dexcom": {
-      "field1": "Utilizator sau email",
+      "field1": "Utilizator, email sau telefon",
       "field2": "Parolă",
-      "hint": "Folosește contul persoanei care poartă senzorul (contul conectat la senzor), nu un cont de follower."
+      "hint": "Folosește contul persoanei care poartă senzorul (contul conectat la senzor), nu un cont de follower. Share trebuie pornit în aplicația Dexcom. Dacă nu apar citiri, invită un follower (poți fi chiar tu)."
     },
     "libre": {
       "field1": "Email",
@@ -54,6 +54,7 @@
       "nightscoutUrl": "Introdu adresa Nightscout",
       "fillAll": "Completează toate câmpurile",
       "invalidCredentials": "Date de autentificare greșite sau cont inexistent",
+      "invalidDexcom": "Date de autentificare greșite sau cont inexistent. Verifică dacă regiunea (EU, US, JP) corespunde contului tău Dexcom.",
       "accountLocked": "Cont blocat după prea multe autentificări eșuate. Încearcă mai târziu."
     }
   },
@@ -126,7 +127,7 @@
       "noDataAfter": "Cât timp fără citire nouă până sună alarma Lipsă date.",
       "repeatOther": "Cât de des se repetă alarmele Scăzut, Ridicat, estimate, de schimbare rapidă și Lipsă date cât timp durează situația. Scăzut urgent și Ridicat urgent se repetă mereu la {{count}} minute.",
       "snooze": "Afișează un buton de amânare pe ecran cât timp e activă o alarmă, ca să oprești alarmele câteva minute.",
-      "snoozeDuration": "Cât timp oprește amânarea toate alarmele. O amânare lungă poate întârzia o alertă critică."
+      "snoozeDuration": "Cât timp oprește amânarea alarmele. Dacă ajungi la Scăzut urgent în timpul amânării, amânarea se oprește și alarma sună."
     }
   },
   "sounds": {
