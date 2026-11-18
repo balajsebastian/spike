@@ -54,6 +54,7 @@
       "nightscoutUrl": "Introdu adresa Nightscout",
       "fillAll": "Completează toate câmpurile",
       "invalidCredentials": "Date de autentificare greșite sau cont inexistent",
+      "invalidDexcom": "Date de autentificare greșite sau cont inexistent. Verifică dacă regiunea (EU, US, JP) corespunde contului tău Dexcom.",
       "accountLocked": "Cont blocat după prea multe autentificări eșuate. Încearcă mai târziu."
     }
   },

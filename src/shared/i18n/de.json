@@ -54,6 +54,7 @@
       "nightscoutUrl": "Gib deine Nightscout-URL ein",
       "fillAll": "Bitte alle Felder ausfüllen",
       "invalidCredentials": "Falsche Zugangsdaten oder Konto nicht gefunden",
+      "invalidDexcom": "Falsche Zugangsdaten oder Konto nicht gefunden. Prüfe, ob die Region (EU, US, JP) zu deinem Dexcom-Konto passt.",
       "accountLocked": "Konto nach zu vielen fehlgeschlagenen Anmeldungen gesperrt. Versuche es später erneut."
     }
   },

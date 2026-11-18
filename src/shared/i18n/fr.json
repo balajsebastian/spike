@@ -54,6 +54,7 @@
       "nightscoutUrl": "Saisissez l'URL Nightscout",
       "fillAll": "Remplissez tous les champs",
       "invalidCredentials": "Identifiants incorrects ou compte introuvable",
+      "invalidDexcom": "Identifiants incorrects ou compte introuvable. Vérifiez que la région (EU, US, JP) correspond à votre compte Dexcom.",
       "accountLocked": "Compte bloqué après trop de tentatives de connexion. Réessayez plus tard."
     }
   },
