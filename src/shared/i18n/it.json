@@ -125,7 +125,7 @@
       "noDataAfter": "Quanto tempo senza nuove letture prima che suoni l'allarme Nessun dato.",
       "repeatOther": "Ogni quanto si ripetono gli allarmi Basso, Alto, previsti, di variazione rapida e Nessun dato finché la situazione dura. Basso urgente e Alto urgente si ripetono sempre ogni {{count}} minuti.",
       "snooze": "Mostra un pulsante per posticipare sul monitor mentre un allarme è attivo, per silenziare gli allarmi per qualche minuto.",
-      "snoozeDuration": "Per quanto tempo il posticipo silenzia tutti gli allarmi. Un posticipo lungo può ritardare un avviso critico."
+      "snoozeDuration": "Per quanto tempo il posticipo silenzia gli allarmi. Se scendi a Basso urgente durante il posticipo, questo si interrompe e l'allarme suona."
     }
   },
   "sounds": {

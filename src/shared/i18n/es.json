@@ -125,7 +125,7 @@
       "noDataAfter": "Cuánto tiempo sin lectura nueva hasta que suena la alarma Sin datos.",
       "repeatOther": "Cada cuánto se repiten las alarmas de Bajo, Alto, previstas, cambio rápido y Sin datos mientras dure la situación. Bajo urgente y Alto urgente siempre se repiten cada {{count}} minutos.",
       "snooze": "Muestra un botón para posponer en el monitor mientras hay una alarma activa, para silenciar las alarmas unos minutos.",
-      "snoozeDuration": "Cuánto tiempo silencia todas las alarmas al posponer. Posponer mucho puede retrasar una alerta crítica."
+      "snoozeDuration": "Cuánto tiempo silencia las alarmas al posponer. Si bajas a Bajo urgente mientras está pospuesto, se cancela y suena la alarma."
     }
   },
   "sounds": {

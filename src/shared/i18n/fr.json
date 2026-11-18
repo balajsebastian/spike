@@ -125,7 +125,7 @@
       "noDataAfter": "Combien de temps sans nouvelle valeur avant que l'alarme Pas de données sonne.",
       "repeatOther": "À quelle fréquence les alarmes Bas, Haut, prévues, de variation rapide et Pas de données se répètent tant que la situation dure. Bas urgent et Haut urgent se répètent toujours toutes les {{count}} minutes.",
       "snooze": "Affiche un bouton Pause sur l'écran pendant une alarme, pour couper les alarmes quelques minutes.",
-      "snoozeDuration": "Combien de temps la pause coupe toutes les alarmes. Une longue pause peut retarder une alerte critique."
+      "snoozeDuration": "Combien de temps la pause coupe les alarmes. Si vous descendez en Bas urgent pendant la pause, elle s'arrête et l'alarme sonne."
     }
   },
   "sounds": {

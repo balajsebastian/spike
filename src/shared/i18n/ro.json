@@ -125,7 +125,7 @@
       "noDataAfter": "Cât timp fără citire nouă până sună alarma Lipsă date.",
       "repeatOther": "Cât de des se repetă alarmele Scăzut, Ridicat, estimate, de schimbare rapidă și Lipsă date cât timp durează situația. Scăzut urgent și Ridicat urgent se repetă mereu la {{count}} minute.",
       "snooze": "Afișează un buton de amânare pe ecran cât timp e activă o alarmă, ca să oprești alarmele câteva minute.",
-      "snoozeDuration": "Cât timp oprește amânarea toate alarmele. O amânare lungă poate întârzia o alertă critică."
+      "snoozeDuration": "Cât timp oprește amânarea alarmele. Dacă ajungi la Scăzut urgent în timpul amânării, amânarea se oprește și alarma sună."
     }
   },
   "sounds": {

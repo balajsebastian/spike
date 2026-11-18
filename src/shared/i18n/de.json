@@ -125,7 +125,7 @@
       "noDataAfter": "Wie lange ohne neuen Wert, bis der Keine-Daten-Alarm losgeht.",
       "repeatOther": "Wie oft Niedrig-, Hoch-, erwartete, Schnellwechsel- und Keine-Daten-Alarme wiederholt werden, solange die Lage anhält. Dringend niedrig und Dringend hoch wiederholen sich immer alle {{count}} Minuten.",
       "snooze": "Zeigt während eines Alarms eine Stummschalten-Taste auf dem Monitor, um Alarme ein paar Minuten stummzuschalten.",
-      "snoozeDuration": "Wie lange Stummschalten alle Alarme stummschaltet. Langes Stummschalten kann einen kritischen Alarm verzögern."
+      "snoozeDuration": "Wie lange Stummschalten die Alarme stummschaltet. Fällt der Wert währenddessen auf Dringend niedrig, endet die Stummschaltung und der Alarm ertönt."
     }
   },
   "sounds": {

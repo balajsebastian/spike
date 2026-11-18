@@ -125,7 +125,7 @@
       "noDataAfter": "How long without a new reading before the No Data alarm goes off.",
       "repeatOther": "How often Low, High, predicted, rapid-change and No Data alarms repeat while the situation lasts. Urgent Low and Urgent High always repeat every {{count}} minutes.",
       "snooze": "Shows a Snooze button on the monitor while an alarm is active, to silence alarms for a few minutes.",
-      "snoozeDuration": "How long Snooze silences all alarms. A long snooze can delay a critical alert."
+      "snoozeDuration": "How long Snooze silences alarms. If you drop to Urgent Low while snoozed, the snooze ends and the alarm goes off."
     }
   },
   "sounds": {
