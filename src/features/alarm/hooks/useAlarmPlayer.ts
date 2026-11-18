@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import { setAudioModeAsync } from "expo-audio";
 import * as Haptics from "expo-haptics";
-import { VolumeManager } from "react-native-volume-manager";
+import { AlarmVolume } from "@modules/alarm-volume";
 import type { AlarmSound, AlarmSoundKind } from "@/features/settings/types";
 import { ALARM_ROUNDS, ALARM_PAUSE_MS, HAPTIC_BURSTS, HAPTIC_DELAY_MS } from "../constants";
 import { useSoundPlayers } from "./useSoundPlayers";
@@ -28,12 +28,12 @@ export function useAlarmPlayer(alarmSounds: Record<AlarmSoundKind, AlarmSound>) 
   return useCallback(
     async (kind: AlarmSoundKind) => {
       const player = players[alarmSounds[kind]];
-      const raise = Platform.OS === "android";
+      const volumeModule = Platform.OS === "android" ? AlarmVolume : null;
 
-      if (raise && savedVolumeRef.current === null) {
+      if (volumeModule && savedVolumeRef.current === null) {
         try {
-          savedVolumeRef.current = (await VolumeManager.getVolume()).volume;
-          await VolumeManager.setVolume(1, { type: "music", showUI: false });
+          const current = volumeModule.getVolume();
+          if (current !== null && current < 1 && (await volumeModule.setVolume(1))) savedVolumeRef.current = current;
         } catch {
           savedVolumeRef.current = null;
         }
@@ -49,12 +49,12 @@ export function useAlarmPlayer(alarmSounds: Record<AlarmSoundKind, AlarmSound>) 
         if (round < ALARM_ROUNDS - 1) await wait(ALARM_PAUSE_MS);
       }
 
-      if (raise && savedVolumeRef.current !== null) {
+      if (volumeModule && savedVolumeRef.current !== null) {
         // Let the last round finish before turning it back down.
         await wait(player.duration > 0 ? player.duration * 1000 : FALLBACK_SOUND_MS);
         const saved = savedVolumeRef.current;
         savedVolumeRef.current = null;
-        VolumeManager.setVolume(saved, { type: "music", showUI: false }).catch(() => {});
+        volumeModule.setVolume(saved).catch(() => {});
       }
     },
     [alarmSounds, players],
