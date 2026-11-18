@@ -36,7 +36,7 @@
     "subtitle": "Connect your CGM",
     "connect": "Connect",
     "dexcom": {
-      "field1": "Username or email",
+      "field1": "Username, email or phone",
       "field2": "Password",
       "hint": "Use the sharer's credentials (the account connected to the sensor), not a follower account. Share must be turned on in the Dexcom app. If no readings come in, invite a follower (it can be you)."
     },

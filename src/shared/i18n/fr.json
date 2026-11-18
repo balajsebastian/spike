@@ -36,7 +36,7 @@
     "subtitle": "Connectez votre capteur",
     "connect": "Connecter",
     "dexcom": {
-      "field1": "Nom d'utilisateur ou e-mail",
+      "field1": "Nom d'utilisateur, e-mail ou téléphone",
       "field2": "Mot de passe",
       "hint": "Utilisez le compte de la personne qui partage ses données (le compte relié au capteur), pas un compte d'abonné. Share doit être activé dans l'application Dexcom. Si aucune mesure n'arrive, invitez un abonné (ça peut être vous)."
     },

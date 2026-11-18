@@ -36,7 +36,7 @@
     "subtitle": "Collega il tuo sensore",
     "connect": "Collega",
     "dexcom": {
-      "field1": "Nome utente o email",
+      "field1": "Nome utente, email o telefono",
       "field2": "Password",
       "hint": "Usa l'account di chi condivide i dati (l'account collegato al sensore), non un account follower. Share deve essere attivo nell'app Dexcom. Se non arrivano letture, invita un follower (puoi essere tu stesso)."
     },

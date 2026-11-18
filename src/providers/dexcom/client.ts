@@ -8,6 +8,7 @@ import {
   NULL_UUID,
 } from "./types";
 import { parseGlucoseReading } from "./parser";
+import { normalizeAccountName, toAccountId } from "./accountName";
 import { CredentialsRejectedError } from "../errors";
 import { toLoginError } from "./errors";
 
@@ -48,10 +49,17 @@ export class DexcomShareClient implements CGMClient {
   }
 
   async authenticate(): Promise<string> {
+    // An account ID typed in place of the username skips this step (the password is still checked at login).
+    const accountId = toAccountId(this.config.username);
+    if (accountId) {
+      this.accountId = accountId;
+      return accountId;
+    }
+
     const response = await this.post<string | { accountId: string }>(
       "General/AuthenticatePublisherAccount",
       {
-        accountName: this.config.username,
+        accountName: normalizeAccountName(this.config.username, this.config.region),
         password: this.config.password,
         applicationId: this.applicationId,
       }

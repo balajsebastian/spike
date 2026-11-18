@@ -36,7 +36,7 @@
     "subtitle": "Conectează-ți senzorul",
     "connect": "Conectează",
     "dexcom": {
-      "field1": "Utilizator sau email",
+      "field1": "Utilizator, email sau telefon",
       "field2": "Parolă",
       "hint": "Folosește contul persoanei care poartă senzorul (contul conectat la senzor), nu un cont de follower. Share trebuie pornit în aplicația Dexcom. Dacă nu apar citiri, invită un follower (poți fi chiar tu)."
     },
