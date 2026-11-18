@@ -4,6 +4,7 @@ export type CGMSource = "dexcom" | "libre" | "nightscout" | "demo";
 
 export type Credentials =
   | { source: "dexcom"; username: string; password: string; region: DexcomRegion }
-  | { source: "libre"; email: string; password: string }
+  /** `patientId`: who to show, when the LibreLinkUp account follows more than one person. */
+  | { source: "libre"; email: string; password: string; patientId?: string }
   | { source: "nightscout"; url: string; token?: string }
   | { source: "demo" };

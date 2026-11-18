@@ -50,6 +50,11 @@
       "field2": "Token (opțional)",
       "hint": "Introdu adresa site-ului tău Nightscout. Adaugă un token de citire dacă site-ul cere autentificare."
     },
+    "pickPerson": {
+      "title": "Pe cine vrei să vezi?",
+      "subtitle": "Acest cont LibreLinkUp urmărește mai multe persoane.",
+      "back": "Înapoi"
+    },
     "errors": {
       "nightscoutUrl": "Introdu adresa Nightscout",
       "fillAll": "Completează toate câmpurile",

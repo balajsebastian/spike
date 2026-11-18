@@ -10,7 +10,7 @@ export function createCGMClient(credentials: Credentials): CGMClient {
     case "dexcom":
       return new DexcomShareClient(credentials);
     case "libre":
-      return new LibreLinkUpClient(credentials.email, credentials.password);
+      return new LibreLinkUpClient(credentials.email, credentials.password, credentials.patientId);
     case "nightscout":
       return new NightscoutClient(credentials.url, credentials.token);
     case "demo":

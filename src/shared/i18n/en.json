@@ -50,6 +50,11 @@
       "field2": "Token (optional)",
       "hint": "Enter your Nightscout site URL. Add a readable token if your site requires authentication."
     },
+    "pickPerson": {
+      "title": "Who do you want to see?",
+      "subtitle": "This LibreLinkUp account follows more than one person.",
+      "back": "Back"
+    },
     "errors": {
       "nightscoutUrl": "Enter your Nightscout URL",
       "fillAll": "Fill in all fields",

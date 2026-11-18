@@ -2,7 +2,13 @@ import * as Crypto from "expo-crypto";
 import type { CGMClient } from "../types";
 import { CredentialsRejectedError } from "../errors";
 import type { GlucoseReading } from "@/shared/types";
-import type { LibreConnectionResponse, LibreGraphPoint, LibreGraphResponse, LibreLoginResponse } from "./types";
+import type {
+  LibreConnectionResponse,
+  LibreGraphPoint,
+  LibreGraphResponse,
+  LibreLoginResponse,
+  LibrePerson,
+} from "./types";
 import { parseGraphPoint, parseMeasurement } from "./parser";
 
 async function sha256Hex(input: string): Promise<string> {
@@ -16,10 +22,20 @@ export class LibreLinkUpClient implements CGMClient {
   private token: string | null = null;
   private accountId: string | null = null;
   private patientId: string | null = null;
+  private preferredPatientId: string | undefined;
+  /** Everyone the account follows, filled in by `connect`. */
+  people: LibrePerson[] = [];
 
-  constructor(email: string, password: string) {
+  /** `patientId` picks who to show when the account follows more than one person; otherwise the first. */
+  constructor(email: string, password: string, patientId?: string) {
     this.email = email;
     this.password = password;
+    this.preferredPatientId = patientId;
+  }
+
+  /** The connection of the person being shown (the chosen one, or the first). */
+  private pickConnection(data: LibreConnectionResponse["data"]) {
+    return data?.find((c) => c.patientId === this.patientId) ?? data?.[0];
   }
 
   private headers(): Record<string, string> {
@@ -76,7 +92,11 @@ export class LibreLinkUpClient implements CGMClient {
     if (!connData.data?.length) {
       throw new Error("No connections found in LibreLinkUp — add a connection in the LibreLinkUp app first");
     }
-    this.patientId = connData.data[0].patientId ?? null;
+    this.people = connData.data.flatMap(({ patientId, firstName, lastName }) =>
+      patientId ? [{ patientId, name: [firstName, lastName].filter(Boolean).join(" ") || patientId }] : [],
+    );
+    const preferred = this.people.find((p) => p.patientId === this.preferredPatientId);
+    this.patientId = preferred?.patientId ?? connData.data[0].patientId ?? null;
   }
 
   async getLatestReading(retries = 1): Promise<GlucoseReading | null> {
@@ -97,7 +117,7 @@ export class LibreLinkUpClient implements CGMClient {
     }
 
     const data: LibreConnectionResponse = await res.json();
-    const measurement = data.data?.[0]?.glucoseMeasurement;
+    const measurement = this.pickConnection(data.data)?.glucoseMeasurement;
 
     return measurement ? parseMeasurement(measurement) : null;
   }

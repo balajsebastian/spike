@@ -25,6 +25,8 @@ export interface LibreGraphResponse {
 export interface LibreConnectionResponse {
   data?: {
     patientId?: string;
+    firstName?: string;
+    lastName?: string;
     glucoseMeasurement?: {
       ValueInMgPerDl: number;
       TrendArrow: number;
@@ -32,4 +34,10 @@ export interface LibreConnectionResponse {
       Timestamp: string;
     };
   }[];
+}
+
+/** Someone the LibreLinkUp account follows. */
+export interface LibrePerson {
+  patientId: string;
+  name: string;
 }

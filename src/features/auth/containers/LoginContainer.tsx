@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { DexcomRegion } from "@/providers/dexcom/types";
+import { LibreLinkUpClient } from "@/providers/libre/client";
+import type { LibrePerson } from "@/providers/libre/types";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import type { Credentials } from "../types";
 import { DEMO_EMAIL, buildConnection, defaultDexcomRegion, type LoginSource } from "../helpers/connection";
 import { describeLoginError, validateLoginForm } from "../helpers/loginErrors";
 import { LoginForm } from "../components/LoginForm";
+import { PersonPicker } from "../components/PersonPicker";
+
+type LibreCredentials = Extract<Credentials, { source: "libre" }>;
 
 interface Props {
   onLogin: (credentials: Credentials) => void;
@@ -21,6 +26,8 @@ export function LoginContainer({ onLogin }: Props) {
   const [region, setRegion] = useState<DexcomRegion>(defaultDexcomRegion);
   const [error, setError] = useState<string | null>(null);
   const [testing, setTesting] = useState(false);
+  // A LibreLinkUp account that follows several people: who to show, before saving the login.
+  const [pick, setPick] = useState<{ people: LibrePerson[]; credentials: LibreCredentials } | null>(null);
 
   const handleSourceChange = (newSource: LoginSource) => {
     setSource(newSource);
@@ -49,6 +56,10 @@ export function LoginContainer({ onLogin }: Props) {
     try {
       const { client, credentials } = buildConnection(source, value1, value2, region);
       await client.connect();
+      if (credentials.source === "libre" && client instanceof LibreLinkUpClient && client.people.length > 1) {
+        setPick({ people: client.people, credentials });
+        return;
+      }
       onLogin(credentials);
     } catch (err) {
       const described = describeLoginError(err, source);
@@ -57,6 +68,17 @@ export function LoginContainer({ onLogin }: Props) {
       setTesting(false);
     }
   };
+
+  if (pick) {
+    return (
+      <PersonPicker
+        people={pick.people}
+        theme={theme}
+        onPick={(person) => onLogin({ ...pick.credentials, patientId: person.patientId })}
+        onBack={() => setPick(null)}
+      />
+    );
+  }
 
   return (
     <LoginForm

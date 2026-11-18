@@ -50,6 +50,11 @@
       "field2": "Jeton (facultatif)",
       "hint": "Saisissez l'URL de votre site Nightscout. Ajoutez un jeton de lecture si votre site exige une authentification."
     },
+    "pickPerson": {
+      "title": "Qui voulez-vous voir ?",
+      "subtitle": "Ce compte LibreLinkUp suit plusieurs personnes.",
+      "back": "Retour"
+    },
     "errors": {
       "nightscoutUrl": "Saisissez l'URL Nightscout",
       "fillAll": "Remplissez tous les champs",
