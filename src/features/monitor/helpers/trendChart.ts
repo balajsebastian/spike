@@ -5,9 +5,6 @@ import type { Settings } from "@/features/settings/types";
 // longer windows group more minutes per dot so there are never more than about MAX_DOTS.
 const MIN_BUCKET_MINUTES = 5;
 const MAX_DOTS = 48;
-const DOMAIN_PADDING = 20;
-const MIN_MGDL = 40;
-const MAX_MGDL = 400;
 
 /** Minutes per dot: 5 for 2h, 10 for 6h, 15 for 12h. */
 export function bucketMinutes(windowMinutes: number): number {
@@ -32,11 +29,7 @@ export function trendDots(readings: GlucoseReading[], windowMinutes: number): Gl
   return dots;
 }
 
-/** Y range: the readings plus the low/high lines, with some padding, within 40–400 mg/dL. */
-export function valueDomain(readings: GlucoseReading[], settings: Settings): { minY: number; maxY: number } {
-  const values = readings.map((r) => r.valueMgdl);
-  return {
-    minY: Math.max(MIN_MGDL, Math.min(...values, settings.lowThreshold) - DOMAIN_PADDING),
-    maxY: Math.min(MAX_MGDL, Math.max(...values, settings.highThreshold) + DOMAIN_PADDING),
-  };
+/** Where a reading is drawn: the chart spans low to high, and anything outside sits on that line (it keeps its color). */
+export function plotValue(mgdl: number, settings: Settings): number {
+  return Math.min(Math.max(mgdl, settings.lowThreshold), settings.highThreshold);
 }

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { GlucoseReading } from "@/shared/types";
 import { formatGlucose, type Settings, type ThemeColors } from "@/features/settings/types";
 import { getRangeColor } from "../helpers/range";
-import { bucketMinutes, trendDots, valueDomain } from "../helpers/trendChart";
+import { bucketMinutes, plotValue, trendDots } from "../helpers/trendChart";
 
 const MAX_DOT_RADIUS = 4;
 const MIN_DOT_RADIUS = 2;
@@ -38,7 +38,6 @@ export function TrendLine({ readings, windowMinutes, now, width, height, setting
 
   const dots = trendDots(readings, windowMinutes);
   const last = dots[dots.length - 1];
-  const { minY, maxY } = valueDomain(dots, settings);
   const startX = now - windowMinutes * 60_000;
 
   const plotLeft = LABEL_WIDTH;
@@ -49,10 +48,12 @@ export function TrendLine({ readings, windowMinutes, now, width, height, setting
   const x = (ms: number) => plotLeft + ((ms - startX) / (now - startX)) * (plotRight - plotLeft);
   const dotSpacing = (plotRight - plotLeft) / (windowMinutes / bucketMinutes(windowMinutes));
   const dotRadius = Math.max(MIN_DOT_RADIUS, Math.min(MAX_DOT_RADIUS, dotSpacing * DOT_SPACING_RATIO));
-  const y = (mgdl: number) => plotTop + (1 - (mgdl - minY) / (maxY - minY)) * (plotBottom - plotTop);
+  // Fixed low-to-high range, so a spike or a drop never stretches the chart or pushes what's around it.
+  const { lowThreshold: low, highThreshold: high } = settings;
+  const y = (mgdl: number) => plotTop + (1 - (plotValue(mgdl, settings) - low) / (high - low)) * (plotBottom - plotTop);
 
   const thresholds = [settings.highThreshold, settings.lowThreshold];
-  // Right under whatever is lowest (the low line or a dot), not at the bottom of the padded range.
+  // Right under the low line, or under a dot sitting on it.
   const chartBottom = Math.max(
     y(settings.lowThreshold),
     ...dots.map((r) => y(r.valueMgdl) + dotRadius),
