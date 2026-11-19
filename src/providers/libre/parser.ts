@@ -13,28 +13,32 @@ export function mapTrend(arrow: number): TrendDirection {
   return LIBRE_TREND_MAP[arrow] ?? "None";
 }
 
-/** LibreLinkUp sends ISO dates or US-style "M/D/YYYY h:mm:ss AM" depending on the endpoint. */
-export function parseTimestamp(ts: string): number {
-  const d = new Date(ts);
-  if (!isNaN(d.getTime())) return d.getTime();
+const US_DATE = /(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+):(\d+)\s*(AM|PM)?/i;
 
-  const match = ts.match(/(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+):(\d+)\s*(AM|PM)?/i);
+/**
+ * LibreLinkUp dates look like "11/19/2026 2:15:00 PM", with no time zone. `FactoryTimestamp` is in UTC;
+ * `Timestamp` is the sensor phone's local time. Reading a UTC one as local time made readings look hours old
+ * east of London (showing "No data") and in the future west of it (so No Data never went off).
+ */
+export function parseTimestamp(ts: string, isUtc: boolean): number {
+  const match = ts.match(US_DATE);
   if (match) {
     const [, month, day, year, hours, minutes, seconds, ampm] = match;
     let h = parseInt(hours);
     if (ampm?.toUpperCase() === "PM" && h !== 12) h += 12;
     if (ampm?.toUpperCase() === "AM" && h === 12) h = 0;
-    return new Date(
-      parseInt(year),
-      parseInt(month) - 1,
-      parseInt(day),
-      h,
-      parseInt(minutes),
-      parseInt(seconds),
-    ).getTime();
+    const parts = [parseInt(year), parseInt(month) - 1, parseInt(day), h, parseInt(minutes), parseInt(seconds)] as const;
+    return isUtc ? Date.UTC(...parts) : new Date(...parts).getTime();
   }
 
-  return Date.now();
+  // ISO dates carry their own zone (or are UTC when they end in Z).
+  const d = new Date(ts);
+  return isNaN(d.getTime()) ? Date.now() : d.getTime();
+}
+
+/** Prefers the UTC `FactoryTimestamp`; falls back to the local `Timestamp`. */
+function readingTime(point: LibreGraphPoint): number {
+  return point.FactoryTimestamp ? parseTimestamp(point.FactoryTimestamp, true) : parseTimestamp(point.Timestamp, false);
 }
 
 /** A graph point has no trend arrow. */
@@ -43,7 +47,7 @@ export function parseGraphPoint(point: LibreGraphPoint): GlucoseReading {
     valueMgdl: point.ValueInMgPerDl,
     trend: "None",
     trendArrow: TREND_ARROWS.None,
-    timestampMs: parseTimestamp(point.FactoryTimestamp || point.Timestamp),
+    timestampMs: readingTime(point),
   };
 }
 
@@ -53,6 +57,6 @@ export function parseMeasurement(measurement: LibreGraphPoint & { TrendArrow: nu
     valueMgdl: measurement.ValueInMgPerDl,
     trend,
     trendArrow: TREND_ARROWS[trend],
-    timestampMs: parseTimestamp(measurement.FactoryTimestamp || measurement.Timestamp),
+    timestampMs: readingTime(measurement),
   };
 }
