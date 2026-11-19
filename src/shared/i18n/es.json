@@ -60,7 +60,10 @@
       "fillAll": "Rellena todos los campos",
       "invalidCredentials": "Credenciales incorrectas o cuenta no encontrada",
       "invalidDexcom": "Credenciales incorrectas o cuenta no encontrada. Comprueba que la región (EU, US, JP) coincide con tu cuenta de Dexcom.",
-      "accountLocked": "Cuenta bloqueada tras demasiados intentos fallidos. Inténtalo más tarde."
+      "accountLocked": "Cuenta bloqueada tras demasiados intentos fallidos. Inténtalo más tarde.",
+      "nightscoutNotFound": "No se encontró un sitio de Nightscout en esta dirección. Revisa la URL, por ejemplo https://tusitio.herokuapp.com.",
+      "nightscoutToken": "Tu sitio de Nightscout rechazó el token. Revísalo o déjalo vacío si tu sitio es público.",
+      "connectionFailed": "No se pudo conectar. Revisa tu conexión a internet e inténtalo de nuevo."
     }
   },
   "monitor": {

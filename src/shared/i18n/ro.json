@@ -60,7 +60,10 @@
       "fillAll": "Completează toate câmpurile",
       "invalidCredentials": "Date de autentificare greșite sau cont inexistent",
       "invalidDexcom": "Date de autentificare greșite sau cont inexistent. Verifică dacă regiunea (EU, US, JP) corespunde contului tău Dexcom.",
-      "accountLocked": "Cont blocat după prea multe autentificări eșuate. Încearcă mai târziu."
+      "accountLocked": "Cont blocat după prea multe autentificări eșuate. Încearcă mai târziu.",
+      "nightscoutNotFound": "Nu am găsit un site Nightscout la această adresă. Verifică adresa, de exemplu https://site-ul-tau.herokuapp.com.",
+      "nightscoutToken": "Site-ul Nightscout a refuzat token-ul. Verifică-l sau lasă câmpul gol dacă site-ul e public.",
+      "connectionFailed": "Nu m-am putut conecta. Verifică internetul și încearcă din nou."
     }
   },
   "monitor": {

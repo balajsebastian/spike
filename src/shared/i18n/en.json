@@ -60,7 +60,10 @@
       "fillAll": "Fill in all fields",
       "invalidCredentials": "Invalid credentials or account not found",
       "invalidDexcom": "Invalid credentials or account not found. Check that the region (EU, US, JP) matches your Dexcom account.",
-      "accountLocked": "Account locked after too many failed logins. Try again later."
+      "accountLocked": "Account locked after too many failed logins. Try again later.",
+      "nightscoutNotFound": "Couldn't find a Nightscout site at this address. Check the URL, for example https://yoursite.herokuapp.com.",
+      "nightscoutToken": "Your Nightscout site refused the token. Check it, or leave it empty if your site is public.",
+      "connectionFailed": "Couldn't connect. Check your internet connection and try again."
     }
   },
   "monitor": {

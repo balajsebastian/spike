@@ -60,7 +60,10 @@
       "fillAll": "Remplissez tous les champs",
       "invalidCredentials": "Identifiants incorrects ou compte introuvable",
       "invalidDexcom": "Identifiants incorrects ou compte introuvable. Vérifiez que la région (EU, US, JP) correspond à votre compte Dexcom.",
-      "accountLocked": "Compte bloqué après trop de tentatives de connexion. Réessayez plus tard."
+      "accountLocked": "Compte bloqué après trop de tentatives de connexion. Réessayez plus tard.",
+      "nightscoutNotFound": "Aucun site Nightscout trouvé à cette adresse. Vérifiez l'URL, par exemple https://votresite.herokuapp.com.",
+      "nightscoutToken": "Votre site Nightscout a refusé le jeton. Vérifiez-le, ou laissez le champ vide si votre site est public.",
+      "connectionFailed": "Connexion impossible. Vérifiez votre connexion internet et réessayez."
     }
   },
   "monitor": {

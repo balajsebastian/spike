@@ -39,12 +39,29 @@ function toReading(entry: NightscoutEntry): GlucoseReading {
   };
 }
 
+/** The site couldn't be reached or isn't a Nightscout site ("notFound"), or the token was refused ("auth"). */
+export class NightscoutError extends Error {
+  readonly kind: "notFound" | "auth";
+
+  constructor(kind: "notFound" | "auth", message: string) {
+    super(message);
+    this.name = "NightscoutError";
+    this.kind = kind;
+  }
+}
+
+/** "mysite.herokuapp.com/" → "https://mysite.herokuapp.com" */
+function normalizeUrl(input: string): string {
+  const url = input.trim().replace(/\/+$/, "");
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+}
+
 export class NightscoutClient implements CGMClient {
   private url: string;
   private token?: string;
 
   constructor(url: string, token?: string) {
-    this.url = url.replace(/\/+$/, "");
+    this.url = normalizeUrl(url);
     this.token = token;
   }
 
@@ -58,19 +75,23 @@ export class NightscoutClient implements CGMClient {
     const qs = query.toString();
     const endpoint = `${this.url}${path}${qs ? `?${qs}` : ""}`;
 
-    const res = await fetch(endpoint, {
-      headers: { Accept: "application/json" },
-    });
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        throw new Error("Nightscout authentication failed — check your token");
-      }
-      throw new Error(`Nightscout error ${res.status}`);
+    let res: Response;
+    try {
+      res = await fetch(endpoint, { headers: { Accept: "application/json" } });
+    } catch {
+      throw new NightscoutError("notFound", "Nightscout site unreachable");
     }
 
-    const entries: NightscoutEntry[] = await res.json();
-    return Array.isArray(entries) ? entries : [];
+    if (!res.ok) {
+      if (res.status === 401) throw new NightscoutError("auth", "Nightscout authentication failed");
+      throw new NightscoutError("notFound", `Nightscout error ${res.status}`);
+    }
+
+    // A page that isn't Nightscout (wrong address) answers with HTML instead of JSON.
+    const entries: unknown = await res.json().catch(() => {
+      throw new NightscoutError("notFound", "Not a Nightscout site");
+    });
+    return Array.isArray(entries) ? (entries as NightscoutEntry[]) : [];
   }
 
   async getLatestReading(): Promise<GlucoseReading | null> {

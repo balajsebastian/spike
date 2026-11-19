@@ -62,8 +62,7 @@ export function LoginContainer({ onLogin }: Props) {
       }
       onLogin(credentials);
     } catch (err) {
-      const described = describeLoginError(err, source);
-      setError("key" in described ? t(described.key) : described.message);
+      setError(t(describeLoginError(err, source).key));
     } finally {
       setTesting(false);
     }

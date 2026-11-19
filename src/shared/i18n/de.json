@@ -60,7 +60,10 @@
       "fillAll": "Bitte alle Felder ausfüllen",
       "invalidCredentials": "Falsche Zugangsdaten oder Konto nicht gefunden",
       "invalidDexcom": "Falsche Zugangsdaten oder Konto nicht gefunden. Prüfe, ob die Region (EU, US, JP) zu deinem Dexcom-Konto passt.",
-      "accountLocked": "Konto nach zu vielen fehlgeschlagenen Anmeldungen gesperrt. Versuche es später erneut."
+      "accountLocked": "Konto nach zu vielen fehlgeschlagenen Anmeldungen gesperrt. Versuche es später erneut.",
+      "nightscoutNotFound": "Unter dieser Adresse wurde keine Nightscout-Seite gefunden. Prüfe die URL, z. B. https://deineseite.herokuapp.com.",
+      "nightscoutToken": "Deine Nightscout-Seite hat den Token abgelehnt. Prüfe ihn oder lass das Feld leer, wenn deine Seite öffentlich ist.",
+      "connectionFailed": "Verbindung fehlgeschlagen. Prüfe deine Internetverbindung und versuche es erneut."
     }
   },
   "monitor": {
