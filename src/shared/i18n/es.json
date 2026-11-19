@@ -93,6 +93,7 @@
     "themeDark": "Oscuro",
     "themeLight": "Claro",
     "unit": "Unidad",
+    "coloredValues": "Valores en color",
     "delta": "Delta",
     "trendLine": "Línea de tendencia",
     "trendWindow": "Periodo",
@@ -121,6 +122,7 @@
     "info": {
       "trendLine": "Muestra tus lecturas recientes como puntos bajo el número, para distinguir una bajada brusca de una lenta.",
       "trendWindow": "Cuántas horas abarca la línea de tendencia. LibreLinkUp solo guarda unas 12 horas.",
+      "coloredValues": "Muestra el número y la línea de tendencia en verde mientras estás en rango. Los bajos siempre son rojos y los altos naranjas, luego rojos.",
       "delta": "Cuánto cambió la glucosa en los últimos 5 minutos, bajo la flecha. No aparece si no hay una lectura de hace unos 5 minutos.",
       "nightMode": "Baja el brillo de la pantalla entre las horas que elijas, para que el monitor no ilumine la habitación. Vuelve a la normalidad mientras suena una alarma.",
       "nightBrightness": "Qué brillo tiene la pantalla por la noche. Nunca sube por encima del brillo que ya tenía tu teléfono.",

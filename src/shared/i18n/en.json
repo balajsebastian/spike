@@ -93,6 +93,7 @@
     "themeDark": "Dark",
     "themeLight": "Light",
     "unit": "Unit",
+    "coloredValues": "Colored Values",
     "delta": "Delta",
     "trendLine": "Trend Line",
     "trendWindow": "Trend Window",
@@ -121,6 +122,7 @@
     "info": {
       "trendLine": "Shows your recent readings as dots under the number, so you can tell a sudden drop from a slow one.",
       "trendWindow": "How many hours the trend line covers. LibreLinkUp only keeps about 12 hours of readings.",
+      "coloredValues": "Shows the number and the trend line in green while you're in range. Lows are always red, highs orange, then red.",
       "delta": "How much glucose changed over the last 5 minutes, shown under the arrow. Hidden when there's no reading from about 5 minutes ago.",
       "nightMode": "Lowers the screen brightness between the hours you set, so the monitor doesn't light up the room. It goes back to normal while an alarm is going off.",
       "nightBrightness": "How bright the screen is at night. It never goes brighter than your phone already was.",

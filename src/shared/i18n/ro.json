@@ -93,6 +93,7 @@
     "themeDark": "Întunecată",
     "themeLight": "Luminoasă",
     "unit": "Unitate",
+    "coloredValues": "Valori colorate",
     "delta": "Delta",
     "trendLine": "Linie de trend",
     "trendWindow": "Interval grafic",
@@ -121,6 +122,7 @@
     "info": {
       "trendLine": "Arată citirile recente ca puncte sub cifră, ca să vezi dacă glicemia scade brusc sau încet.",
       "trendWindow": "Câte ore cuprinde graficul. LibreLinkUp păstrează doar aproximativ 12 ore de citiri.",
+      "coloredValues": "Afișează cifra și graficul în verde cât timp ești în interval. Valorile mici sunt mereu roșii, cele mari portocalii, apoi roșii.",
       "delta": "Cât s-a schimbat glicemia în ultimele 5 minute, afișat sub săgeată. Nu apare dacă nu există o citire de acum aproximativ 5 minute.",
       "nightMode": "Scade luminozitatea ecranului între orele alese, ca să nu lumineze camera. Revine la normal cât timp sună o alarmă.",
       "nightBrightness": "Cât de luminos e ecranul noaptea. Nu devine niciodată mai luminos decât era deja telefonul.",

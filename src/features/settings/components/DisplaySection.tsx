@@ -1,6 +1,6 @@
 import { Switch } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChartSpline, Diff, History, Moon, Ruler } from "lucide-react-native";
+import { ChartSpline, Diff, History, Moon, Palette, Ruler } from "lucide-react-native";
 import { TREND_WINDOW_HOURS, type Settings, type ThemeColors } from "../types";
 import { Section } from "./Section";
 import { Row } from "./Row";
@@ -38,6 +38,9 @@ export function DisplaySection({ settings, theme, onChange }: Props) {
           onChange={(unit) => onChange({ unit })}
           theme={theme}
         />
+      </Row>
+      <Row label={t("settings.coloredValues")} icon={Palette} info={t("settings.info.coloredValues")} theme={theme}>
+        <Switch value={settings.coloredValues} onValueChange={(coloredValues) => onChange({ coloredValues })} />
       </Row>
       <Row label={t("settings.delta")} icon={Diff} info={t("settings.info.delta")} theme={theme}>
         <Switch value={settings.showDelta} onValueChange={(showDelta) => onChange({ showDelta })} />

@@ -93,6 +93,7 @@
     "themeDark": "Scuro",
     "themeLight": "Chiaro",
     "unit": "Unità",
+    "coloredValues": "Valori colorati",
     "delta": "Delta",
     "trendLine": "Linea di tendenza",
     "trendWindow": "Periodo",
@@ -121,6 +122,7 @@
     "info": {
       "trendLine": "Mostra le letture recenti come punti sotto il numero, per distinguere un calo improvviso da uno lento.",
       "trendWindow": "Quante ore copre la linea di tendenza. LibreLinkUp conserva solo circa 12 ore.",
+      "coloredValues": "Mostra il valore e la linea di tendenza in verde finché sei nell'intervallo. I valori bassi sono sempre rossi, quelli alti arancioni, poi rossi.",
       "delta": "Quanto è cambiata la glicemia negli ultimi 5 minuti, sotto la freccia. Nascosto se non c'è una lettura di circa 5 minuti fa.",
       "nightMode": "Abbassa la luminosità dello schermo negli orari scelti, per non illuminare la stanza. Torna normale mentre suona un allarme.",
       "nightBrightness": "Quanto è luminoso lo schermo di notte. Non diventa mai più luminoso di quanto fosse già il telefono.",

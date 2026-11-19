@@ -29,6 +29,8 @@ export interface Settings {
   trendWindowHours: TrendWindowHours;
   /** Shows the change over the last 5 minutes next to "x min ago". */
   showDelta: boolean;
+  /** Green while in range, instead of the plain text color. */
+  coloredValues: boolean;
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
@@ -63,6 +65,7 @@ export const DEFAULT_SETTINGS: Settings = {
   showTrendLine: false,
   trendWindowHours: 2,
   showDelta: false,
+  coloredValues: false,
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,
