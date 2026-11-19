@@ -1,4 +1,4 @@
-import { SunDim, Volume2, type LucideIcon } from "lucide-react-native";
+import { Palette, SunDim, Volume2, type LucideIcon } from "lucide-react-native";
 
 /**
  * Change this (and the items) to show "What's new" again after an update.
@@ -14,4 +14,5 @@ export const WHATS_NEW_ID = "2026-11-1.2";
 export const WHATS_NEW_ITEMS: { key: string; icon: LucideIcon; perPlatform?: boolean }[] = [
   { key: "brightness", icon: SunDim },
   { key: "volume", icon: Volume2, perPlatform: true },
+  { key: "coloredValues", icon: Palette },
 ];

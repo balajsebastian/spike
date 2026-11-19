@@ -163,6 +163,10 @@
         "title": "Allarmi più forti",
         "body_android": "Spike alza il volume al massimo mentre suona un allarme, poi lo rimette com'era.",
         "body_ios": "Se il volume è troppo basso perché un allarme ti svegli, il monitor te lo dice."
+      },
+      "coloredValues": {
+        "title": "Valori colorati",
+        "body": "Attiva Valori colorati nelle Impostazioni per vedere il valore e la linea di tendenza in verde finché sei nell'intervallo."
       }
     }
   }

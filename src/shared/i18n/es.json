@@ -163,6 +163,10 @@
         "title": "Alarmas más fuertes",
         "body_android": "Spike sube el volumen al máximo mientras suena una alarma y luego lo deja como estaba.",
         "body_ios": "Si el volumen es demasiado bajo para que una alarma te despierte, el monitor te avisa."
+      },
+      "coloredValues": {
+        "title": "Valores en color",
+        "body": "Activa Valores en color en Ajustes para ver el número y la línea de tendencia en verde mientras estás en rango."
       }
     }
   }

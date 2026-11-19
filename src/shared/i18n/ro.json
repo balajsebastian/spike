@@ -163,6 +163,10 @@
         "title": "Alarme mai tari",
         "body_android": "Spike dă volumul la maxim cât sună o alarmă, apoi îl readuce la cât era.",
         "body_ios": "Dacă volumul e prea mic ca alarma să te trezească, monitorul îți spune."
+      },
+      "coloredValues": {
+        "title": "Valori colorate",
+        "body": "Pornește Valori colorate din Setări ca să vezi cifra și graficul în verde cât timp ești în interval."
       }
     }
   }

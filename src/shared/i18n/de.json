@@ -163,6 +163,10 @@
         "title": "Lautere Alarme",
         "body_android": "Spike dreht die Lautstärke während eines Alarms ganz auf und stellt sie danach zurück.",
         "body_ios": "Wenn die Lautstärke zu leise ist, um dich zu wecken, sagt es dir der Monitor."
+      },
+      "coloredValues": {
+        "title": "Farbige Werte",
+        "body": "Aktiviere Farbige Werte in den Einstellungen, um Wert und Verlauf grün zu sehen, solange du im Zielbereich bist."
       }
     }
   }

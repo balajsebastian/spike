@@ -163,6 +163,10 @@
         "title": "Louder alarms",
         "body_android": "Spike turns the volume all the way up while an alarm rings, then puts it back.",
         "body_ios": "If your volume is too low for an alarm to wake you, the monitor tells you."
+      },
+      "coloredValues": {
+        "title": "Colored values",
+        "body": "Turn on Colored Values in Settings to see your number and trend line in green while you're in range."
       }
     }
   }
