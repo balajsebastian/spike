@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Platform, useWindowDimensions } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useIsFocused } from "expo-router";
@@ -17,7 +18,13 @@ import { getStatusText } from "../helpers/status";
 import { formatDelta, getDelta } from "../helpers/delta";
 import { getReadingDisplay, snoozeMinutesLeft } from "../helpers/display";
 import { getMonitorLayout } from "../helpers/layout";
-import { getNightBrightness, getScreenBrightness, isAlarmRinging } from "../helpers/nightMode";
+import {
+  getNightBrightness,
+  getScreenBrightness,
+  isAlarmRinging,
+  isNightTime,
+  withNightThresholds,
+} from "../helpers/nightMode";
 import { useScreenBrightness } from "../hooks/useScreenBrightness";
 import { MonitorView } from "../components/MonitorView";
 
@@ -32,11 +39,14 @@ interface Props {
 /** Polls the CGM, runs the alarm, and turns it all into what the monitor screen shows. */
 export function MonitorContainer({ credentials }: Props) {
   const { t } = useTranslation();
-  const { settings, theme } = useSettingsContext();
+  const { settings: savedSettings, theme } = useSettingsContext();
   const { clear: logout } = useAuth();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const now = useNow(CLOCK_TICK_MS);
+  const isNight = isNightTime(savedSettings, now);
+  // Memoized on the night flag, not `now`, so the alarm doesn't see new settings every tick.
+  const settings = useMemo(() => withNightThresholds(savedSettings, isNight), [savedSettings, isNight]);
   const trendWindowMinutes = settings.trendWindowHours * 60;
   const needsShortHistory = settings.showDelta || settings.predictedLowEnabled || settings.predictedHighEnabled;
   const historyMinutes = settings.showTrendLine ? trendWindowMinutes : needsShortHistory ? SHORT_HISTORY_MINUTES : null;

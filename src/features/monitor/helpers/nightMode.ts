@@ -25,11 +25,34 @@ export function isWithinNight(minutes: number, start: number, end: number): bool
  * night mode off, outside the night hours, or an alarm that just went off (so the number can be read).
  */
 export function getNightBrightness(settings: NightSettings, now: number, alarmActive: boolean): number | null {
-  if (!settings.nightModeEnabled || alarmActive) return null;
+  if (alarmActive || !isNightTime(settings, now)) return null;
+  return settings.nightBrightness / 100;
+}
+
+/** Night mode is on and `now` falls in its hours. */
+export function isNightTime(
+  settings: Pick<Settings, "nightModeEnabled" | "nightStartMinutes" | "nightEndMinutes">,
+  now: number,
+): boolean {
+  if (!settings.nightModeEnabled) return false;
   const date = new Date(now);
   const minutes = date.getHours() * 60 + date.getMinutes();
-  if (!isWithinNight(minutes, settings.nightStartMinutes, settings.nightEndMinutes)) return null;
-  return settings.nightBrightness / 100;
+  return isWithinNight(minutes, settings.nightStartMinutes, settings.nightEndMinutes);
+}
+
+/**
+ * The settings the monitor runs on right now: at night, with night thresholds on, Low / High / Urgent High
+ * are swapped for the night ones, so the alarm, the colors and the trend line all follow them.
+ * Urgent Low stays the same.
+ */
+export function withNightThresholds(settings: Settings, isNight: boolean): Settings {
+  if (!isNight || !settings.nightThresholdsEnabled) return settings;
+  return {
+    ...settings,
+    lowThreshold: settings.nightLowThreshold,
+    highThreshold: settings.nightHighThreshold,
+    urgentHighThreshold: settings.nightUrgentHighThreshold,
+  };
 }
 
 /**

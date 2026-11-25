@@ -5,6 +5,7 @@ import type { AlarmSoundKind, Settings, ThemeColors } from "../types";
 import type { NightTimeKey, StepDirection, ThresholdKey } from "../helpers/steppers";
 import { DisplaySection } from "./DisplaySection";
 import { NightModeSection } from "./NightModeSection";
+import { BrightnessSection } from "./BrightnessSection";
 import { ThresholdsSection } from "./ThresholdsSection";
 import { AlertTypesSection } from "./AlertTypesSection";
 import { SoundsSection } from "./SoundsSection";
@@ -66,13 +67,19 @@ export function SettingsView({
         <Text style={[styles.title, { color: theme.text }]}>{t("tabs.settings")}</Text>
 
         <DisplaySection settings={settings} theme={theme} onChange={onChange} />
+        <BrightnessSection
+          settings={settings}
+          theme={theme}
+          onChange={onChange}
+          onStepDayBrightness={onStepDayBrightness}
+        />
         <NightModeSection
           settings={settings}
           theme={theme}
           onChange={onChange}
           onStepTime={onStepNightTime}
           onStepBrightness={onStepNightBrightness}
-          onStepDayBrightness={onStepDayBrightness}
+          onStepThreshold={onStepThreshold}
         />
         <ThresholdsSection settings={settings} theme={theme} onStep={onStepThreshold} />
         <AlertTypesSection

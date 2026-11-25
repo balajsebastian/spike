@@ -22,18 +22,39 @@ import {
 
 export type StepDirection = -1 | 1;
 export type NightTimeKey = "nightStartMinutes" | "nightEndMinutes";
-export type ThresholdKey = "urgentLowThreshold" | "lowThreshold" | "highThreshold" | "urgentHighThreshold";
+export type ThresholdKey =
+  | "urgentLowThreshold"
+  | "lowThreshold"
+  | "highThreshold"
+  | "urgentHighThreshold"
+  | "nightLowThreshold"
+  | "nightHighThreshold"
+  | "nightUrgentHighThreshold";
 
 /** One step down or up, never past `min` / `max`. */
 export function stepWithin(value: number, direction: StepDirection, step: number, min: number, max: number): number {
   return direction < 0 ? Math.max(min, value - step) : Math.min(max, value + step);
 }
 
-/** Thresholds keep their order with at least one step between them: urgent low < low < high < urgent high. */
+/**
+ * Thresholds keep their order with at least one step between them: urgent low < low < high < urgent high,
+ * by day and at night. Urgent Low is shared, so with night thresholds on it stays below both Lows.
+ */
 function thresholdBounds(settings: Settings, key: ThresholdKey): { min: number; max: number } {
   switch (key) {
     case "urgentLowThreshold":
-      return { min: THRESHOLD_MIN, max: settings.lowThreshold - THRESHOLD_STEP };
+      return {
+        min: THRESHOLD_MIN,
+        max:
+          (settings.nightThresholdsEnabled ? Math.min(settings.lowThreshold, settings.nightLowThreshold) : settings.lowThreshold) -
+          THRESHOLD_STEP,
+      };
+    case "nightLowThreshold":
+      return { min: settings.urgentLowThreshold + THRESHOLD_STEP, max: settings.nightHighThreshold - THRESHOLD_STEP };
+    case "nightHighThreshold":
+      return { min: settings.nightLowThreshold + THRESHOLD_STEP, max: settings.nightUrgentHighThreshold - THRESHOLD_STEP };
+    case "nightUrgentHighThreshold":
+      return { min: settings.nightHighThreshold + THRESHOLD_STEP, max: THRESHOLD_MAX };
     case "lowThreshold":
       return { min: settings.urgentLowThreshold + THRESHOLD_STEP, max: settings.highThreshold - THRESHOLD_STEP };
     case "highThreshold":
@@ -41,6 +62,14 @@ function thresholdBounds(settings: Settings, key: ThresholdKey): { min: number; 
     case "urgentHighThreshold":
       return { min: settings.highThreshold + THRESHOLD_STEP, max: THRESHOLD_MAX };
   }
+}
+
+/** Pushes the night thresholds up just enough to sit in order above the shared Urgent Low. */
+export function orderNightThresholds(settings: Settings): Partial<Settings> {
+  const nightLowThreshold = Math.max(settings.nightLowThreshold, settings.urgentLowThreshold + THRESHOLD_STEP);
+  const nightHighThreshold = Math.max(settings.nightHighThreshold, nightLowThreshold + THRESHOLD_STEP);
+  const nightUrgentHighThreshold = Math.max(settings.nightUrgentHighThreshold, nightHighThreshold + THRESHOLD_STEP);
+  return { nightLowThreshold, nightHighThreshold, nightUrgentHighThreshold };
 }
 
 export function stepThreshold(settings: Settings, key: ThresholdKey, direction: StepDirection): Partial<Settings> {
