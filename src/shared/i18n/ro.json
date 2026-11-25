@@ -85,7 +85,7 @@
   "settings": {
     "sections": {
       "display": "AFIȘARE",
-      "nightMode": "MOD NOAPTE",
+      "brightness": "LUMINOZITATE",
       "thresholds": "PRAGURI DE ALERTĂ",
       "alertTypes": "TIPURI DE ALERTĂ",
       "sounds": "SUNETE ALARMĂ",
@@ -101,6 +101,8 @@
     "delta": "Delta",
     "trendLine": "Linie de trend",
     "trendWindow": "Interval grafic",
+    "dayBrightnessEnabled": "Estompare ziua",
+    "dayBrightness": "Luminozitate ziua",
     "nightMode": "Mod noapte",
     "nightStart": "Începe",
     "nightEnd": "Se termină",
@@ -129,6 +131,7 @@
       "coloredValues": "Afișează cifra și graficul în verde cât timp ești în interval. Valorile mici sunt mereu roșii, cele mari portocalii, apoi roșii.",
       "clock": "Afișează ora în partea de sus a monitorului. Respectă setarea de 12/24 de ore a telefonului.",
       "delta": "Cât s-a schimbat glicemia în ultimele 5 minute, afișat sub săgeată. Nu apare dacă nu există o citire de acum aproximativ 5 minute.",
+      "dayBrightness": "Ține monitorul mai puțin luminos în afara modului de noapte, fără să schimbe luminozitatea telefonului. Celelalte aplicații și celelalte taburi din Spike rămân la fel de luminoase. Revine la normal cât timp sună o alarmă.",
       "nightMode": "Scade luminozitatea ecranului între orele alese, ca să nu lumineze camera. Revine la normal cât timp sună o alarmă.",
       "nightBrightness": "Cât de luminos e ecranul noaptea. Nu devine niciodată mai luminos decât era deja telefonul.",
       "predictedLow": "Sună când glicemia e încă în interval, dar se îndreaptă să scadă sub Scăzut în următoarele {{count}} de minute.",

@@ -17,7 +17,7 @@ export function useScreenBrightness(level: number | null): boolean {
 
     async function dim(value: number) {
       if (originalRef.current === null) originalRef.current = await Brightness.getBrightnessAsync();
-      // Never brighter than the phone already was: night mode only ever dims.
+      // Never brighter than the phone already was: Spike only ever dims.
       if (!cancelled) await Brightness.setBrightnessAsync(Math.min(value, originalRef.current));
     }
 

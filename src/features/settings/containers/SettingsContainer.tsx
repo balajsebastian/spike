@@ -6,6 +6,7 @@ import { PREDICTION_MINUTES } from "@/features/alarm/helpers/prediction";
 import { useSettingsContext } from "../SettingsContext";
 import { SNOOZE_WARNING_ABOVE } from "../constants";
 import {
+  stepDayBrightness,
   stepNightBrightness,
   stepNightTime,
   stepNoDataMinutes,
@@ -39,6 +40,7 @@ export function SettingsContainer() {
       onStepSnooze={(direction) => update(stepSnooze(settings, direction))}
       onStepNightTime={(key, direction) => update(stepNightTime(settings, key, direction))}
       onStepNightBrightness={(direction) => update(stepNightBrightness(settings, direction))}
+      onStepDayBrightness={(direction) => update(stepDayBrightness(settings, direction))}
       onPickSound={(kind) => router.push({ pathname: "/sound-picker", params: { kind } })}
     />
   );

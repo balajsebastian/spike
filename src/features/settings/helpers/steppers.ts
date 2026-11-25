@@ -1,5 +1,8 @@
 import type { Settings } from "../types";
 import {
+  DAY_BRIGHTNESS_MAX,
+  DAY_BRIGHTNESS_MIN,
+  DAY_BRIGHTNESS_STEP,
   NON_URGENT_REPEAT_MAX,
   NON_URGENT_REPEAT_MIN,
   NON_URGENT_REPEAT_STEP,
@@ -71,6 +74,12 @@ const MINUTES_PER_DAY = 24 * 60;
 export function stepNightTime(settings: Settings, key: NightTimeKey, direction: StepDirection): Partial<Settings> {
   const next = (settings[key] + direction * NIGHT_TIME_STEP + MINUTES_PER_DAY) % MINUTES_PER_DAY;
   return { [key]: next };
+}
+
+export function stepDayBrightness(settings: Settings, direction: StepDirection): Partial<Settings> {
+  return {
+    dayBrightness: stepWithin(settings.dayBrightness, direction, DAY_BRIGHTNESS_STEP, DAY_BRIGHTNESS_MIN, DAY_BRIGHTNESS_MAX),
+  };
 }
 
 export function stepNightBrightness(settings: Settings, direction: StepDirection): Partial<Settings> {

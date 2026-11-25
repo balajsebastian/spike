@@ -85,7 +85,7 @@
   "settings": {
     "sections": {
       "display": "ANZEIGE",
-      "nightMode": "NACHTMODUS",
+      "brightness": "HELLIGKEIT",
       "thresholds": "ALARMGRENZEN",
       "alertTypes": "ALARMARTEN",
       "sounds": "ALARMTÖNE",
@@ -101,6 +101,8 @@
     "delta": "Delta",
     "trendLine": "Trendlinie",
     "trendWindow": "Zeitraum",
+    "dayBrightnessEnabled": "Tagsüber dimmen",
+    "dayBrightness": "Helligkeit tagsüber",
     "nightMode": "Nachtmodus",
     "nightStart": "Beginn",
     "nightEnd": "Ende",
@@ -129,6 +131,7 @@
       "coloredValues": "Zeigt Wert und Verlauf grün an, solange du im Zielbereich bist. Niedrige Werte sind immer rot, hohe orange, dann rot.",
       "clock": "Zeigt die Uhrzeit oben auf dem Monitor. Folgt der 12/24-Stunden-Einstellung deines Handys.",
       "delta": "Wie stark sich der Wert in den letzten 5 Minuten geändert hat, unter dem Pfeil. Ausgeblendet, wenn es keinen Wert von vor etwa 5 Minuten gibt.",
+      "dayBrightness": "Hält den Monitor außerhalb des Nachtmodus dunkler, ohne die Helligkeit deines Handys zu ändern. Andere Apps und Spikes andere Tabs bleiben so hell wie sonst. Während ein Alarm läuft, wird es wieder normal hell.",
       "nightMode": "Senkt die Bildschirmhelligkeit zwischen den eingestellten Uhrzeiten, damit der Monitor den Raum nicht erhellt. Bei einem Alarm wird sie wieder normal.",
       "nightBrightness": "Wie hell der Bildschirm nachts ist. Er wird nie heller, als dein Telefon schon war.",
       "predictedLow": "Meldet sich, wenn der Wert noch im Bereich ist, aber in den nächsten {{count}} Minuten voraussichtlich unter Niedrig fällt.",

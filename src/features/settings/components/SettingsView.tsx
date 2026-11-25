@@ -25,6 +25,7 @@ interface Props {
   onStepSnooze: (direction: StepDirection) => void;
   onStepNightTime: (key: NightTimeKey, direction: StepDirection) => void;
   onStepNightBrightness: (direction: StepDirection) => void;
+  onStepDayBrightness: (direction: StepDirection) => void;
   onPickSound: (kind: AlarmSoundKind) => void;
 }
 
@@ -43,6 +44,7 @@ export function SettingsView({
   onStepSnooze,
   onStepNightTime,
   onStepNightBrightness,
+  onStepDayBrightness,
   onPickSound,
 }: Props) {
   const { t } = useTranslation();
@@ -70,6 +72,7 @@ export function SettingsView({
           onChange={onChange}
           onStepTime={onStepNightTime}
           onStepBrightness={onStepNightBrightness}
+          onStepDayBrightness={onStepDayBrightness}
         />
         <ThresholdsSection settings={settings} theme={theme} onStep={onStepThreshold} />
         <AlertTypesSection

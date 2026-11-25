@@ -12,6 +12,7 @@ export function isAlarmRinging(lastAlarmAt: number, snoozeUntil: number, now: nu
 }
 
 type NightSettings = Pick<Settings, "nightModeEnabled" | "nightStartMinutes" | "nightEndMinutes" | "nightBrightness">;
+type BrightnessSettings = NightSettings & Pick<Settings, "dayBrightnessEnabled" | "dayBrightness">;
 
 /** Whether `minutes` (after midnight) falls in [start, end), including ranges that cross midnight (23:00–07:00). */
 export function isWithinNight(minutes: number, start: number, end: number): boolean {
@@ -29,4 +30,15 @@ export function getNightBrightness(settings: NightSettings, now: number, alarmAc
   const minutes = date.getHours() * 60 + date.getMinutes();
   if (!isWithinNight(minutes, settings.nightStartMinutes, settings.nightEndMinutes)) return null;
   return settings.nightBrightness / 100;
+}
+
+/**
+ * The monitor's screen brightness (0–1): the night level during night hours, otherwise the day level when it's on.
+ * Null means the phone's own brightness, which is also what an alarm that just went off gets.
+ */
+export function getScreenBrightness(settings: BrightnessSettings, now: number, alarmActive: boolean): number | null {
+  if (alarmActive) return null;
+  const night = getNightBrightness(settings, now, false);
+  if (night !== null) return night;
+  return settings.dayBrightnessEnabled ? settings.dayBrightness / 100 : null;
 }

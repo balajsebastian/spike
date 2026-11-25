@@ -53,6 +53,9 @@ export interface Settings {
   snoozeEnabled: boolean;
   snoozeMinutes: number;
   alarmSounds: Record<AlarmSoundKind, AlarmSound>;
+  /** Keeps the monitor at `dayBrightness` percent outside the night hours, so the phone itself can stay bright. */
+  dayBrightnessEnabled: boolean;
+  dayBrightness: number;
   /** Dims the monitor between `nightStartMinutes` and `nightEndMinutes` (minutes after midnight). */
   nightModeEnabled: boolean;
   nightStartMinutes: number;
@@ -97,6 +100,8 @@ export const DEFAULT_SETTINGS: Settings = {
     trend: "beep",
     noData: "arcade",
   },
+  dayBrightnessEnabled: false,
+  dayBrightness: 50,
   nightModeEnabled: false,
   nightStartMinutes: 23 * 60,
   nightEndMinutes: 7 * 60,

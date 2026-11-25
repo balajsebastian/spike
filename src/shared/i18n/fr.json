@@ -85,7 +85,7 @@
   "settings": {
     "sections": {
       "display": "AFFICHAGE",
-      "nightMode": "MODE NUIT",
+      "brightness": "LUMINOSITÉ",
       "thresholds": "SEUILS D'ALERTE",
       "alertTypes": "TYPES D'ALERTE",
       "sounds": "SONS D'ALARME",
@@ -101,6 +101,8 @@
     "delta": "Delta",
     "trendLine": "Courbe de tendance",
     "trendWindow": "Période",
+    "dayBrightnessEnabled": "Atténuer le jour",
+    "dayBrightness": "Luminosité de jour",
     "nightMode": "Mode nuit",
     "nightStart": "Début",
     "nightEnd": "Fin",
@@ -129,6 +131,7 @@
       "coloredValues": "Affiche la valeur et la courbe en vert tant que vous êtes dans la cible. Les valeurs basses sont toujours en rouge, les hautes en orange puis en rouge.",
       "clock": "Affiche l'heure en haut du moniteur. Suit le réglage 12/24 heures de ton téléphone.",
       "delta": "De combien la glycémie a changé ces 5 dernières minutes, sous la flèche. Masqué s'il n'y a pas de valeur d'il y a environ 5 minutes.",
+      "dayBrightness": "Garde le moniteur moins lumineux en dehors du mode nuit, sans changer la luminosité de ton téléphone. Les autres apps et les autres onglets de Spike restent aussi lumineux que d'habitude. Revient à la normale pendant une alarme.",
       "nightMode": "Baisse la luminosité de l'écran entre les heures choisies, pour ne pas éclairer la pièce. Elle redevient normale pendant une alarme.",
       "nightBrightness": "La luminosité de l'écran la nuit. Elle ne dépasse jamais celle que votre téléphone avait déjà.",
       "predictedLow": "Sonne quand la glycémie est encore dans la cible mais en passe de descendre sous Bas dans les {{count}} prochaines minutes.",

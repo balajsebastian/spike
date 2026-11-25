@@ -14,3 +14,6 @@ export const NIGHT_TIME_STEP = 30;
 export const NIGHT_BRIGHTNESS_MIN = 10;
 export const NIGHT_BRIGHTNESS_MAX = 80;
 export const NIGHT_BRIGHTNESS_STEP = 10;
+export const DAY_BRIGHTNESS_MIN = 10;
+export const DAY_BRIGHTNESS_MAX = 90;
+export const DAY_BRIGHTNESS_STEP = 10;

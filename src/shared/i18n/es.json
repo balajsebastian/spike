@@ -85,7 +85,7 @@
   "settings": {
     "sections": {
       "display": "PANTALLA",
-      "nightMode": "MODO NOCHE",
+      "brightness": "BRILLO",
       "thresholds": "UMBRALES DE ALERTA",
       "alertTypes": "TIPOS DE ALERTA",
       "sounds": "SONIDOS DE ALARMA",
@@ -101,6 +101,8 @@
     "delta": "Delta",
     "trendLine": "Línea de tendencia",
     "trendWindow": "Periodo",
+    "dayBrightnessEnabled": "Atenuar de día",
+    "dayBrightness": "Brillo de día",
     "nightMode": "Modo noche",
     "nightStart": "Empieza",
     "nightEnd": "Termina",
@@ -129,6 +131,7 @@
       "coloredValues": "Muestra el número y la línea de tendencia en verde mientras estás en rango. Los bajos siempre son rojos y los altos naranjas, luego rojos.",
       "clock": "Muestra la hora en la parte superior del monitor. Sigue el ajuste de 12/24 horas de tu teléfono.",
       "delta": "Cuánto cambió la glucosa en los últimos 5 minutos, bajo la flecha. No aparece si no hay una lectura de hace unos 5 minutos.",
+      "dayBrightness": "Mantiene el monitor más tenue fuera del modo nocturno, sin cambiar el brillo del teléfono. Las demás apps y las otras pestañas de Spike siguen igual de brillantes. Vuelve a la normalidad mientras suena una alarma.",
       "nightMode": "Baja el brillo de la pantalla entre las horas que elijas, para que el monitor no ilumine la habitación. Vuelve a la normalidad mientras suena una alarma.",
       "nightBrightness": "Qué brillo tiene la pantalla por la noche. Nunca sube por encima del brillo que ya tenía tu teléfono.",
       "predictedLow": "Suena cuando la glucosa aún está en rango pero va camino de bajar de Bajo en los próximos {{count}} minutos.",
