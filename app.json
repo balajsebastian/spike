@@ -86,7 +86,8 @@
             "de"
           ]
         }
-      ]
+      ],
+      "expo-status-bar"
     ]
   }
 }
