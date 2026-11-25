@@ -38,7 +38,7 @@ export function stepWithin(value: number, direction: StepDirection, step: number
 
 /**
  * Thresholds keep their order with at least one step between them: urgent low < low < high < urgent high,
- * by day and at night. Urgent Low is shared, so with night thresholds on it stays below both Lows.
+ * by day and at night. Urgent Low is shared, so while the night thresholds are in use it stays below both Lows.
  */
 function thresholdBounds(settings: Settings, key: ThresholdKey): { min: number; max: number } {
   switch (key) {
@@ -46,8 +46,9 @@ function thresholdBounds(settings: Settings, key: ThresholdKey): { min: number; 
       return {
         min: THRESHOLD_MIN,
         max:
-          (settings.nightThresholdsEnabled ? Math.min(settings.lowThreshold, settings.nightLowThreshold) : settings.lowThreshold) -
-          THRESHOLD_STEP,
+          (nightThresholdsInUse(settings)
+            ? Math.min(settings.lowThreshold, settings.nightLowThreshold)
+            : settings.lowThreshold) - THRESHOLD_STEP,
       };
     case "nightLowThreshold":
       return { min: settings.urgentLowThreshold + THRESHOLD_STEP, max: settings.nightHighThreshold - THRESHOLD_STEP };
@@ -62,6 +63,11 @@ function thresholdBounds(settings: Settings, key: ThresholdKey): { min: number; 
     case "urgentHighThreshold":
       return { min: settings.highThreshold + THRESHOLD_STEP, max: THRESHOLD_MAX };
   }
+}
+
+/** Night thresholds only count with Night Mode on too; otherwise they're hidden and do nothing. */
+function nightThresholdsInUse(settings: Settings): boolean {
+  return settings.nightModeEnabled && settings.nightThresholdsEnabled;
 }
 
 /** Pushes the night thresholds up just enough to sit in order above the shared Urgent Low. */

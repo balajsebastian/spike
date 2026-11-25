@@ -19,7 +19,6 @@ import { formatDelta, getDelta } from "../helpers/delta";
 import { getReadingDisplay, snoozeMinutesLeft } from "../helpers/display";
 import { getMonitorLayout } from "../helpers/layout";
 import {
-  getNightBrightness,
   getScreenBrightness,
   isAlarmRinging,
   isNightTime,
@@ -73,7 +72,6 @@ export function MonitorContainer({ credentials }: Props) {
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
   const minutesLeft = snoozeMinutesLeft(snoozeUntil, now);
   const alarmRinging = isAlarmRinging(lastAlarmAt, snoozeUntil, now);
-  const nightBrightness = getNightBrightness(settings, now, alarmRinging);
   const screenBrightness = getScreenBrightness(settings, now, alarmRinging);
   // Only while the monitor is on screen: Settings and the other tabs keep the phone's own brightness.
   const isFocused = useIsFocused();
@@ -82,7 +80,7 @@ export function MonitorContainer({ credentials }: Props) {
   const nightDim = screenBrightness !== null && !brightnessApplied ? 1 - screenBrightness : 0;
   // Rating prompt only on a good moment: a fresh reading in range, nothing ringing, not at night or on the nightstand.
   useStoreReviewPrompt(
-    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && nightBrightness === null && screenWidth <= screenHeight,
+    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && !isNight && screenWidth <= screenHeight,
   );
   const layout = getMonitorLayout({
     width: screenWidth,

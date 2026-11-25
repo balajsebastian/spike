@@ -27,7 +27,8 @@ export function NightModeSection({ settings, theme, onChange, onStepTime, onStep
       <Row label={t("settings.nightMode")} icon={MoonStar} info={t("settings.info.nightMode")} theme={theme}>
         <Switch
           value={settings.nightModeEnabled}
-          onValueChange={(nightModeEnabled) => onChange({ nightModeEnabled })}
+          // Urgent Low may have moved up while this was off; keep the night thresholds above it.
+          onValueChange={(nightModeEnabled) => onChange({ nightModeEnabled, ...orderNightThresholds(settings) })}
         />
       </Row>
       {settings.nightModeEnabled && (

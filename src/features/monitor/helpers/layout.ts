@@ -4,7 +4,7 @@ const LINE_HEIGHT_RATIO = 1.25;
 const STATUS_HEIGHT = 48;
 const SNOOZE_HEIGHT = 64;
 /** Space kept free at the top for the clock. */
-export const CLOCK_HEIGHT = 48;
+export const CLOCK_HEIGHT = 64;
 const VERTICAL_PADDING = 40;
 const TREND_GAP = 24;
 const SIDE_MARGIN = 24;

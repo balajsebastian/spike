@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   clock: {
     position: "absolute",
     alignSelf: "center",
-    fontSize: 28,
+    fontSize: 40,
     fontWeight: "600",
     fontVariant: ["tabular-nums"],
   },
