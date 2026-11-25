@@ -31,6 +31,8 @@ export interface Settings {
   showDelta: boolean;
   /** Green while in range, instead of the plain text color. */
   coloredValues: boolean;
+  /** Time of day at the top of the monitor (the status bar is hidden there). */
+  showClock: boolean;
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
@@ -66,6 +68,7 @@ export const DEFAULT_SETTINGS: Settings = {
   trendWindowHours: 2,
   showDelta: false,
   coloredValues: false,
+  showClock: false,
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,

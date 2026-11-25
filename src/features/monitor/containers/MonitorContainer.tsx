@@ -75,6 +75,7 @@ export function MonitorContainer({ credentials }: Props) {
     insets,
     showTrend: settings.showTrendLine,
     reserveSnooze: settings.snoozeEnabled,
+    showClock: settings.showClock,
     unit: settings.unit,
   });
 
@@ -90,6 +91,7 @@ export function MonitorContainer({ credentials }: Props) {
       nightDim={nightDim}
       trend={layout.trend && { readings: history, windowMinutes: trendWindowMinutes, ...layout.trend }}
       now={now}
+      clockTop={settings.showClock ? insets.top : null}
       settings={settings}
       theme={theme}
       snooze={settings.snoozeEnabled ? { minutesLeft, canSnooze: !!alarmLevel || noDataAlarm } : null}

@@ -8,6 +8,8 @@ import { GlucoseDisplay } from "./GlucoseDisplay";
 import { TrendLine } from "./TrendLine";
 import { SnoozeControl } from "./SnoozeControl";
 import { CredentialsNotice } from "./CredentialsNotice";
+import { Clock } from "./Clock";
+import { CLOCK_HEIGHT } from "../helpers/layout";
 
 interface Props {
   display: ReadingDisplay;
@@ -23,6 +25,8 @@ interface Props {
   nightDim: number;
   trend: { readings: GlucoseReading[]; windowMinutes: number; width: number; height: number } | null;
   now: number;
+  /** Where the clock sits (the top safe-area inset), or null when it's off. */
+  clockTop: number | null;
   settings: Settings;
   theme: ThemeColors;
   snooze: { minutesLeft: number | null; canSnooze: boolean } | null;
@@ -46,6 +50,7 @@ export function MonitorView({
   nightDim,
   trend,
   now,
+  clockTop,
   settings,
   theme,
   snooze,
@@ -57,8 +62,17 @@ export function MonitorView({
   onLoginAgain,
 }: Props) {
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: theme.background },
+        // Centers everything in the space under the clock.
+        clockTop !== null && { paddingTop: clockTop + CLOCK_HEIGHT },
+      ]}
+    >
       <StatusBar hidden />
+
+      {clockTop !== null && <Clock top={clockTop} theme={theme} />}
 
       <View style={split ? styles.splitRow : styles.stacked}>
         <View style={split ? [styles.splitColumn, { width: columnWidth ?? undefined }] : styles.stacked}>
