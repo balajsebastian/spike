@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { Platform, useWindowDimensions } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useIsFocused } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSettingsContext } from "@/features/settings/SettingsContext";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -16,7 +18,12 @@ import { getStatusText } from "../helpers/status";
 import { formatDelta, getDelta } from "../helpers/delta";
 import { getReadingDisplay, snoozeMinutesLeft } from "../helpers/display";
 import { getMonitorLayout } from "../helpers/layout";
-import { getNightBrightness, isAlarmRinging } from "../helpers/nightMode";
+import {
+  getScreenBrightness,
+  isAlarmRinging,
+  isNightTime,
+  withNightThresholds,
+} from "../helpers/nightMode";
 import { useScreenBrightness } from "../hooks/useScreenBrightness";
 import { MonitorView } from "../components/MonitorView";
 
@@ -31,11 +38,14 @@ interface Props {
 /** Polls the CGM, runs the alarm, and turns it all into what the monitor screen shows. */
 export function MonitorContainer({ credentials }: Props) {
   const { t } = useTranslation();
-  const { settings, theme } = useSettingsContext();
+  const { settings: savedSettings, theme } = useSettingsContext();
   const { clear: logout } = useAuth();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const now = useNow(CLOCK_TICK_MS);
+  const isNight = isNightTime(savedSettings, now);
+  // Memoized on the night flag, not `now`, so the alarm doesn't see new settings every tick.
+  const settings = useMemo(() => withNightThresholds(savedSettings, isNight), [savedSettings, isNight]);
   const trendWindowMinutes = settings.trendWindowHours * 60;
   const needsShortHistory = settings.showDelta || settings.predictedLowEnabled || settings.predictedHighEnabled;
   const historyMinutes = settings.showTrendLine ? trendWindowMinutes : needsShortHistory ? SHORT_HISTORY_MINUTES : null;
@@ -61,13 +71,16 @@ export function MonitorContainer({ credentials }: Props) {
   const display = getReadingDisplay(reading, now, settings, { normal: theme.text, noData: theme.textTertiary });
   const blinkOpacity = useBlink(isUrgentLevel(alarmLevel) && !display.isNoData);
   const minutesLeft = snoozeMinutesLeft(snoozeUntil, now);
-  const nightBrightness = getNightBrightness(settings, now, isAlarmRinging(lastAlarmAt, snoozeUntil, now));
-  const brightnessApplied = useScreenBrightness(nightBrightness);
+  const alarmRinging = isAlarmRinging(lastAlarmAt, snoozeUntil, now);
+  const screenBrightness = getScreenBrightness(settings, now, alarmRinging);
+  // Only while the monitor is on screen: Settings and the other tabs keep the phone's own brightness.
+  const isFocused = useIsFocused();
+  const brightnessApplied = useScreenBrightness(isFocused ? screenBrightness : null);
   // If the real brightness can't be changed, dim with a black overlay instead.
-  const nightDim = nightBrightness !== null && !brightnessApplied ? 1 - nightBrightness : 0;
+  const nightDim = screenBrightness !== null && !brightnessApplied ? 1 - screenBrightness : 0;
   // Rating prompt only on a good moment: a fresh reading in range, nothing ringing, not at night or on the nightstand.
   useStoreReviewPrompt(
-    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && nightBrightness === null && screenWidth <= screenHeight,
+    !!reading && !display.isNoData && !alarmLevel && !noDataAlarm && !isNight && screenWidth <= screenHeight,
   );
   const layout = getMonitorLayout({
     width: screenWidth,
@@ -75,6 +88,7 @@ export function MonitorContainer({ credentials }: Props) {
     insets,
     showTrend: settings.showTrendLine,
     reserveSnooze: settings.snoozeEnabled,
+    showClock: settings.showClock,
     unit: settings.unit,
   });
 
@@ -90,6 +104,7 @@ export function MonitorContainer({ credentials }: Props) {
       nightDim={nightDim}
       trend={layout.trend && { readings: history, windowMinutes: trendWindowMinutes, ...layout.trend }}
       now={now}
+      clockTop={settings.showClock ? insets.top : null}
       settings={settings}
       theme={theme}
       snooze={settings.snoozeEnabled ? { minutesLeft, canSnooze: !!alarmLevel || noDataAlarm } : null}

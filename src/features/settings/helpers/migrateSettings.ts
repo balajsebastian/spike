@@ -1,5 +1,6 @@
 import { DEFAULT_SETTINGS, TREND_WINDOW_HOURS, type AlarmSound, type Settings } from "../types";
 import { THRESHOLD_STEP } from "../constants";
+import { orderNightThresholds } from "./steppers";
 
 type StoredSettings = Partial<Settings> & {
   /** Before 1.1 there was a single sound for every alarm. */
@@ -33,5 +34,7 @@ export function migrateSettings(stored: StoredSettings): Settings {
 
   // Settings saved before Urgent High existed may have a High above its default.
   merged.urgentHighThreshold = Math.max(merged.urgentHighThreshold, merged.highThreshold + THRESHOLD_STEP);
-  return merged;
+
+  // Night thresholds are new: keep them in order above the shared Urgent Low, whatever it was set to.
+  return { ...merged, ...orderNightThresholds(merged) };
 }

@@ -3,6 +3,8 @@ const MIN_READING_FONT = 72;
 const LINE_HEIGHT_RATIO = 1.25;
 const STATUS_HEIGHT = 48;
 const SNOOZE_HEIGHT = 64;
+/** Space kept free at the top for the clock. */
+export const CLOCK_HEIGHT = 64;
 const VERTICAL_PADDING = 40;
 const TREND_GAP = 24;
 const SIDE_MARGIN = 24;
@@ -34,6 +36,7 @@ interface Input {
   insets: { top: number; bottom: number; left: number; right: number };
   showTrend: boolean;
   reserveSnooze: boolean;
+  showClock: boolean;
   unit: "mgdl" | "mmol";
 }
 
@@ -52,8 +55,8 @@ function fitReadingFontSize(
   return Math.round(Math.max(MIN_READING_FONT, Math.min(MAX_READING_FONT, byHeight, byWidth)));
 }
 
-export function getMonitorLayout({ width, height, insets, showTrend, reserveSnooze, unit }: Input): MonitorLayout {
-  const availableHeight = height - insets.top - insets.bottom;
+export function getMonitorLayout({ width, height, insets, showTrend, reserveSnooze, showClock, unit }: Input): MonitorLayout {
+  const availableHeight = height - insets.top - insets.bottom - (showClock ? CLOCK_HEIGHT : 0);
   const availableWidth = width - insets.left - insets.right;
   const snooze = reserveSnooze ? SNOOZE_HEIGHT : 0;
   const isLandscape = width > height;

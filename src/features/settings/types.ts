@@ -31,6 +31,8 @@ export interface Settings {
   showDelta: boolean;
   /** Green while in range, instead of the plain text color. */
   coloredValues: boolean;
+  /** Time of day at the top of the monitor (the status bar is hidden there). */
+  showClock: boolean;
   urgentLowThreshold: number;
   lowThreshold: number;
   highThreshold: number;
@@ -51,12 +53,23 @@ export interface Settings {
   snoozeEnabled: boolean;
   snoozeMinutes: number;
   alarmSounds: Record<AlarmSoundKind, AlarmSound>;
+  /** Keeps the monitor at `dayBrightness` percent outside the night hours, so the phone itself can stay bright. */
+  dayBrightnessEnabled: boolean;
+  dayBrightness: number;
   /** Dims the monitor between `nightStartMinutes` and `nightEndMinutes` (minutes after midnight). */
   nightModeEnabled: boolean;
   nightStartMinutes: number;
   nightEndMinutes: number;
-  /** How bright the monitor stays at night, in percent. */
+  /** How bright the monitor stays at night, in percent (100 keeps the phone's own brightness). */
   nightBrightness: number;
+  /**
+   * Separate Low / High / Urgent High during the night hours, e.g. a higher High so a mild high doesn't wake you.
+   * Urgent Low is never relaxed at night: it always uses `urgentLowThreshold`.
+   */
+  nightThresholdsEnabled: boolean;
+  nightLowThreshold: number;
+  nightHighThreshold: number;
+  nightUrgentHighThreshold: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -66,6 +79,7 @@ export const DEFAULT_SETTINGS: Settings = {
   trendWindowHours: 2,
   showDelta: false,
   coloredValues: false,
+  showClock: false,
   urgentLowThreshold: 55,
   lowThreshold: 70,
   highThreshold: 140,
@@ -94,10 +108,16 @@ export const DEFAULT_SETTINGS: Settings = {
     trend: "beep",
     noData: "arcade",
   },
+  dayBrightnessEnabled: false,
+  dayBrightness: 50,
   nightModeEnabled: false,
   nightStartMinutes: 23 * 60,
   nightEndMinutes: 7 * 60,
   nightBrightness: 30,
+  nightThresholdsEnabled: false,
+  nightLowThreshold: 70,
+  nightHighThreshold: 180,
+  nightUrgentHighThreshold: 250,
 };
 
 export interface ThemeColors {
