@@ -1,6 +1,10 @@
 {
   "outdatedRuntimes": {
-    "ios": ["3a9a3afb28581e876ada771c844edf1625a25ab7"],
-    "android": ["38f4ec21a70c9e8ed71a6f18f2484d57a04de26b", "1c4daed682892eba93da2661568ea00c6bbf5bf2"]
+    "ios": ["3a9a3afb28581e876ada771c844edf1625a25ab7", "c07713165b0ba4586ffe117726bbbbdbf87143fc"],
+    "android": [
+      "38f4ec21a70c9e8ed71a6f18f2484d57a04de26b",
+      "1c4daed682892eba93da2661568ea00c6bbf5bf2",
+      "396b43ee2323fd4b2083f140cb09c68dd7c3d8ee"
+    ]
   }
 }
